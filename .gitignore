@@ -1,0 +1,15 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+/.gradle/
+/bin/
+/build/
+**/build/
+/logs/
+**/logs/
+.DS_Store
+.classpath
+.project
+/.settings/
+target/
+out/
+.idea
+*.iml
