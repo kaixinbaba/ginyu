@@ -1,5 +1,6 @@
 package protocol;
 
+import io.netty.buffer.ByteBuf;
 import lombok.Data;
 
 /**
@@ -13,4 +14,6 @@ public abstract class Resp2<T> {
     private String flag;
 
     private T data;
+
+    public abstract void writeByteBuf(ByteBuf byteBuf);
 }

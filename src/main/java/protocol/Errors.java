@@ -14,7 +14,7 @@ import static common.Constants.ERRORS_FLAG;
  */
 @Data
 @ToString(callSuper = true)
-public class Errors extends Resp2<String> {
+public class Errors extends SimpleStrings {
 
     public Errors() {
         this.setFlag(ERRORS_FLAG);

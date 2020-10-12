@@ -12,6 +12,8 @@ public abstract class Constants {
 
     public static final String RESP_SPLIT = CR + LF;
 
+    public static final byte[] SPLIT_BYTE = RESP_SPLIT.getBytes();
+
     public static final int SKIP = RESP_SPLIT.length();
 
     public static final String SIMPLE_STRINGS_FLAG = "+";

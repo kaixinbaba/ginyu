@@ -1,5 +1,6 @@
 package protocol;
 
+import common.Constants;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.ToString;
@@ -23,11 +24,29 @@ public class BulkStrings extends Resp2<BulkString> {
 
     public static BulkStrings convert(ByteBuf byteBuf) {
         Integer length = ProtocolUtils.readInt(byteBuf);
-        byte[] bb = new byte[length];
-        byteBuf.readBytes(bb);
-        byteBuf.skipBytes(SKIP);
         BulkStrings bulkStrings = new BulkStrings();
-        bulkStrings.setData(new BulkString(length, new String(bb)));
+        String content;
+        if (length < 0) {
+            content = null;
+        } else if (length == 0) {
+            content = "";
+            byteBuf.skipBytes(SKIP);
+        } else {
+            byte[] bb = new byte[length];
+            byteBuf.readBytes(bb);
+            content = new String(bb);
+            byteBuf.skipBytes(SKIP);
+        }
+        bulkStrings.setData(new BulkString(length, content));
         return bulkStrings;
+    }
+
+    @Override
+    public void writeByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBytes(this.getFlag().getBytes());
+        byteBuf.writeBytes(String.valueOf(this.getData().getLength()).getBytes());
+        byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        byteBuf.writeBytes(this.getData().getContent().getBytes());
+        byteBuf.writeBytes(Constants.SPLIT_BYTE);
     }
 }

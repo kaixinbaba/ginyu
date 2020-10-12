@@ -1,5 +1,6 @@
 package protocol;
 
+import common.Constants;
 import io.netty.buffer.ByteBuf;
 import lombok.Data;
 import lombok.ToString;
@@ -24,5 +25,12 @@ public class SimpleStrings extends Resp2<String> {
         SimpleStrings simpleStrings = new SimpleStrings();
         simpleStrings.setData(ProtocolUtils.readString(byteBuf));
         return simpleStrings;
+    }
+
+    @Override
+    public void writeByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBytes(this.getFlag().getBytes());
+        byteBuf.writeBytes(this.getData().getBytes());
+        byteBuf.writeBytes(Constants.SPLIT_BYTE);
     }
 }

@@ -30,19 +30,8 @@ public abstract class Serializers {
     }
 
     public static ByteBuf encode(Resp2 resp) {
-        // 1. 创建 ByteBuf 对象
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
-        // 2. 序列化 Java 对象
-//        byte[] bytes = serializer.serialize(msg);
-//
-//        // 3. 实际编码过程
-//        byteBuf.writeInt(MAGIC_NUMBER);
-//        byteBuf.writeByte(packet.getVersion());
-//        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
-//        byteBuf.writeByte(packet.getCommand());
-//        byteBuf.writeInt(bytes.length);
-//        byteBuf.writeBytes(bytes);
-        byteBuf.writeBytes("+OK\r\n".getBytes());
+        resp.writeByteBuf(byteBuf);
         return byteBuf;
     }
 
