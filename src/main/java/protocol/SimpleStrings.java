@@ -21,6 +21,12 @@ public class SimpleStrings extends Resp2<String> {
         this.setFlag(SIMPLE_STRINGS_FLAG);
     }
 
+    public static SimpleStrings create(String content) {
+        SimpleStrings simpleStrings = new SimpleStrings();
+        simpleStrings.setData(content);
+        return simpleStrings;
+    }
+
     public static SimpleStrings convert(ByteBuf byteBuf) {
         SimpleStrings simpleStrings = new SimpleStrings();
         simpleStrings.setData(ProtocolUtils.readString(byteBuf));

@@ -25,4 +25,10 @@ public class Errors extends SimpleStrings {
         errors.setData(ProtocolUtils.readString(byteBuf));
         return errors;
     }
+
+    public static Errors create(String errorMessage) {
+        Errors errors = new Errors();
+        errors.setData(errorMessage);
+        return errors;
+    }
 }

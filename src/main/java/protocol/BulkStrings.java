@@ -19,7 +19,23 @@ import static common.Constants.SKIP;
 public class BulkStrings extends Resp2<BulkString> {
 
     public BulkStrings() {
+        this(null);
+    }
+
+    public BulkStrings(BulkString bulkString) {
+        if (bulkString != null) {
+            this.setData(bulkString);
+        }
         this.setFlag(BULK_STRINGS_FLAG);
+    }
+
+    public static final BulkStrings NULL = new BulkStrings(new BulkString(-1, null));
+
+    public static BulkStrings create(String content) {
+        if (content == null) {
+            return NULL;
+        }
+        return new BulkStrings(new BulkString(content.length(), content));
     }
 
     public static BulkStrings convert(ByteBuf byteBuf) {
@@ -44,9 +60,16 @@ public class BulkStrings extends Resp2<BulkString> {
     @Override
     public void writeByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBytes(this.getFlag().getBytes());
-        byteBuf.writeBytes(String.valueOf(this.getData().getLength()).getBytes());
-        byteBuf.writeBytes(Constants.SPLIT_BYTE);
-        byteBuf.writeBytes(this.getData().getContent().getBytes());
-        byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        BulkString bulkString = this.getData();
+        byteBuf.writeBytes(String.valueOf(bulkString.getLength()).getBytes());
+        if (bulkString.getLength() < 0) {
+            byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        } else if (bulkString.getLength() == 0) {
+            byteBuf.writeBytes(Constants.SPLIT_BYTE);
+            byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        } else if (bulkString.getLength() > 0 && bulkString.getContent() != null) {
+            byteBuf.writeBytes(bulkString.getContent().getBytes());
+            byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        }
     }
 }
