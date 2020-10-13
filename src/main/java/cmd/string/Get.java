@@ -2,7 +2,10 @@ package cmd.string;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import core.Server;
+import db.Database;
 import exception.CommandValidateException;
+import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
@@ -29,8 +32,18 @@ public class Get extends AbstractRedisCommand<GetArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(GetArg arg) {
-//        return BulkStrings.create("xjj");
-        return BulkStrings.create(null);
+    protected Resp2 doCommand0(GetArg arg, Server server) {
+        // TODO dbIndex from client
+        Database database = server.getDb().getDatabase(0);
+        StringObject stringObject = database.getString(arg.getKey());
+        return object2Resp(stringObject);
+    }
+
+    private Resp2 object2Resp(StringObject stringObject) {
+        if (stringObject == null) {
+            return BulkStrings.NULL;
+        } else {
+            return BulkStrings.create(stringObject.getOriginal());
+        }
     }
 }

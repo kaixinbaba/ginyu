@@ -2,11 +2,13 @@ package io.handler;
 
 import cmd.RedisCommand;
 import cmd.RedisCommands;
+import core.Server;
 import exception.ProtocolException;
 import exception.UnknowCommandException;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.AttributeKey;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
@@ -40,6 +42,6 @@ public class RespHandler extends SimpleChannelInboundHandler<Resp2> {
         if (redisCommand == null) {
             throw new UnknowCommandException("ERR unknown command '%s'", commandName);
         }
-        redisCommand.doCommand(commandName, arrays, ctx);
+        redisCommand.doCommand(commandName, arrays, ctx, Server.INSTANCE);
     }
 }

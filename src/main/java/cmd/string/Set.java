@@ -2,7 +2,13 @@ package cmd.string;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import com.sun.org.apache.bcel.internal.generic.ObjectType;
+import core.Server;
+import db.Database;
 import exception.CommandValidateException;
+import exception.SetWrongTypeException;
+import object.RedisObject;
+import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
@@ -85,13 +91,36 @@ public class Set extends AbstractRedisCommand<SetArg> {
         }
     }
 
+    private Resp2 set(Database database, String key, String value, Long expiredMilliSeconds) {
+        StringObject stringObject = new StringObject();
+        stringObject.setOriginal(value);
+        database.setString(key, stringObject);
+        if (expiredMilliSeconds != null && expiredMilliSeconds > 0) {
+            database.setExpired(key, System.currentTimeMillis() + expiredMilliSeconds);
+        }
+        return SimpleStrings.OK;
+    }
+
     @Override
-    protected Resp2 doCommand0(SetArg arg) {
-        System.out.println(arg);
-        if (true) {
-            return SimpleStrings.OK;
+    protected Resp2 doCommand0(SetArg arg, Server server) {
+        Database database = server.getDb().getDatabase(0);
+        RedisObject redisObject = database.get(arg.getKey());
+        if (redisObject == null) {
+            if (arg.getXx()) {
+                return BulkStrings.NULL;
+            }
+            return set(database, arg.getKey(), arg.getValue(), arg.getExpiredMilliSeconds());
         } else {
-            return BulkStrings.NULL;
+            if (arg.getNx()) {
+                return BulkStrings.NULL;
+            }
+            if (!(redisObject instanceof StringObject)) {
+                throw new SetWrongTypeException(
+                        "WRONGTYPE Operation against a key holding the wrong kind of value, expect %s but %s",
+                        ObjectType.STRING, redisObject.getType()
+                );
+            }
+            return set(database, arg.getKey(), arg.getValue(), arg.getExpiredMilliSeconds());
         }
     }
 }

@@ -1,7 +1,9 @@
 package cmd;
 
+import core.Server;
 import exception.GinyuException;
 import io.netty.channel.ChannelHandlerContext;
+import object.RedisObject;
 import protocol.Arrays;
 import protocol.Resp2;
 
@@ -14,12 +16,12 @@ import protocol.Resp2;
 public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
 
     @Override
-    public void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx) throws Exception {
-        // TODO 命令执行的生命周期
+    public void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx, Server server) throws Exception {
+        // TODO 命令执行的生命周期, 异步？
         try {
             AbstractRedisCommand.this.validate(commandName, arrays);
             T arg = AbstractRedisCommand.this.createArg(arrays);
-            Resp2 resp2 = AbstractRedisCommand.this.doCommand0(arg);
+            Resp2 resp2 = AbstractRedisCommand.this.doCommand0(arg, server);
             ctx.writeAndFlush(resp2);
         } catch (GinyuException g) {
             throw g;
@@ -32,5 +34,5 @@ public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
 
     protected abstract void validate(String commandName, Arrays arrays);
 
-    protected abstract Resp2 doCommand0(T arg);
+    protected abstract Resp2 doCommand0(T arg, Server server);
 }

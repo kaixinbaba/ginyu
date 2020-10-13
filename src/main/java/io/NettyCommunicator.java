@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class NettyCommunicator implements Communicator {
 
-    private final AtomicInteger clientIdCursor = new AtomicInteger(1);
+    private static final AtomicInteger clientIdCursor = new AtomicInteger(1);
 
     @Override
     public void start(GinyuConfig ginyuConfig) {

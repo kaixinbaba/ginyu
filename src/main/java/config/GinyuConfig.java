@@ -14,4 +14,6 @@ public class GinyuConfig {
 
     private Integer logLevel;
 
+    private Integer dbSize;
+
 }

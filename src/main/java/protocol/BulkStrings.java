@@ -62,10 +62,8 @@ public class BulkStrings extends Resp2<BulkString> {
         byteBuf.writeBytes(this.getFlag().getBytes());
         BulkString bulkString = this.getData();
         byteBuf.writeBytes(String.valueOf(bulkString.getLength()).getBytes());
-        if (bulkString.getLength() < 0) {
-            byteBuf.writeBytes(Constants.SPLIT_BYTE);
-        } else if (bulkString.getLength() == 0) {
-            byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        byteBuf.writeBytes(Constants.SPLIT_BYTE);
+        if (bulkString.getLength() == 0) {
             byteBuf.writeBytes(Constants.SPLIT_BYTE);
         } else if (bulkString.getLength() > 0 && bulkString.getContent() != null) {
             byteBuf.writeBytes(bulkString.getContent().getBytes());
