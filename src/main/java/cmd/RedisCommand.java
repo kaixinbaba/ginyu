@@ -5,6 +5,6 @@ import protocol.Arrays;
 
 public interface RedisCommand<T> {
 
-    void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx);
+    void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx) throws Exception;
 
 }

@@ -17,7 +17,16 @@ import static common.Constants.SIMPLE_STRINGS_FLAG;
 @ToString(callSuper = true)
 public class SimpleStrings extends Resp2<String> {
 
+    public static final SimpleStrings OK = new SimpleStrings("OK");
+
     public SimpleStrings() {
+        this(null);
+    }
+
+    public SimpleStrings(String data) {
+        if (data != null) {
+            this.setData(data);
+        }
         this.setFlag(SIMPLE_STRINGS_FLAG);
     }
 

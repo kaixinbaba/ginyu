@@ -9,6 +9,7 @@ import utils.ProtocolUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static common.Constants.ARRAYS_FLAG;
 
@@ -35,6 +36,13 @@ public class Arrays extends Resp2<List<Resp2>> {
         }
         arrays.setData(data);
         return arrays;
+    }
+
+    public List<String> map2String() {
+        assert this.getData() != null;
+        return this.getData().stream().map(r -> {
+            return ((BulkString)r.getData()).getContent();
+        }).collect(Collectors.toList());
     }
 
     @Override

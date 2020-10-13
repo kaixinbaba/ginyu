@@ -6,7 +6,6 @@ import exception.CommandValidateException;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
-import protocol.SimpleStrings;
 
 /**
  * @author: junjiexun
