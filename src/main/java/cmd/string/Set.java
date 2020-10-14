@@ -3,6 +3,7 @@ package cmd.string;
 import cmd.AbstractRedisCommand;
 import cmd.Command;
 import com.sun.org.apache.bcel.internal.generic.ObjectType;
+import common.Attributes;
 import core.Server;
 import db.Database;
 import exception.CommandValidateException;
@@ -88,7 +89,7 @@ public class Set extends AbstractRedisCommand<SetArg> {
     @Override
     protected void validate(String commandName, Arrays arrays) {
         if (arrays.getData().size() < 3 || arrays.getData().size() > 9) {
-            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
+            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
         }
     }
 
@@ -104,7 +105,7 @@ public class Set extends AbstractRedisCommand<SetArg> {
 
     @Override
     protected Resp2 doCommand0(SetArg arg, ChannelHandlerContext ctx) {
-        Database database = Server.INSTANCE.getDb().getDatabase(0);
+        Database database = Server.INSTANCE.getDb().getDatabase(Attributes.getClient(ctx).getDb());
         RedisObject redisObject = database.get(arg.getKey());
         if (redisObject == null) {
             if (arg.getXx()) {

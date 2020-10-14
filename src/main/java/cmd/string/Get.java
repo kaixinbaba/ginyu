@@ -37,7 +37,6 @@ public class Get extends AbstractRedisCommand<GetArg> {
     @Override
     protected Resp2 doCommand0(GetArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        System.out.println(client);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         StringObject stringObject = database.getString(arg.getKey());
         return object2Resp(stringObject);
