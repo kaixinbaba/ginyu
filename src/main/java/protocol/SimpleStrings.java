@@ -45,7 +45,7 @@ public class SimpleStrings extends Resp2<String> {
     @Override
     public void writeByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBytes(this.getFlag().getBytes());
-        byteBuf.writeBytes(this.getData().getBytes());
+        byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
     }
 }

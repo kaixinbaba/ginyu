@@ -18,6 +18,7 @@ public class Database {
 
     private final Dict<String, RedisObject> dict;
 
+    @Getter
     private final Dict<String, Long> expired;
 
     public Database(Integer id) {
@@ -57,8 +58,8 @@ public class Database {
     public boolean checkIfExpired(String key) {
         Long now = System.currentTimeMillis();
         Long expiredTimestamp = expired.get(key);
-        if (now >= expiredTimestamp) {
-            expired.remove(key);
+        if (expiredTimestamp != null && now >= expiredTimestamp) {
+            this.delete(key);
             return true;
         }
         return false;

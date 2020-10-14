@@ -5,6 +5,7 @@ import db.Db;
 import io.Communicator;
 import io.NettyCommunicator;
 import lombok.Getter;
+import task.CleanExpiredTask;
 import utils.ConfigUtils;
 
 import java.util.Map;
@@ -27,6 +28,8 @@ public class Server {
     @Getter
     private Db db;
 
+    private CleanExpiredTask cleanExpiredTask;
+
     private Server() {
     }
 
@@ -34,10 +37,12 @@ public class Server {
         this.ginyuConfig = ConfigUtils.getConfig(args);
         this.communicator = new NettyCommunicator();
         this.db = new Db(this.ginyuConfig.getDbSize());
+        this.cleanExpiredTask = new CleanExpiredTask();
     }
 
     public void start() {
         this.communicator.start(ginyuConfig);
+        this.startTask();
         System.out.println("server started");
     }
 
@@ -49,7 +54,7 @@ public class Server {
         this.clients.remove(client.getId());
     }
 
-    public boolean isClientAlive(Client client) {
-        return this.clients.containsKey(client.getId());
+    private void startTask() {
+        this.cleanExpiredTask.start();
     }
 }
