@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
+import protocol.Validates;
 import utils.ProtocolValueUtils;
 
 /**
@@ -24,9 +25,7 @@ public class Echo extends AbstractRedisCommand<EchoArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() != 2) {
-            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, 2);
     }
 
     @Override

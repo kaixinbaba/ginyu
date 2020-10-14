@@ -9,10 +9,7 @@ import db.Database;
 import exception.CommandValidateException;
 import io.netty.channel.ChannelHandlerContext;
 import object.StringObject;
-import protocol.Arrays;
-import protocol.BulkStrings;
-import protocol.Integers;
-import protocol.Resp2;
+import protocol.*;
 
 import static common.Constants.STR_EMPTY_ARRAY;
 
@@ -32,9 +29,7 @@ public class Del extends AbstractRedisCommand<DelArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() < 2) {
-            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, 2, null);
     }
 
     @Override

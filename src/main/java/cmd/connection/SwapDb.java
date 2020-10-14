@@ -27,9 +27,7 @@ public class SwapDb extends AbstractRedisCommand<SwapDbArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() != 3) {
-            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, 3);
         Validates.validateDbIndex(arrays, 1, "index1");
         Validates.validateDbIndex(arrays, 2, "index2");
     }

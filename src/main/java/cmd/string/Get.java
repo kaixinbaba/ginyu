@@ -12,6 +12,7 @@ import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
+import protocol.Validates;
 
 /**
  * @author: junjiexun
@@ -29,9 +30,7 @@ public class Get extends AbstractRedisCommand<GetArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() != 2) {
-            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, 2);
     }
 
     @Override

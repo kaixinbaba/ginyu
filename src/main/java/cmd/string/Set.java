@@ -11,10 +11,7 @@ import exception.SetWrongTypeException;
 import io.netty.channel.ChannelHandlerContext;
 import object.RedisObject;
 import object.StringObject;
-import protocol.Arrays;
-import protocol.BulkStrings;
-import protocol.Resp2;
-import protocol.SimpleStrings;
+import protocol.*;
 
 import java.util.List;
 
@@ -88,9 +85,7 @@ public class Set extends AbstractRedisCommand<SetArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() < 3 || arrays.getData().size() > 9) {
-            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, 3, 9);
     }
 
     private Resp2 set(Database database, String key, String value, Long expiredMilliSeconds) {

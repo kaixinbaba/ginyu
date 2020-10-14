@@ -6,10 +6,7 @@ import common.Attributes;
 import core.Client;
 import exception.CommandValidateException;
 import io.netty.channel.ChannelHandlerContext;
-import protocol.Arrays;
-import protocol.BulkStrings;
-import protocol.Resp2;
-import protocol.SimpleStrings;
+import protocol.*;
 
 /**
  * @author: junjiexun
@@ -30,9 +27,7 @@ public class Ping extends AbstractRedisCommand<PingArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() > 2) {
-            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, null, 2);
     }
 
     @Override

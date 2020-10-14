@@ -25,9 +25,7 @@ public class Select extends AbstractRedisCommand<SelectArg> {
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        if (arrays.getData().size() != 2) {
-            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
-        }
+        Validates.validateArraysSize(commandName, arrays, 2);
         Validates.validateDbIndex(arrays, 1, "index");
     }
 

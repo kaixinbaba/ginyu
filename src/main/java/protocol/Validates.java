@@ -10,6 +10,20 @@ import exception.CommandValidateException;
  */
 public abstract class Validates {
 
+    public static void validateArraysSize(String commandName, Arrays arrays, Integer target) {
+        if (arrays.getData().size() != target) {
+            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
+        }
+    }
+
+    public static void validateArraysSize(String commandName, Arrays arrays, Integer min, Integer max) {
+        int size = arrays.getData().size();
+        if ((min != null && size < min) || (max != null && size > max)) {
+            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
+        }
+    }
+
+
     public static Integer validateInteger(Arrays arrays, int index, String argName) {
         try {
             return Integer.parseInt(((BulkStrings) arrays.getData().get(index)).getData().getContent());
