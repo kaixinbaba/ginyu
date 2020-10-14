@@ -7,10 +7,7 @@ import core.Client;
 import core.Server;
 import exception.CommandValidateException;
 import io.netty.channel.ChannelHandlerContext;
-import protocol.Arrays;
-import protocol.BulkStrings;
-import protocol.Resp2;
-import protocol.SimpleStrings;
+import protocol.*;
 
 /**
  * @author: junjiexun
@@ -31,15 +28,7 @@ public class Select extends AbstractRedisCommand<SelectArg> {
         if (arrays.getData().size() != 2) {
             throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
         }
-        Integer index;
-        try {
-            index = Integer.parseInt(((BulkStrings) arrays.getData().get(1)).getData().getContent());
-        } catch (NumberFormatException e) {
-            throw new CommandValidateException("index must be integer");
-        }
-        if (index < 0 || index >= Server.INSTANCE.getGinyuConfig().getDbSize()) {
-            throw new CommandValidateException("DB index is out of range");
-        }
+        Validates.validateDbIndex(arrays, 1, "index");
     }
 
     @Override

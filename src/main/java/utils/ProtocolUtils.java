@@ -12,6 +12,7 @@ import static common.Constants.*;
  * @date: 2020/10/12 5:29 下午
  * @description:
  */
+@SuppressWarnings("all")
 public abstract class ProtocolUtils {
 
     public static boolean isProtocolBegin(String content) {

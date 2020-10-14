@@ -3,7 +3,6 @@ package cmd;
 import core.Server;
 import exception.GinyuException;
 import io.netty.channel.ChannelHandlerContext;
-import object.RedisObject;
 import protocol.Arrays;
 import protocol.Resp2;
 
@@ -32,7 +31,8 @@ public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
 
     protected abstract T createArg(Arrays arrays);
 
-    protected abstract void validate(String commandName, Arrays arrays);
+    protected void validate(String commandName, Arrays arrays) {
+    }
 
     protected abstract Resp2 doCommand0(T arg, ChannelHandlerContext ctx);
 }
