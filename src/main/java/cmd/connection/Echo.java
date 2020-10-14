@@ -2,7 +2,6 @@ package cmd.connection;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
-import exception.CommandValidateException;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.Arrays;
 import protocol.BulkStrings;

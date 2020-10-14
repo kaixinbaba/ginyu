@@ -1,6 +1,5 @@
 package io;
 
-import common.Attributes;
 import config.GinyuConfig;
 import io.handler.*;
 import io.netty.bootstrap.ServerBootstrap;

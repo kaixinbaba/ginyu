@@ -18,6 +18,8 @@ import static common.Constants.SKIP;
 @ToString(callSuper = true)
 public class BulkStrings extends Resp2<BulkString> {
 
+    public static final BulkStrings NULL = new BulkStrings(new BulkString(-1, null));
+
     public BulkStrings() {
         this(null);
     }
@@ -28,8 +30,6 @@ public class BulkStrings extends Resp2<BulkString> {
         }
         this.setFlag(BULK_STRINGS_FLAG);
     }
-
-    public static final BulkStrings NULL = new BulkStrings(new BulkString(-1, null));
 
     public static BulkStrings create(String content) {
         if (content == null) {

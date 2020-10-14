@@ -53,4 +53,14 @@ public class Database {
         }
         return deleted;
     }
+
+    public boolean checkIfExpired(String key) {
+        Long now = System.currentTimeMillis();
+        Long expiredTimestamp = expired.get(key);
+        if (now >= expiredTimestamp) {
+            expired.remove(key);
+            return true;
+        }
+        return false;
+    }
 }

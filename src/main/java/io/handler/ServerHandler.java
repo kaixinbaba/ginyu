@@ -16,10 +16,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 @ChannelHandler.Sharable
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
+    public static final ServerHandler INSTANCE = new ServerHandler();
+
     private ServerHandler() {
     }
-
-    public static final ServerHandler INSTANCE = new ServerHandler();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

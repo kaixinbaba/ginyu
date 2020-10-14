@@ -6,7 +6,6 @@ import common.Attributes;
 import core.Client;
 import core.Server;
 import db.Database;
-import exception.CommandValidateException;
 import io.netty.channel.ChannelHandlerContext;
 import object.StringObject;
 import protocol.Arrays;
@@ -37,6 +36,10 @@ public class Get extends AbstractRedisCommand<GetArg> {
     protected Resp2 doCommand0(GetArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        boolean expired = database.checkIfExpired(arg.getKey());
+        if (expired) {
+            return BulkStrings.NULL;
+        }
         StringObject stringObject = database.getString(arg.getKey());
         return object2Resp(stringObject);
     }

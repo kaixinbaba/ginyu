@@ -41,7 +41,7 @@ public class Arrays extends Resp2<List<Resp2>> {
     public List<String> map2String() {
         assert this.getData() != null;
         return this.getData().stream().map(r -> {
-            return ((BulkString)r.getData()).getContent();
+            return ((BulkString) r.getData()).getContent();
         }).collect(Collectors.toList());
     }
 

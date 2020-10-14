@@ -14,10 +14,10 @@ import protocol.Errors;
 @ChannelHandler.Sharable
 public class ExceptionHandler extends ChannelInboundHandlerAdapter {
 
+    public static final ExceptionHandler INSTANCE = new ExceptionHandler();
+
     private ExceptionHandler() {
     }
-
-    public static final ExceptionHandler INSTANCE = new ExceptionHandler();
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

@@ -2,18 +2,14 @@ package io.handler;
 
 import cmd.RedisCommand;
 import cmd.RedisCommands;
-import core.Server;
 import exception.ProtocolException;
 import exception.UnknowCommandException;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.AttributeKey;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author: junjiexun
@@ -24,10 +20,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ChannelHandler.Sharable
 public class RespHandler extends SimpleChannelInboundHandler<Resp2> {
 
+    public static final RespHandler INSTANCE = new RespHandler();
+
     private RespHandler() {
     }
-
-    public static final RespHandler INSTANCE = new RespHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Resp2 msg) throws Exception {
@@ -39,11 +35,11 @@ public class RespHandler extends SimpleChannelInboundHandler<Resp2> {
         if (!(resp2 instanceof BulkStrings)) {
             throw new ProtocolException("The first argument must in BULKSTRINGS format");
         }
-        String commandName = ((BulkStrings) resp2).getData().getContent();
+        String commandName = ((BulkStrings) resp2).getData().getContent().toLowerCase();
         RedisCommand redisCommand = RedisCommands.COMMAND_MAP.get(commandName);
         if (redisCommand == null) {
             throw new UnknowCommandException("ERR unknown command '%s'", commandName);
         }
-        redisCommand.doCommand(commandName, arrays, ctx, Server.INSTANCE);
+        redisCommand.doCommand(commandName, arrays, ctx);
     }
 }

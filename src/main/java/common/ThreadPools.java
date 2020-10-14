@@ -10,6 +10,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class ThreadPools {
 
+    // TODO RejectedExecutionHandler
+    public static final ExecutorService POOL = new ThreadPoolExecutor(
+            10,
+            10,
+            0L,
+            TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(10000),
+            new GinyuThreadFactory());
+
     private static class GinyuThreadFactory implements ThreadFactory {
 
         private final AtomicInteger threadNumber = new AtomicInteger(1);
@@ -21,14 +30,5 @@ public abstract class ThreadPools {
             return t;
         }
     }
-
-    // TODO RejectedExecutionHandler
-    public static final ExecutorService POOL = new ThreadPoolExecutor(
-            10,
-            10,
-            0L,
-            TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(10000),
-            new GinyuThreadFactory());
 
 }

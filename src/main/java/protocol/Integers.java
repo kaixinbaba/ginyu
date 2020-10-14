@@ -17,6 +17,9 @@ import static common.Constants.INTEGERS_FLAG;
 @ToString(callSuper = true)
 public class Integers extends Resp2<Integer> {
 
+    public static final Integers ZERO = Integers.create(0);
+    public static final Integers ONE = Integers.create(1);
+
     public Integers() {
         this.setFlag(INTEGERS_FLAG);
     }
@@ -27,16 +30,16 @@ public class Integers extends Resp2<Integer> {
         return integers;
     }
 
+    public static Integers create(Integer number) {
+        Integers integers = new Integers();
+        integers.setData(number);
+        return integers;
+    }
+
     @Override
     public void writeByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBytes(this.getFlag().getBytes());
         byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
-    }
-
-    public static Integers create(Integer number) {
-        Integers integers = new Integers();
-        integers.setData(number);
-        return integers;
     }
 }

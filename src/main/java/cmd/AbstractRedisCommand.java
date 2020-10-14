@@ -1,6 +1,5 @@
 package cmd;
 
-import core.Server;
 import exception.GinyuException;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.Arrays;
@@ -15,7 +14,7 @@ import protocol.Resp2;
 public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
 
     @Override
-    public void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx, Server server) throws Exception {
+    public void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx) throws Exception {
         // TODO 命令执行的生命周期, 异步？
         try {
             AbstractRedisCommand.this.validate(commandName, arrays);

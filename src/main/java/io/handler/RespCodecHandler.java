@@ -17,10 +17,10 @@ import java.util.List;
 @ChannelHandler.Sharable
 public class RespCodecHandler extends MessageToMessageCodec<ByteBuf, Resp2> {
 
+    public static final RespCodecHandler INSTANCE = new RespCodecHandler();
+
     private RespCodecHandler() {
     }
-
-    public static final RespCodecHandler INSTANCE = new RespCodecHandler();
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Resp2 msg, List<Object> out) throws Exception {

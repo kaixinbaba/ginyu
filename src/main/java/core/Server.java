@@ -5,7 +5,6 @@ import db.Db;
 import io.Communicator;
 import io.NettyCommunicator;
 import lombok.Getter;
-import lombok.Setter;
 import utils.ConfigUtils;
 
 import java.util.Map;
@@ -18,19 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Server {
 
-    @Getter
-    private Communicator communicator;
-
-    @Getter
-    private GinyuConfig ginyuConfig;
-
-    @Getter
-    private Db db;
-
+    public static final Server INSTANCE = new Server();
     @Getter
     private final Map<Integer, Client> clients = new ConcurrentHashMap<>();
-
-    public static final Server INSTANCE = new Server();
+    @Getter
+    private Communicator communicator;
+    @Getter
+    private GinyuConfig ginyuConfig;
+    @Getter
+    private Db db;
 
     private Server() {
     }

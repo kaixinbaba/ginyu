@@ -3,7 +3,6 @@ package cmd.connection;
 import cmd.AbstractRedisCommand;
 import cmd.Command;
 import core.Server;
-import exception.CommandValidateException;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.*;
 import utils.ProtocolValueUtils;

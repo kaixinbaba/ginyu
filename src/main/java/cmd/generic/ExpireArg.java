@@ -1,5 +1,6 @@
 package cmd.generic;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -8,11 +9,10 @@ import lombok.Data;
  * @description:
  */
 @Data
-public class DelArg {
+@AllArgsConstructor
+public class ExpireArg {
 
-    private String[] keys;
+    private String key;
 
-    public DelArg(String... keys) {
-        this.keys = keys;
-    }
+    private Integer seconds;
 }
