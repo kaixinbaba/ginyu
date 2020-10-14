@@ -12,7 +12,7 @@ public abstract class Validates {
 
     public static Integer validateInteger(Arrays arrays, int index, String argName) {
         try {
-            return Integer.parseInt(((BulkStrings) arrays.getData().get(1)).getData().getContent());
+            return Integer.parseInt(((BulkStrings) arrays.getData().get(index)).getData().getContent());
         } catch (NumberFormatException e) {
             throw new CommandValidateException("%s must be integer", argName);
         }
