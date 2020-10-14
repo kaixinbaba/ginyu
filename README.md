@@ -4,5 +4,6 @@ Redis implment with PURE Java
 
 
 ## TODO
-- del
 - expire
+- hset
+- hdel

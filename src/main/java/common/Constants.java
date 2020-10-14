@@ -25,4 +25,6 @@ public abstract class Constants {
     public static final String INTEGERS_FLAG = ":";
 
     public static final String ARRAYS_FLAG = "*";
+
+    public static final String[] STR_EMPTY_ARRAY = new String[]{};
 }

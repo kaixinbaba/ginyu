@@ -26,10 +26,12 @@ public class Db {
         return this.databases.get(id);
     }
 
-    public synchronized void swapDb(Integer index1, Integer index2) {
-        Database database1 = databases.get(index1);
-        Database database2 = databases.get(index2);
-        databases.set(index1, database2);
-        databases.set(index2, database1);
+    public void swapDb(Integer index1, Integer index2) {
+        synchronized (this.databases) {
+            Database database1 = databases.get(index1);
+            Database database2 = databases.get(index2);
+            databases.set(index1, database2);
+            databases.set(index2, database1);
+        }
     }
 }

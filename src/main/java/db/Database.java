@@ -41,4 +41,16 @@ public class Database {
     public void setExpired(String key, Long expiredTimestamp) {
         expired.put(key, expiredTimestamp);
     }
+
+    public int delete(String... keys) {
+        int deleted = 0;
+        for (String key : keys) {
+            RedisObject value = this.dict.remove(key);
+            if (value != null) {
+                this.expired.remove(key);
+                deleted++;
+            }
+        }
+        return deleted;
+    }
 }

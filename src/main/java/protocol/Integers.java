@@ -33,4 +33,10 @@ public class Integers extends Resp2<Integer> {
         byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
     }
+
+    public static Integers create(Integer number) {
+        Integers integers = new Integers();
+        integers.setData(number);
+        return integers;
+    }
 }
