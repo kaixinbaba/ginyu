@@ -39,10 +39,18 @@ public class Arrays extends Resp2<List<Resp2>> {
     }
 
     public List<String> map2String() {
+        return map2String(false);
+    }
+
+    public List<String> map2String(boolean excludeCmd) {
         assert this.getData() != null;
-        return this.getData().stream().map(r -> {
+        List<String> list = this.getData().stream().map(r -> {
             return ((BulkString) r.getData()).getContent();
         }).collect(Collectors.toList());
+        if (excludeCmd) {
+            list.remove(0);
+        }
+        return list;
     }
 
     @Override

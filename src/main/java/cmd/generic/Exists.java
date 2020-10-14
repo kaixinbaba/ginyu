@@ -7,10 +7,8 @@ import core.Client;
 import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
-import protocol.Arrays;
-import protocol.Integers;
-import protocol.Resp2;
-import protocol.Validates;
+import object.StringObject;
+import protocol.*;
 
 import static common.Constants.STR_EMPTY_ARRAY;
 
@@ -20,12 +18,11 @@ import static common.Constants.STR_EMPTY_ARRAY;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "del")
-public class Del extends AbstractRedisCommand<DelArg> {
-
+@Command(name = "exists")
+public class Exists extends AbstractRedisCommand<ExistsArg> {
     @Override
-    public DelArg createArg(Arrays arrays) {
-        return new DelArg(arrays.map2String(true).toArray(STR_EMPTY_ARRAY));
+    public ExistsArg createArg(Arrays arrays) {
+        return new ExistsArg(arrays.map2String(true).toArray(STR_EMPTY_ARRAY));
     }
 
     @Override
@@ -34,10 +31,11 @@ public class Del extends AbstractRedisCommand<DelArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(DelArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(ExistsArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        int deleted = database.delete(arg.getKeys());
-        return Integers.create(deleted);
+        int exists = database.exists(arg.getKeys());
+        return Integers.create(exists);
     }
+
 }

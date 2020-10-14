@@ -48,9 +48,11 @@ public class Database {
     public int delete(String... keys) {
         int deleted = 0;
         for (String key : keys) {
-            this.dict.remove(key);
+            RedisObject value = this.dict.remove(key);
             this.expired.remove(key);
-            deleted++;
+            if (value != null) {
+                deleted++;
+            }
         }
         return deleted;
     }
@@ -66,5 +68,15 @@ public class Database {
 
     public Integer cleanExpired(String key) {
         return expired.remove(key) == null ? 0 : 1;
+    }
+
+    public int exists(String... keys) {
+        int exists = 0;
+        for (String key : keys) {
+            if (this.dict.containsKey(key)) {
+                exists++;
+            }
+        }
+        return exists;
     }
 }
