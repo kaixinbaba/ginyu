@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Client {
 
-    private Long id;
+    private Integer id;
 
     private Integer db;
 

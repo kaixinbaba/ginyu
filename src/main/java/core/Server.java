@@ -5,7 +5,11 @@ import db.Db;
 import io.Communicator;
 import io.NettyCommunicator;
 import lombok.Getter;
+import lombok.Setter;
 import utils.ConfigUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author: junjiexun
@@ -23,6 +27,9 @@ public class Server {
     @Getter
     private Db db;
 
+    @Getter
+    private final Map<Integer, Client> clients = new ConcurrentHashMap<>();
+
     public static final Server INSTANCE = new Server();
 
     private Server() {
@@ -37,5 +44,17 @@ public class Server {
     public void start() {
         this.communicator.start(ginyuConfig);
         System.out.println("server started");
+    }
+
+    public void addClient(Client client) {
+        this.clients.put(client.getId(), client);
+    }
+
+    public void removeClient(Client client) {
+        this.clients.remove(client.getId());
+    }
+
+    public boolean isClientAlive(Client client) {
+        return this.clients.containsKey(client.getId());
     }
 }

@@ -2,9 +2,12 @@ package cmd.string;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import common.Attributes;
+import core.Client;
 import core.Server;
 import db.Database;
 import exception.CommandValidateException;
+import io.netty.channel.ChannelHandlerContext;
 import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
@@ -32,9 +35,10 @@ public class Get extends AbstractRedisCommand<GetArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(GetArg arg, Server server) {
-        // TODO dbIndex from client
-        Database database = server.getDb().getDatabase(0);
+    protected Resp2 doCommand0(GetArg arg, ChannelHandlerContext ctx) {
+        Client client = Attributes.getClient(ctx);
+        System.out.println(client);
+        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         StringObject stringObject = database.getString(arg.getKey());
         return object2Resp(stringObject);
     }

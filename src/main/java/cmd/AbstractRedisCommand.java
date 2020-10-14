@@ -21,7 +21,7 @@ public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
         try {
             AbstractRedisCommand.this.validate(commandName, arrays);
             T arg = AbstractRedisCommand.this.createArg(arrays);
-            Resp2 resp2 = AbstractRedisCommand.this.doCommand0(arg, server);
+            Resp2 resp2 = AbstractRedisCommand.this.doCommand0(arg, ctx);
             ctx.writeAndFlush(resp2);
         } catch (GinyuException g) {
             throw g;
@@ -34,5 +34,5 @@ public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
 
     protected abstract void validate(String commandName, Arrays arrays);
 
-    protected abstract Resp2 doCommand0(T arg, Server server);
+    protected abstract Resp2 doCommand0(T arg, ChannelHandlerContext ctx);
 }

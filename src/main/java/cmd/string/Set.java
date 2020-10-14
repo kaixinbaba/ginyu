@@ -7,6 +7,7 @@ import core.Server;
 import db.Database;
 import exception.CommandValidateException;
 import exception.SetWrongTypeException;
+import io.netty.channel.ChannelHandlerContext;
 import object.RedisObject;
 import object.StringObject;
 import protocol.Arrays;
@@ -102,8 +103,8 @@ public class Set extends AbstractRedisCommand<SetArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(SetArg arg, Server server) {
-        Database database = server.getDb().getDatabase(0);
+    protected Resp2 doCommand0(SetArg arg, ChannelHandlerContext ctx) {
+        Database database = Server.INSTANCE.getDb().getDatabase(0);
         RedisObject redisObject = database.get(arg.getKey());
         if (redisObject == null) {
             if (arg.getXx()) {
