@@ -4,8 +4,5 @@ Redis implment with PURE Java
 
 
 ## TODO
-- Client对象要和channel绑定
-- db index从client对象上取
-- select
 - del
 - expire
