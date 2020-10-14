@@ -38,6 +38,7 @@ public class Get extends AbstractRedisCommand<GetArg> {
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         boolean expired = database.checkIfExpired(arg.getKey());
         if (expired) {
+            database.delete(arg.getKey());
             return BulkStrings.NULL;
         }
         StringObject stringObject = database.getString(arg.getKey());

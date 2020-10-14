@@ -5,6 +5,8 @@ import object.Dict;
 import object.RedisObject;
 import object.StringObject;
 
+import java.util.concurrent.ConcurrentSkipListMap;
+
 /**
  * @author: junjiexun
  * @date: 2020/10/13 10:03 下午
@@ -19,12 +21,12 @@ public class Database {
     private final Dict<String, RedisObject> dict;
 
     @Getter
-    private final Dict<String, Long> expired;
+    private final ConcurrentSkipListMap<String, Long> expired;
 
     public Database(Integer id) {
         this.id = id;
         this.dict = new Dict<>();
-        this.expired = new Dict<>();
+        this.expired = new ConcurrentSkipListMap<>();
     }
 
     public RedisObject get(String key) {
@@ -46,11 +48,9 @@ public class Database {
     public int delete(String... keys) {
         int deleted = 0;
         for (String key : keys) {
-            RedisObject value = this.dict.remove(key);
-            if (value != null) {
-                this.expired.remove(key);
-                deleted++;
-            }
+            this.dict.remove(key);
+            this.expired.remove(key);
+            deleted++;
         }
         return deleted;
     }
@@ -59,9 +59,12 @@ public class Database {
         Long now = System.currentTimeMillis();
         Long expiredTimestamp = expired.get(key);
         if (expiredTimestamp != null && now >= expiredTimestamp) {
-            this.delete(key);
             return true;
         }
         return false;
+    }
+
+    public Integer cleanExpired(String key) {
+        return expired.remove(key) == null ? 0 : 1;
     }
 }

@@ -43,11 +43,14 @@ public class BulkStrings extends Resp2<BulkString> {
         BulkStrings bulkStrings = new BulkStrings();
         String content;
         if (length < 0) {
+            // eg: $-1\r\n
             content = null;
         } else if (length == 0) {
+            // eg: $0\r\n\r\n
             content = "";
             byteBuf.skipBytes(SKIP);
         } else {
+            // eg: $5\r\nginyu\r\n
             byte[] bb = new byte[length];
             byteBuf.readBytes(bb);
             content = new String(bb);
