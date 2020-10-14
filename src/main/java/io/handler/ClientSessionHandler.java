@@ -3,7 +3,6 @@ package io.handler;
 import common.Attributes;
 import core.Client;
 import core.Server;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -15,16 +14,13 @@ import java.util.concurrent.TimeUnit;
  * @date: 2020/10/14 3:48 下午
  * @description:
  */
-@ChannelHandler.Sharable
 public class ClientSessionHandler extends IdleStateHandler {
 
-    private static final int SESSION_TIMEOUT = 30;
+    private static final int SESSION_TIMEOUT = 60 * 30;
 
-    private ClientSessionHandler() {
-        super(0, 0, SESSION_TIMEOUT, TimeUnit.MINUTES);
+    public ClientSessionHandler() {
+        super(0, 0, SESSION_TIMEOUT, TimeUnit.SECONDS);
     }
-
-    public static final ClientSessionHandler INSTANCE = new ClientSessionHandler();
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) {

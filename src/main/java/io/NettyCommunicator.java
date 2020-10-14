@@ -31,7 +31,7 @@ public class NettyCommunicator implements Communicator {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(ClientSessionHandler.INSTANCE);
+                        ch.pipeline().addLast(new ClientSessionHandler());
                         ch.pipeline().addLast(RespCodecHandler.INSTANCE);
                         ch.pipeline().addLast(ServerHandler.INSTANCE);
                         ch.pipeline().addLast(RespHandler.INSTANCE);
