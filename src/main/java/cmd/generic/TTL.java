@@ -9,6 +9,7 @@ import db.Database;
 import io.netty.channel.ChannelHandlerContext;
 import object.RedisObject;
 import protocol.*;
+import utils.ProtocolValueUtils;
 
 /**
  * @author: junjiexun
@@ -20,8 +21,7 @@ import protocol.*;
 public class TTL extends AbstractRedisCommand<TTLArg> {
     @Override
     public TTLArg createArg(Arrays arrays) {
-        BulkStrings bulkStrings = (BulkStrings) arrays.getData().get(1);
-        return new TTLArg(bulkStrings.getData().getContent());
+        return new TTLArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override

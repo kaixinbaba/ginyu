@@ -8,6 +8,7 @@ import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.*;
+import utils.ProtocolValueUtils;
 
 /**
  * @author: junjiexun
@@ -19,8 +20,7 @@ import protocol.*;
 public class Persist extends AbstractRedisCommand<PersistArg> {
     @Override
     public PersistArg createArg(Arrays arrays) {
-        BulkStrings bulkStrings = (BulkStrings) arrays.getData().get(1);
-        return new PersistArg(bulkStrings.getData().getContent());
+        return new PersistArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override

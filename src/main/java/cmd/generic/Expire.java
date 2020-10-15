@@ -22,7 +22,6 @@ public class Expire extends AbstractRedisCommand<ExpireArg> {
 
     @Override
     public ExpireArg createArg(Arrays arrays) {
-        BulkStrings bulkStrings = (BulkStrings) arrays.getData().get(1);
         return new ExpireArg(
                 ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1),
                 ProtocolValueUtils.getIntFromBulkStringsInArrays(arrays, 2)

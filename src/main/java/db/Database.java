@@ -38,6 +38,10 @@ public class Database {
     }
 
     public void setString(String key, StringObject object) {
+        set(key, object);
+    }
+
+    public void set(String key, RedisObject object) {
         dict.put(key, object);
     }
 
@@ -82,5 +86,13 @@ public class Database {
 
     public Long getExpired(String key) {
         return this.expired.get(key);
+    }
+
+    public RedisObject remove(String key) {
+        return this.dict.remove(key);
+    }
+
+    public Long removeExpire(String key) {
+        return this.expired.remove(key);
     }
 }

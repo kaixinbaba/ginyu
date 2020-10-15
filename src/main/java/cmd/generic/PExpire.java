@@ -22,7 +22,6 @@ public class PExpire extends AbstractRedisCommand<PExpireArg> {
 
     @Override
     public PExpireArg createArg(Arrays arrays) {
-        BulkStrings bulkStrings = (BulkStrings) arrays.getData().get(1);
         return new PExpireArg(
                 ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1),
                 ProtocolValueUtils.getLongFromBulkStringsInArrays(arrays, 2)
