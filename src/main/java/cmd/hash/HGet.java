@@ -1,4 +1,4 @@
-package cmd.string;
+package cmd.hash;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
@@ -7,6 +7,7 @@ import core.Client;
 import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
+import object.HashObject;
 import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
@@ -20,20 +21,22 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "get")
-public class Get extends AbstractRedisCommand<GetArg> {
+@Command(name = "hget")
+public class HGet extends AbstractRedisCommand<HGetArg> {
     @Override
-    public GetArg createArg(Arrays arrays) {
-        return new GetArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public HGetArg createArg(Arrays arrays) {
+        return new HGetArg(
+                ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1),
+                ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 2));
     }
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        Validates.validateArraysSize(commandName, arrays, 2);
+        Validates.validateArraysSize(commandName, arrays, 3);
     }
 
     @Override
-    protected Resp2 doCommand0(GetArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(HGetArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         boolean expired = database.checkIfExpired(arg.getKey());
@@ -41,10 +44,11 @@ public class Get extends AbstractRedisCommand<GetArg> {
             database.delete(arg.getKey());
             return BulkStrings.NULL;
         }
-        StringObject stringObject = database.getString(arg.getKey());
-        if (stringObject == null) {
+        HashObject hashObject = database.getHash(arg.getKey());
+        String value = hashObject.getOriginal().get(arg.getField());
+        if (value == null) {
             return BulkStrings.NULL;
         }
-        return BulkStrings.create(stringObject.getOriginal());
+        return BulkStrings.create(value);
     }
 }

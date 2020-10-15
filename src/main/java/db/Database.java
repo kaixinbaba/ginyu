@@ -2,6 +2,7 @@ package db;
 
 import lombok.Getter;
 import object.Dict;
+import object.HashObject;
 import object.RedisObject;
 import object.StringObject;
 
@@ -35,6 +36,10 @@ public class Database {
 
     public StringObject getString(String key) {
         return (StringObject) this.get(key);
+    }
+
+    public HashObject getHash(String key) {
+        return (HashObject) this.get(key);
     }
 
     public void setString(String key, StringObject object) {
