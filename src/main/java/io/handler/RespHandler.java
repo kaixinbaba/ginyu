@@ -38,7 +38,7 @@ public class RespHandler extends SimpleChannelInboundHandler<Resp2> {
         String commandName = ((BulkStrings) resp2).getData().getContent().toLowerCase();
         RedisCommand redisCommand = RedisCommands.COMMAND_MAP.get(commandName);
         if (redisCommand == null) {
-            throw new UnknowCommandException("ERR unknown command '%s'", commandName);
+            throw new UnknowCommandException("unknown command '%s'", commandName);
         }
         redisCommand.doCommand(commandName, arrays, ctx);
     }

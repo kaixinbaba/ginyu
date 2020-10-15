@@ -32,6 +32,10 @@ public class Integers extends Resp2<Long> {
         return integers;
     }
 
+    public static Integers create(Integer number) {
+        return create((long) number);
+    }
+
     public static Integers create(Long number) {
         Integers integers = new Integers();
         integers.setData(number);

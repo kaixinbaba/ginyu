@@ -2,13 +2,13 @@ package cmd.string;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
-import com.sun.org.apache.bcel.internal.generic.ObjectType;
 import common.Attributes;
 import core.Server;
 import db.Database;
 import exception.CommandValidateException;
 import exception.SetWrongTypeException;
 import io.netty.channel.ChannelHandlerContext;
+import object.ObjectType;
 import object.RedisObject;
 import object.StringObject;
 import protocol.*;
@@ -89,9 +89,10 @@ public class Set extends AbstractRedisCommand<SetArg> {
     }
 
     private Resp2 set(Database database, String key, String value, Long expiredMilliSeconds) {
+        // TODO 如果key已经存在是否直接变更StringObject的original 性能更好
         StringObject stringObject = new StringObject();
         stringObject.setOriginal(value);
-        database.setString(key, stringObject);
+        database.set(key, stringObject);
         if (expiredMilliSeconds != null && expiredMilliSeconds > 0) {
             database.setExpired(key, System.currentTimeMillis() + expiredMilliSeconds);
         }
@@ -101,8 +102,8 @@ public class Set extends AbstractRedisCommand<SetArg> {
     @Override
     protected Resp2 doCommand0(SetArg arg, ChannelHandlerContext ctx) {
         Database database = Server.INSTANCE.getDb().getDatabase(Attributes.getClient(ctx).getDb());
-        RedisObject redisObject = database.get(arg.getKey());
-        if (redisObject == null) {
+        StringObject stringObject = Validates.validateType(database.get(arg.getKey()), ObjectType.STRING);
+        if (stringObject == null) {
             if (arg.getXx()) {
                 return BulkStrings.NULL;
             }
@@ -110,12 +111,6 @@ public class Set extends AbstractRedisCommand<SetArg> {
         } else {
             if (arg.getNx()) {
                 return BulkStrings.NULL;
-            }
-            if (!(redisObject instanceof StringObject)) {
-                throw new SetWrongTypeException(
-                        "WRONGTYPE Operation against a key holding the wrong kind of value, expect %s but %s",
-                        ObjectType.STRING, redisObject.getType()
-                );
             }
             return set(database, arg.getKey(), arg.getValue(), arg.getExpiredMilliSeconds());
         }

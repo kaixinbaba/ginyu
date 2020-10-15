@@ -9,5 +9,6 @@ public class HashObject extends RedisObject<Dict<String, String>> {
 
     public HashObject() {
         this.setType(ObjectType.HASH);
+        this.setOriginal(new Dict<>());
     }
 }

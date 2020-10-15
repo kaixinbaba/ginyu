@@ -31,27 +31,15 @@ public class Database {
     }
 
     public RedisObject get(String key) {
-        return dict.get(key);
-    }
-
-    public StringObject getString(String key) {
-        return (StringObject) this.get(key);
-    }
-
-    public HashObject getHash(String key) {
-        return (HashObject) this.get(key);
-    }
-
-    public void setString(String key, StringObject object) {
-        set(key, object);
+        return this.dict.get(key);
     }
 
     public void set(String key, RedisObject object) {
-        dict.put(key, object);
+        this.dict.put(key, object);
     }
 
     public void setExpired(String key, Long expiredTimestamp) {
-        expired.put(key, expiredTimestamp);
+        this.expired.put(key, expiredTimestamp);
     }
 
     public int delete(String... keys) {
@@ -68,7 +56,7 @@ public class Database {
 
     public boolean checkIfExpired(String key) {
         Long now = System.currentTimeMillis();
-        Long expiredTimestamp = expired.get(key);
+        Long expiredTimestamp = this.expired.get(key);
         if (expiredTimestamp != null && now >= expiredTimestamp) {
             return true;
         }
@@ -76,7 +64,7 @@ public class Database {
     }
 
     public Integer cleanExpired(String key) {
-        return expired.remove(key) == null ? 0 : 1;
+        return this.expired.remove(key) == null ? 0 : 1;
     }
 
     public int exists(String... keys) {

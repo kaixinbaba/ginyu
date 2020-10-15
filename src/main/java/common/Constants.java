@@ -1,5 +1,7 @@
 package common;
 
+import cmd.hash.HashEntry;
+
 /**
  * @author: junjiexun
  * @date: 2020/10/11 10:23 下午
@@ -27,4 +29,5 @@ public abstract class Constants {
     public static final String ARRAYS_FLAG = "*";
 
     public static final String[] STR_EMPTY_ARRAY = new String[]{};
+    public static final HashEntry[] HASH_ENTRIES_EMPTY_ARRAY = new HashEntry[]{};
 }

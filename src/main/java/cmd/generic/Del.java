@@ -38,6 +38,6 @@ public class Del extends AbstractRedisCommand<DelArg> {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         int deleted = database.delete(arg.getKeys());
-        return Integers.create((long) deleted);
+        return Integers.create(deleted);
     }
 }

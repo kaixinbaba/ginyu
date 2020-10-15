@@ -33,6 +33,6 @@ public class Persist extends AbstractRedisCommand<PersistArg> {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         Integer persisted = database.cleanExpired(arg.getKey());
-        return Integers.create((long) persisted);
+        return Integers.create(persisted);
     }
 }

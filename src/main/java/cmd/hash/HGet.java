@@ -8,6 +8,7 @@ import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
 import object.HashObject;
+import object.ObjectType;
 import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
@@ -44,7 +45,10 @@ public class HGet extends AbstractRedisCommand<HGetArg> {
             database.delete(arg.getKey());
             return BulkStrings.NULL;
         }
-        HashObject hashObject = database.getHash(arg.getKey());
+        HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
+        if (hashObject == null) {
+            return BulkStrings.NULL;
+        }
         String value = hashObject.getOriginal().get(arg.getField());
         if (value == null) {
             return BulkStrings.NULL;

@@ -2,24 +2,29 @@ package protocol;
 
 import core.Server;
 import exception.CommandValidateException;
+import exception.SetWrongTypeException;
+import object.ObjectType;
+import object.RedisObject;
+import object.StringObject;
 
 /**
  * @author: junjiexun
  * @date: 2020/10/14 5:25 下午
  * @description:
  */
+@SuppressWarnings("all")
 public abstract class Validates {
 
     public static void validateArraysSize(String commandName, Arrays arrays, Integer target) {
         if (arrays.getData().size() != target) {
-            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
+            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
         }
     }
 
     public static void validateArraysSize(String commandName, Arrays arrays, Integer min, Integer max) {
         int size = arrays.getData().size();
         if ((min != null && size < min) || (max != null && size > max)) {
-            throw new CommandValidateException("ERR wrong number of arguments for '%s' command", commandName);
+            throw new CommandValidateException("wrong number of arguments for '%s' command", commandName);
         }
     }
 
@@ -46,5 +51,15 @@ public abstract class Validates {
             throw new CommandValidateException("DB index is out of range");
         }
         return index;
+    }
+
+    public static <T extends RedisObject> T validateType(RedisObject redisObject, ObjectType expect) {
+        if (redisObject != null && !redisObject.getType().equals(expect)) {
+            throw new SetWrongTypeException(
+                    "WRONGTYPE Operation against a key holding the wrong kind of value, expect %s but %s",
+                    expect, redisObject.getType()
+            );
+        }
+        return (T) redisObject;
     }
 }

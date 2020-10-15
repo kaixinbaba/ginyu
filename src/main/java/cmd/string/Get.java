@@ -7,6 +7,7 @@ import core.Client;
 import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
+import object.ObjectType;
 import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
@@ -41,7 +42,7 @@ public class Get extends AbstractRedisCommand<GetArg> {
             database.delete(arg.getKey());
             return BulkStrings.NULL;
         }
-        StringObject stringObject = database.getString(arg.getKey());
+        StringObject stringObject = Validates.validateType(database.get(arg.getKey()), ObjectType.STRING);
         if (stringObject == null) {
             return BulkStrings.NULL;
         }
