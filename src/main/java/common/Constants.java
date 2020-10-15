@@ -27,4 +27,14 @@ public abstract class Constants {
     public static final String ARRAYS_FLAG = "*";
 
     public static final String[] STR_EMPTY_ARRAY = new String[]{};
+
+    public static final Integer TRACE = 0;
+
+    public static final Integer DEBUG = 1;
+
+    public static final Integer INFO = 2;
+
+    public static final Integer WARN = 3;
+
+    public static final Integer ERROR = 4;
 }

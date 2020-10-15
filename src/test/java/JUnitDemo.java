@@ -1,7 +1,7 @@
+import common.Consoles;
 import org.junit.Test;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.io.IOException;
 
 /**
  * @author: junjiexun
@@ -11,17 +11,17 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class JUnitDemo {
 
     @Test
-    public void test() {
-        ConcurrentSkipListMap<Long, String> map = new ConcurrentSkipListMap<>();
-        map.put(7L, "");
-        map.put(11L, "");
-        map.put(3L, "");
-        map.put(4L, "");
-        map.put(1L, "");
-        map.put(9L, "");
-        System.out.println(map);
-        for (Map.Entry<Long, String> longStringEntry : map.entrySet()) {
-            System.out.println(longStringEntry.getKey() + " == " + longStringEntry.getValue());
-        }
+    public void test() throws IOException {
+//        File f = new File("banner.txt");
+//        String s = FileUtils.readFileToString(f, Charset.forName("UTF-8"));
+        Consoles.trace("dfdf3\nadk");
+        Consoles.debug("dkfjdkj\nadk");
+        Consoles.info("hello\nworld");
+        Consoles.warn("df\nworld");
+        Consoles.error("102973lskdajf\nworld");
+        Consoles.blue("dkfjakjdf");
+        Consoles.gray("akdsjflkajd");
+        Consoles.white("dkfj");
+
     }
 }
