@@ -8,7 +8,10 @@ import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
 import object.RedisObject;
-import protocol.*;
+import protocol.Arrays;
+import protocol.Integers;
+import protocol.Resp2;
+import protocol.Validates;
 import utils.ProtocolValueUtils;
 
 /**
@@ -17,11 +20,11 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "ttl")
-public class TTL extends AbstractRedisCommand<TTLArg> {
+@Command(name = "pttl")
+public class PTTL extends AbstractRedisCommand<PTTLArg> {
     @Override
-    public TTLArg createArg(Arrays arrays) {
-        return new TTLArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public PTTLArg createArg(Arrays arrays) {
+        return new PTTLArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -30,7 +33,7 @@ public class TTL extends AbstractRedisCommand<TTLArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(TTLArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(PTTLArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         boolean expired = database.checkIfExpired(arg.getKey());
@@ -46,6 +49,6 @@ public class TTL extends AbstractRedisCommand<TTLArg> {
         if (expiredTimestamp == null) {
             return Integers.N_ONE;
         }
-        return Integers.create((expiredTimestamp - System.currentTimeMillis()) / 1000);
+        return Integers.create(expiredTimestamp - System.currentTimeMillis());
     }
 }

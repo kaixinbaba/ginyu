@@ -15,12 +15,12 @@ import static common.Constants.INTEGERS_FLAG;
  */
 @Data
 @ToString(callSuper = true)
-public class Integers extends Resp2<Integer> {
+public class Integers extends Resp2<Long> {
 
-    public static final Integers N_TWO = Integers.create(-2);
-    public static final Integers N_ONE = Integers.create(-1);
-    public static final Integers ZERO = Integers.create(0);
-    public static final Integers ONE = Integers.create(1);
+    public static final Integers N_TWO = Integers.create(-2L);
+    public static final Integers N_ONE = Integers.create(-1L);
+    public static final Integers ZERO = Integers.create(0L);
+    public static final Integers ONE = Integers.create(1L);
 
     public Integers() {
         this.setFlag(INTEGERS_FLAG);
@@ -28,11 +28,11 @@ public class Integers extends Resp2<Integer> {
 
     public static Integers convert(ByteBuf byteBuf) {
         Integers integers = new Integers();
-        integers.setData(ProtocolUtils.readInt(byteBuf));
+        integers.setData(ProtocolUtils.readLong(byteBuf));
         return integers;
     }
 
-    public static Integers create(Integer number) {
+    public static Integers create(Long number) {
         Integers integers = new Integers();
         integers.setData(number);
         return integers;

@@ -18,6 +18,7 @@ import static common.Constants.SIMPLE_STRINGS_FLAG;
 public class SimpleStrings extends Resp2<String> {
 
     public static final SimpleStrings OK = SimpleStrings.create("OK");
+    public static final SimpleStrings NONE = SimpleStrings.create("none");
 
     public SimpleStrings() {
         this(null);

@@ -37,7 +37,7 @@ public class Exists extends AbstractRedisCommand<ExistsArg> {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         int exists = database.exists(arg.getKeys());
-        return Integers.create(exists);
+        return Integers.create((long) exists);
     }
 
 }

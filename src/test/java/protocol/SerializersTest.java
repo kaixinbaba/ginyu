@@ -129,7 +129,7 @@ public class SerializersTest {
     @Test
     public void decodeIntegersTest() {
         Integers integers = new Integers();
-        integers.setData(777);
+        integers.setData(777L);
         ByteBuf encode = Serializers.encode(integers);
         byte[] bb = new byte[encode.readableBytes()];
         encode.readBytes(bb);
@@ -151,7 +151,7 @@ public class SerializersTest {
         Arrays arrays = new Arrays();
         List<Resp2> data = new ArrayList<>();
         Integers integers = new Integers();
-        integers.setData(777);
+        integers.setData(777L);
         data.add(integers);
         BulkStrings bulkStrings = new BulkStrings();
         bulkStrings.setData(new BulkString(13, "daimakexuejia"));
@@ -160,7 +160,7 @@ public class SerializersTest {
         Arrays arrays2 = new Arrays();
         List<Resp2> data2 = new ArrayList<>();
         Integers integers2 = new Integers();
-        integers2.setData(777);
+        integers2.setData(777L);
         data2.add(integers2);
         BulkStrings bulkStrings2 = new BulkStrings();
         bulkStrings2.setData(new BulkString(13, "daimakexuejia"));

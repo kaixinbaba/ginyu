@@ -23,6 +23,7 @@ public class Quit extends AbstractRedisCommand<Void> {
 
     @Override
     protected Resp2 doCommand0(Void arg, ChannelHandlerContext ctx) {
+        ctx.channel().close();
         return SimpleStrings.OK;
     }
 }

@@ -7,6 +7,7 @@ import core.Client;
 import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
+import object.RedisObject;
 import protocol.*;
 import utils.ProtocolValueUtils;
 
@@ -16,11 +17,11 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "persist")
-public class Persist extends AbstractRedisCommand<PersistArg> {
+@Command(name = "type")
+public class Type extends AbstractRedisCommand<TypeArg> {
     @Override
-    public PersistArg createArg(Arrays arrays) {
-        return new PersistArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public TypeArg createArg(Arrays arrays) {
+        return new TypeArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -29,10 +30,13 @@ public class Persist extends AbstractRedisCommand<PersistArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(PersistArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(TypeArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        Integer persisted = database.cleanExpired(arg.getKey());
-        return Integers.create((long) persisted);
+        RedisObject redisObject = database.get(arg.getKey());
+        if (redisObject == null) {
+            return SimpleStrings.NONE;
+        }
+        return SimpleStrings.create(redisObject.getType().getDisplay());
     }
 }

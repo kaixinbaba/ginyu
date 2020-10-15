@@ -52,5 +52,13 @@ public abstract class ProtocolUtils {
         }
     }
 
+    public static Long readLong(ByteBuf byteBuf) {
+        try {
+            return Long.parseLong(readString(byteBuf));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 
 }
