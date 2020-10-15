@@ -32,6 +32,14 @@ public abstract class Validates {
         }
     }
 
+    public static Long validateLong(Arrays arrays, int index, String argName) {
+        try {
+            return Long.parseLong(((BulkStrings) arrays.getData().get(index)).getData().getContent());
+        } catch (NumberFormatException e) {
+            throw new CommandValidateException("%s must be long", argName);
+        }
+    }
+
     public static Integer validateDbIndex(Arrays arrays, int arrayIndex, String argName) {
         Integer index = validateInteger(arrays, arrayIndex, argName);
         if (index < 0 || index >= Server.INSTANCE.getGinyuConfig().getDbSize()) {

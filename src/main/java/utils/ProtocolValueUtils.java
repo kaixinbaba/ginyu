@@ -23,4 +23,8 @@ public abstract class ProtocolValueUtils {
     public static Integer getIntFromBulkStringsInArrays(Arrays arrays, int index) {
         return Integer.parseInt(getFromBulkStringsInArrays(arrays, index));
     }
+
+    public static Long getLongFromBulkStringsInArrays(Arrays arrays, int index) {
+        return Long.parseLong(getFromBulkStringsInArrays(arrays, index));
+    }
 }

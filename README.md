@@ -4,6 +4,5 @@ Redis implment with PURE Java
 
 
 ## TODO
-- log输出
 - hset
 - hdel

@@ -17,6 +17,8 @@ import static common.Constants.INTEGERS_FLAG;
 @ToString(callSuper = true)
 public class Integers extends Resp2<Integer> {
 
+    public static final Integers N_TWO = Integers.create(-2);
+    public static final Integers N_ONE = Integers.create(-1);
     public static final Integers ZERO = Integers.create(0);
     public static final Integers ONE = Integers.create(1);
 

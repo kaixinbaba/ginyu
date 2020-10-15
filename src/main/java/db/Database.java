@@ -79,4 +79,8 @@ public class Database {
         }
         return exists;
     }
+
+    public Long getExpired(String key) {
+        return this.expired.get(key);
+    }
 }
