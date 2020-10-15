@@ -12,9 +12,18 @@ import java.util.regex.Matcher;
  */
 public abstract class Consoles {
 
-    private static boolean enableColor = true;
-
+    private static final String RESET = "\033[0m";
+    private static final int LIGHT_GRAY = 39;
+    private static final int WHITE = 30;
+    private static final int RED = 31;
+    private static final int GREEN = 32;
+    private static final int YELLOW = 33;
+    private static final int BLUE = 34;
+    private static final int MAGENTA = 35;
+    private static final int CYAN = 36;
+    private static final int GRAY = 37;
     public volatile static Level LEVEL = Level.CONFIG;
+    private static boolean enableColor = true;
 
     static {
         if (System.console() != null) {
@@ -29,18 +38,6 @@ public abstract class Consoles {
             enableColor = true;
         }
     }
-
-    private static final String RESET = "\033[0m";
-
-    private static final int LIGHT_GRAY = 39;
-    private static final int WHITE = 30;
-    private static final int RED = 31;
-    private static final int GREEN = 32;
-    private static final int YELLOW = 33;
-    private static final int BLUE = 34;
-    private static final int MAGENTA = 35;
-    private static final int CYAN = 36;
-    private static final int GRAY = 37;
 
     private static String colorStr(String msg, int colorCode) {
         return String.format("\033[%sm%s%s", colorCode, msg, RESET);

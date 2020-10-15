@@ -7,7 +7,6 @@ import core.Client;
 import core.Server;
 import db.Database;
 import io.netty.channel.ChannelHandlerContext;
-import object.StringObject;
 import protocol.*;
 
 /**
