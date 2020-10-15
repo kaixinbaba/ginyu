@@ -1,3 +1,4 @@
+import common.Consoles;
 import core.Server;
 
 /**
@@ -8,8 +9,13 @@ import core.Server;
 public class Boot {
 
     public static void main(String[] args) {
-        Server server = Server.INSTANCE;
-        server.init(args);
-        server.start();
+        try {
+            Server server = Server.INSTANCE;
+            server.init(args);
+            server.start();
+        } catch (Exception e) {
+            Consoles.error("ginyu startup failed! cause on {}", e.getMessage());
+            System.exit(1);
+        }
     }
 }

@@ -14,7 +14,7 @@ public abstract class Consoles {
 
     private static boolean enableColor = true;
 
-    public static Level LEVEL = Level.FINEST;
+    public volatile static Level LEVEL = Level.CONFIG;
 
     static {
         if (System.console() != null) {
@@ -32,7 +32,7 @@ public abstract class Consoles {
 
     private static final String RESET = "\033[0m";
 
-    private static final int DEFAULT = 39;
+    private static final int LIGHT_GRAY = 39;
     private static final int WHITE = 30;
     private static final int RED = 31;
     private static final int GREEN = 32;
@@ -44,6 +44,14 @@ public abstract class Consoles {
 
     private static String colorStr(String msg, int colorCode) {
         return String.format("\033[%sm%s%s", colorCode, msg, RESET);
+    }
+
+    public static void lightGray(String msg) {
+        System.out.println(colorStr(msg, LIGHT_GRAY));
+    }
+
+    public static void blue(String format, Object... arguments) {
+        blue(format(format, arguments));
     }
 
     public static void blue(String msg) {
@@ -79,7 +87,7 @@ public abstract class Consoles {
     }
 
     public static void trace(String msg) {
-        if (canLog(Level.FINEST)) {
+        if (canLog(Level.FINE)) {
             if (enableColor) {
                 cyan(msg);
             } else {
@@ -93,7 +101,7 @@ public abstract class Consoles {
     }
 
     public static void debug(String msg) {
-        if (canLog(Level.FINER)) {
+        if (canLog(Level.CONFIG)) {
             if (enableColor) {
                 gray(msg);
             } else {
@@ -107,7 +115,7 @@ public abstract class Consoles {
     }
 
     public static void info(String msg) {
-        if (canLog(Level.CONFIG)) {
+        if (canLog(Level.INFO)) {
             if (enableColor) {
                 green(msg);
             } else {
