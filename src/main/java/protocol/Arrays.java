@@ -28,6 +28,14 @@ public class Arrays extends Resp2<List<Resp2>> {
 
     public static final Arrays EMPTY = Arrays.create(null);
 
+    public static Arrays createSpecifiedSizeWithNull(int size) {
+        List<Resp2> result = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            result.add(BulkStrings.NULL);
+        }
+        return create(result);
+    }
+
     public static Arrays createByStringList(List<String> data) {
         return createByStringArray(data.toArray(STR_EMPTY_ARRAY));
     }
