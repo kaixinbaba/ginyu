@@ -8,6 +8,7 @@ import utils.ProtocolUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,11 +37,7 @@ public class Arrays extends Resp2<List<Resp2>> {
         return create(result);
     }
 
-    public static Arrays createByStringList(List<String> data) {
-        return createByStringArray(data.toArray(STR_EMPTY_ARRAY));
-    }
-
-    public static Resp2 createByStringSet(Set<String> data) {
+    public static Arrays createByStringCollection(Collection<String> data) {
         return createByStringArray(data.toArray(STR_EMPTY_ARRAY));
     }
 

@@ -57,6 +57,6 @@ public class HGetAll extends AbstractRedisCommand<HGetAllArg> {
             result.add(entry.getValue());
         }
         // FIXME redis是按照hset的顺序返回的，而我是乱序的
-        return Arrays.createByStringList(result);
+        return Arrays.createByStringCollection(result);
     }
 }

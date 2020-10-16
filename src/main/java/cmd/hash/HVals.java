@@ -10,7 +10,6 @@ import io.netty.channel.ChannelHandlerContext;
 import object.HashObject;
 import object.ObjectType;
 import protocol.Arrays;
-import protocol.Integers;
 import protocol.Resp2;
 import protocol.Validates;
 import utils.ProtocolValueUtils;
@@ -21,11 +20,11 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hkeys")
-public class HKeys extends AbstractRedisCommand<HKeysArg> {
+@Command(name = "hvals")
+public class HVals extends AbstractRedisCommand<HValsArg> {
     @Override
-    public HKeysArg createArg(Arrays arrays) {
-        return new HKeysArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public HValsArg createArg(Arrays arrays) {
+        return new HValsArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -34,7 +33,7 @@ public class HKeys extends AbstractRedisCommand<HKeysArg> {
     }
 
     @Override
-    protected Resp2 doCommand0(HKeysArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(HValsArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         boolean expired = database.checkIfExpired(arg.getKey());
@@ -46,6 +45,6 @@ public class HKeys extends AbstractRedisCommand<HKeysArg> {
         if (hashObject == null) {
             return Arrays.EMPTY;
         }
-        return Arrays.createByStringCollection(hashObject.getOriginal().keySet());
+        return Arrays.createByStringCollection(hashObject.getOriginal().values());
     }
 }

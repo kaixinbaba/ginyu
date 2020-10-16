@@ -57,6 +57,6 @@ public class HMGet extends AbstractRedisCommand<HMGetArg> {
         for (String field : arg.getFields()) {
             data.add(hashObject.getOriginal().get(field));
         }
-        return Arrays.createByStringList(data);
+        return Arrays.createByStringCollection(data);
     }
 }
