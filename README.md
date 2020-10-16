@@ -4,3 +4,9 @@ Redis implment with PURE Java
 
 
 ## TODO
+- zadd
+- zrange
+- zcard
+- zscore
+- zrem
+- zincrby

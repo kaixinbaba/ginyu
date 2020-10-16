@@ -5,6 +5,8 @@ import cmd.Command;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.*;
 
+import static common.Constants.SLOGAN;
+
 /**
  * @author: junjiexun
  * @date: 2020/10/13 1:56 下午
@@ -30,7 +32,7 @@ public class Ping extends AbstractRedisCommand<PingArg> {
     @Override
     protected Resp2 doCommand0(PingArg arg, ChannelHandlerContext ctx) {
         if (arg.getMessage() == null) {
-            return SimpleStrings.create("ギニュー特戦队! Ginyu!");
+            return SimpleStrings.create(SLOGAN + "Ginyu!");
         } else {
             return BulkStrings.create(arg.getMessage());
         }

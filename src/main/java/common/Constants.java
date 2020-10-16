@@ -30,4 +30,6 @@ public abstract class Constants {
 
     public static final String[] STR_EMPTY_ARRAY = new String[]{};
     public static final HashEntry[] HASH_ENTRIES_EMPTY_ARRAY = new HashEntry[]{};
+
+    public static String SLOGAN = "ギニュー特戦队!";
 }
