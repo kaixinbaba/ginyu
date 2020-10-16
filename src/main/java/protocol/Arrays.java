@@ -27,7 +27,7 @@ import static common.Constants.STR_EMPTY_ARRAY;
 @SuppressWarnings("all")
 public class Arrays extends Resp2<List<Resp2>> {
 
-    public static final Arrays EMPTY = Arrays.create(null);
+    public static final Arrays EMPTY = Arrays.create(new ArrayList<>());
 
     public static Arrays createSpecifiedSizeWithNull(int size) {
         List<Resp2> result = new ArrayList<>(size);

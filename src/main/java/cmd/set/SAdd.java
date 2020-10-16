@@ -48,7 +48,8 @@ public class SAdd extends AbstractRedisCommand<SAddArg> {
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         SetObject setObject = Validates.validateType(database.get(arg.getKey()), ObjectType.SET);
         if (setObject == null) {
-            return Integers.ZERO;
+            setObject = new SetObject();
+            database.set(arg.getKey(), setObject);
         }
         int added = 0;
         for (String member : arg.getMembers()) {
