@@ -10,8 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static common.Constants.ARRAYS_FLAG;
@@ -28,6 +26,10 @@ import static common.Constants.STR_EMPTY_ARRAY;
 public class Arrays extends Resp2<List<Resp2>> {
 
     public static final Arrays EMPTY = Arrays.create(new ArrayList<>());
+
+    public Arrays() {
+        this.setFlag(ARRAYS_FLAG);
+    }
 
     public static Arrays createSpecifiedSizeWithNull(int size) {
         List<Resp2> result = new ArrayList<>(size);
@@ -52,10 +54,6 @@ public class Arrays extends Resp2<List<Resp2>> {
         Arrays arrays = new Arrays();
         arrays.setData(data);
         return arrays;
-    }
-
-    public Arrays() {
-        this.setFlag(ARRAYS_FLAG);
     }
 
     public static Arrays convert(ByteBuf byteBuf) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {

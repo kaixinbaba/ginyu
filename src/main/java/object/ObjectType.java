@@ -13,7 +13,7 @@ public enum ObjectType {
     ;
 
     @Getter
-    private String display;
+    private final String display;
 
     ObjectType() {
         this.display = this.name().toLowerCase();

@@ -5,7 +5,6 @@ import exception.CommandValidateException;
 import exception.SetWrongTypeException;
 import object.ObjectType;
 import object.RedisObject;
-import object.StringObject;
 
 /**
  * @author: junjiexun

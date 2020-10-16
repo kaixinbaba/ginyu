@@ -17,6 +17,21 @@ import static common.Constants.SLOGAN;
 @SuppressWarnings("all")
 public class ZSet {
 
+    private final ZSetNode HEAD = new ZSetNode(Double.MIN_VALUE, SLOGAN, null, null);
+    private ConcurrentHashMap<String, Double> members = new ConcurrentHashMap<>();
+    private volatile ZSetNode TAIL;
+
+    public boolean exists(String member) {
+        return this.members.containsKey(member);
+    }
+
+    public void addNodes(ScoreMember[] scoreMembers, Boolean xx, Boolean nx, Boolean incr, Boolean ch) {
+        ZSetNode node = this.HEAD.next;
+        while (node != null) {
+
+        }
+    }
+
     @AllArgsConstructor
     static class ZSetNode implements Comparable<ZSetNode> {
 
@@ -52,22 +67,6 @@ public class ZSet {
                 return this.member.compareTo(o.member);
             }
             return this.score.compareTo(o.score);
-        }
-    }
-
-    private ConcurrentHashMap<String, Double> members = new ConcurrentHashMap<>();
-
-    private final ZSetNode HEAD = new ZSetNode(Double.MIN_VALUE, SLOGAN, null, null);
-    private volatile ZSetNode TAIL;
-
-    public boolean exists(String member) {
-        return this.members.containsKey(member);
-    }
-
-    public void addNodes(ScoreMember[] scoreMembers, Boolean xx, Boolean nx, Boolean incr, Boolean ch) {
-        ZSetNode node = this.HEAD.next;
-        while (node != null) {
-
         }
     }
 }

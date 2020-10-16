@@ -27,11 +27,8 @@ public abstract class Consoles {
 
     static {
         if (System.console() != null) {
-            enableColor = true;
             // windows dos, do not support color
-            if (OSUtils.isWindows()) {
-                enableColor = false;
-            }
+            enableColor = !OSUtils.isWindows();
         }
         // cygwin and mingw support color
         if (OSUtils.isCygwinOrMinGW()) {

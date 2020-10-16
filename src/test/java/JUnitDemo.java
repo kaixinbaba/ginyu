@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -19,7 +20,7 @@ public class JUnitDemo {
     @Test
     public void test() throws IOException {
         File f = new File("banner.txt");
-        String s = FileUtils.readFileToString(f, Charset.forName("UTF-8"));
+        String s = FileUtils.readFileToString(f, StandardCharsets.UTF_8);
         Consoles.magenta(s);
         Consoles.trace("dfdf3\nadk");
         Consoles.debug("dkfjdkj\nadk");
@@ -46,17 +47,6 @@ public class JUnitDemo {
         System.out.println(set);
     }
 
-    @Data
-    @AllArgsConstructor
-    private static class A implements Comparable<A> {
-        private String name;
-
-        @Override
-        public int compareTo(A o) {
-            return this.name.compareTo(o.name);
-        }
-    }
-
     @Test
     public void test2() {
         ConcurrentSkipListSet<A> set = new ConcurrentSkipListSet<>();
@@ -67,5 +57,16 @@ public class JUnitDemo {
         set.add(new A("fdkfj123"));
         set.add(new A("dsfk34"));
         System.out.println(set);
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class A implements Comparable<A> {
+        private String name;
+
+        @Override
+        public int compareTo(A o) {
+            return this.name.compareTo(o.name);
+        }
     }
 }

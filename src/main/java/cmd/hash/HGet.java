@@ -9,7 +9,6 @@ import db.Database;
 import io.netty.channel.ChannelHandlerContext;
 import object.HashObject;
 import object.ObjectType;
-import object.StringObject;
 import protocol.Arrays;
 import protocol.BulkStrings;
 import protocol.Resp2;
