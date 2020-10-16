@@ -9,9 +9,12 @@ import utils.ProtocolUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static common.Constants.ARRAYS_FLAG;
+import static common.Constants.STR_EMPTY_ARRAY;
 
 /**
  * @author: junjiexun
@@ -22,6 +25,29 @@ import static common.Constants.ARRAYS_FLAG;
 @ToString(callSuper = true)
 @SuppressWarnings("all")
 public class Arrays extends Resp2<List<Resp2>> {
+
+    public static final Arrays EMPTY = Arrays.create(null);
+
+    public static Arrays createByStringList(List<String> data) {
+        return createByStringArray(data.toArray(STR_EMPTY_ARRAY));
+    }
+
+    public static Resp2 createByStringSet(Set<String> data) {
+        return createByStringArray(data.toArray(STR_EMPTY_ARRAY));
+    }
+
+    public static Arrays createByStringArray(String... data) {
+        return create(java.util.Arrays
+                .stream(data)
+                .map(s -> BulkStrings.create(s))
+                .collect(Collectors.toList()));
+    }
+
+    public static Arrays create(List<Resp2> data) {
+        Arrays arrays = new Arrays();
+        arrays.setData(data);
+        return arrays;
+    }
 
     public Arrays() {
         this.setFlag(ARRAYS_FLAG);
@@ -37,6 +63,7 @@ public class Arrays extends Resp2<List<Resp2>> {
         arrays.setData(data);
         return arrays;
     }
+
 
     public List<String> map2String() {
         return map2String(false);
