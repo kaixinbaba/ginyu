@@ -15,6 +15,7 @@ import static common.Constants.INTEGERS_FLAG;
  */
 @Data
 @ToString(callSuper = true)
+@SuppressWarnings("all")
 public class Integers extends Resp2<Long> {
 
     public static final Integers N_TWO = Integers.create(-2L);
@@ -42,15 +43,14 @@ public class Integers extends Resp2<Long> {
         return integers;
     }
 
+    public static Resp2 defaultValue() {
+        return Integers.ZERO;
+    }
+
     @Override
     public void writeByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBytes(this.getFlag().getBytes());
         byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
-    }
-
-    @Override
-    public Resp2 defaultResult() {
-        return Integers.ZERO;
     }
 }

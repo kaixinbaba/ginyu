@@ -16,6 +16,4 @@ public abstract class Resp2<T> {
     private T data;
 
     public abstract void writeByteBuf(ByteBuf byteBuf);
-
-    public abstract Resp2 defaultResult();
 }

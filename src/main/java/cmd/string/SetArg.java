@@ -1,6 +1,9 @@
 package cmd.string;
 
+import cmd.KeyArg;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author: junjiexun
@@ -8,9 +11,9 @@ import lombok.Data;
  * @description:
  */
 @Data
-public class SetArg {
-
-    private String key;
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class SetArg extends KeyArg {
 
     private String value;
 

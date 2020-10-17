@@ -2,10 +2,14 @@ package utils;
 
 import cmd.Command;
 import cmd.RedisCommand;
+import lombok.NonNull;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -115,6 +119,83 @@ public abstract class ReflectUtils {
                 commandMap.put(cmdName, (RedisCommand) clazz.newInstance());
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        }
+    }
+
+
+    /**
+     * 通过反射获取目标字段值
+     *
+     * @param fieldName 字段名
+     * @param o         对象
+     * @param <T>       返回值泛型
+     * @return
+     */
+    public static <T> T getFieldValue(@NonNull String fieldName, @NonNull Object o) {
+        try {
+            Class clazz = o.getClass();
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return (T) field.get(o);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 通过反射设置目标字段值
+     *
+     * @param fieldName 字段名
+     * @param o         对象
+     * @return
+     */
+    public static void setFieldValue(@NonNull String fieldName, @NonNull Object o, Object value) {
+        try {
+            Class clazz = o.getClass();
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(o, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+        }
+    }
+
+    public static Class getFirstGenericTypeOnInterface(@NonNull Object o) {
+        return getGenericTypeOnSuperClassOrInterface(o.getClass(), 0, false);
+    }
+
+    public static Class getFirstGenericTypeOnInterface(Class clazz) {
+        return getGenericTypeOnSuperClassOrInterface(clazz, 0, false);
+    }
+
+    public static Class getGenericTypeOnInterface(@NonNull Object o, int index) {
+        return getGenericTypeOnSuperClassOrInterface(o.getClass(), index, false);
+    }
+
+    public static Class getFirstGenericTypeOnSuperClass(@NonNull Object o) {
+        return getGenericTypeOnSuperClassOrInterface(o.getClass(), 0, true);
+    }
+
+    public static Class getFirstGenericTypeOnSuperClass(Class clazz) {
+        return getGenericTypeOnSuperClassOrInterface(clazz, 0, true);
+    }
+
+    public static Class getGenericTypeOnSuperClass(@NonNull Object o, int index) {
+        return getGenericTypeOnSuperClassOrInterface(o.getClass(), index, true);
+    }
+
+    public static Class getGenericTypeOnSuperClassOrInterface(@NonNull Class clazz, int index, boolean isClass) {
+        try {
+            ParameterizedType type;
+            if (isClass) {
+                type = (ParameterizedType) clazz.getGenericSuperclass();
+            } else {
+                // FIXME hardcode first interface
+                type = (ParameterizedType) clazz.getGenericInterfaces()[0];
+            }
+            Type genericType = type.getActualTypeArguments()[index];
+            return Class.forName(genericType.getTypeName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

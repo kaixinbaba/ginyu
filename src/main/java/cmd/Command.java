@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface Command {
 
     String name();
+
+    boolean checkExpire() default false;
 }

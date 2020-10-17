@@ -67,6 +67,9 @@ public class Arrays extends Resp2<List<Resp2>> {
         return arrays;
     }
 
+    public static Resp2 defaultValue() {
+        return Arrays.EMPTY;
+    }
 
     public List<String> map2String() {
         return map2String(false);
@@ -92,10 +95,5 @@ public class Arrays extends Resp2<List<Resp2>> {
         for (Resp2 resp2 : data) {
             resp2.writeByteBuf(byteBuf);
         }
-    }
-
-    @Override
-    public Resp2 defaultResult() {
-        return Arrays.EMPTY;
     }
 }

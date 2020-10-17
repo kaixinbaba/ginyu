@@ -16,6 +16,7 @@ import static common.Constants.SKIP;
  */
 @Data
 @ToString(callSuper = true)
+@SuppressWarnings("all")
 public class BulkStrings extends Resp2<BulkString> {
 
     public static final BulkStrings NULL = new BulkStrings(new BulkString(-1, null));
@@ -60,6 +61,10 @@ public class BulkStrings extends Resp2<BulkString> {
         return bulkStrings;
     }
 
+    public static Resp2 defaultValue() {
+        return BulkStrings.NULL;
+    }
+
     @Override
     public void writeByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBytes(this.getFlag().getBytes());
@@ -72,10 +77,5 @@ public class BulkStrings extends Resp2<BulkString> {
             byteBuf.writeBytes(bulkString.getContent().getBytes());
             byteBuf.writeBytes(Constants.SPLIT_BYTE);
         }
-    }
-
-    @Override
-    public Resp2 defaultResult() {
-        return BulkStrings.NULL;
     }
 }

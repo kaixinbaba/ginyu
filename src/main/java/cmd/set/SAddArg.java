@@ -1,7 +1,10 @@
 package cmd.set;
 
+import cmd.KeyArg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author: junjiexun
@@ -10,9 +13,14 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class SAddArg {
-
-    private String key;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class SAddArg extends KeyArg {
 
     private String[] members;
+
+    public SAddArg(String key, String... members) {
+        super(key);
+        this.members = members;
+    }
 }

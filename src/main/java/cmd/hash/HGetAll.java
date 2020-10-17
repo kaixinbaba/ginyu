@@ -2,6 +2,7 @@ package cmd.hash;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import cmd.KeyArg;
 import common.Attributes;
 import core.Client;
 import core.Server;
@@ -26,10 +27,10 @@ import java.util.Map;
  */
 @SuppressWarnings("all")
 @Command(name = "hgetall")
-public class HGetAll extends AbstractRedisCommand<HGetAllArg, Arrays> {
+public class HGetAll extends AbstractRedisCommand<KeyArg, Arrays> {
     @Override
-    public HGetAllArg createArg(Arrays arrays) {
-        return new HGetAllArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public KeyArg createArg(Arrays arrays) {
+        return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -38,7 +39,7 @@ public class HGetAll extends AbstractRedisCommand<HGetAllArg, Arrays> {
     }
 
     @Override
-    protected Resp2 doCommand0(HGetAllArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         boolean expired = database.checkIfExpired(arg.getKey());

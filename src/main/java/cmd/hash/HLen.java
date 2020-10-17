@@ -2,6 +2,7 @@ package cmd.hash;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import cmd.KeyArg;
 import common.Attributes;
 import core.Client;
 import core.Server;
@@ -22,10 +23,10 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hlen")
-public class HLen extends AbstractRedisCommand<HLenArg, Integers> {
+public class HLen extends AbstractRedisCommand<KeyArg, Integers> {
     @Override
-    public HLenArg createArg(Arrays arrays) {
-        return new HLenArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public KeyArg createArg(Arrays arrays) {
+        return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -34,7 +35,7 @@ public class HLen extends AbstractRedisCommand<HLenArg, Integers> {
     }
 
     @Override
-    protected Resp2 doCommand0(HLenArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         boolean expired = database.checkIfExpired(arg.getKey());

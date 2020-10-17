@@ -9,12 +9,13 @@ public class SetObject extends RedisObject<Dict<String, SetObject.None>> {
 
     public static final None NONE = new None();
 
-    public static class None {
-        private None() {}
-    }
-
     public SetObject() {
         this.setType(ObjectType.SET);
         this.setOriginal(new Dict<>());
+    }
+
+    public static class None {
+        private None() {
+        }
     }
 }

@@ -2,6 +2,7 @@ package cmd.generic;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import cmd.KeyArg;
 import common.Attributes;
 import core.Client;
 import core.Server;
@@ -21,10 +22,10 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "type")
-public class Type extends AbstractRedisCommand<TypeArg, SimpleStrings> {
+public class Type extends AbstractRedisCommand<KeyArg, SimpleStrings> {
     @Override
-    public TypeArg createArg(Arrays arrays) {
-        return new TypeArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public KeyArg createArg(Arrays arrays) {
+        return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -33,7 +34,7 @@ public class Type extends AbstractRedisCommand<TypeArg, SimpleStrings> {
     }
 
     @Override
-    protected Resp2 doCommand0(TypeArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         RedisObject redisObject = database.get(arg.getKey());

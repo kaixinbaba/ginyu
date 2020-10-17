@@ -1,7 +1,10 @@
 package cmd.hash;
 
+import cmd.KeyArg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author: junjiexun
@@ -10,9 +13,14 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class HMGetArg {
-
-    private String key;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class HMGetArg extends KeyArg {
 
     private String[] fields;
+
+    public HMGetArg(String key, String... fields) {
+        super(key);
+        this.fields = fields;
+    }
 }

@@ -1,7 +1,10 @@
 package cmd.generic;
 
+import cmd.KeyArg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author: junjiexun
@@ -10,9 +13,14 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class RenameArg {
-
-    private String key;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class RenameArg extends KeyArg {
 
     private String newKey;
+
+    public RenameArg(String key, String newKey) {
+        super(key);
+        this.newKey = newKey;
+    }
 }

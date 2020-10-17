@@ -15,6 +15,7 @@ import static common.Constants.SIMPLE_STRINGS_FLAG;
  */
 @Data
 @ToString(callSuper = true)
+@SuppressWarnings("all")
 public class SimpleStrings extends Resp2<String> {
 
     public static final SimpleStrings OK = SimpleStrings.create("OK");
@@ -43,15 +44,14 @@ public class SimpleStrings extends Resp2<String> {
         return simpleStrings;
     }
 
+    public static Resp2 defaultValue() {
+        return SimpleStrings.OK;
+    }
+
     @Override
     public void writeByteBuf(ByteBuf byteBuf) {
         byteBuf.writeBytes(this.getFlag().getBytes());
         byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
-    }
-
-    @Override
-    public Resp2 defaultResult() {
-        return SimpleStrings.OK;
     }
 }

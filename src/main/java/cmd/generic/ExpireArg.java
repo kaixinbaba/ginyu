@@ -1,7 +1,10 @@
 package cmd.generic;
 
+import cmd.KeyArg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author: junjiexun
@@ -10,9 +13,14 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ExpireArg {
-
-    private String key;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ExpireArg extends KeyArg {
 
     private Integer seconds;
+
+    public ExpireArg(String key, Integer seconds) {
+        super(key);
+        this.seconds = seconds;
+    }
 }

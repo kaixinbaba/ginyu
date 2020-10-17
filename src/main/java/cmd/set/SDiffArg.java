@@ -1,5 +1,6 @@
 package cmd.set;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -8,11 +9,8 @@ import lombok.Data;
  * @description:
  */
 @Data
+@AllArgsConstructor
 public class SDiffArg {
 
     private String[] keys;
-
-    public SDiffArg(String... keys) {
-        this.keys = keys;
-    }
 }

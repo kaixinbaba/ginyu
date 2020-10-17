@@ -2,6 +2,7 @@ package cmd.generic;
 
 import cmd.AbstractRedisCommand;
 import cmd.Command;
+import cmd.KeyArg;
 import common.Attributes;
 import core.Client;
 import core.Server;
@@ -20,10 +21,10 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "persist")
-public class Persist extends AbstractRedisCommand<PersistArg, Integers> {
+public class Persist extends AbstractRedisCommand<KeyArg, Integers> {
     @Override
-    public PersistArg createArg(Arrays arrays) {
-        return new PersistArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public KeyArg createArg(Arrays arrays) {
+        return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Persist extends AbstractRedisCommand<PersistArg, Integers> {
     }
 
     @Override
-    protected Resp2 doCommand0(PersistArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
         Integer persisted = database.cleanExpired(arg.getKey());

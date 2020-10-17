@@ -35,8 +35,7 @@ public class Errors extends SimpleStrings {
         return errors;
     }
 
-    @Override
-    public Resp2 defaultResult() {
+    public static Resp2 defaultValue() {
         return Errors.ERROR;
     }
 }

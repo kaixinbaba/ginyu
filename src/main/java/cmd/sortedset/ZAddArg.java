@@ -1,7 +1,10 @@
 package cmd.sortedset;
 
+import cmd.KeyArg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author: junjiexun
@@ -10,9 +13,9 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ZAddArg {
-
-    private String key;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ZAddArg extends KeyArg {
 
     private Boolean xx;
 
