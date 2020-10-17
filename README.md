@@ -5,8 +5,10 @@ Redis implment with PURE Java
 ## Redis Command List
 <details>
 <summary>
-- [ ] Cluster
+Cluster
 </summary>
+
+- [ ] Cluster
     - [ ] CLUSTER ADDSLOTS
     - [ ] CLUSTER COUNT-FAILURE-REPO
     - [ ] CLUSTER COUNTKEYSINSLOT
@@ -29,6 +31,7 @@ Redis implment with PURE Java
     - [ ] CLUSTER READONLY
     - [ ] CLUSTER READWRITE
 </details>
+
 - [ ] Connection
     - [ ] AUTH
     - [x] ECHO
