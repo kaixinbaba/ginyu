@@ -17,7 +17,8 @@ import protocol.Validates;
 
 import java.util.List;
 
-import static object.None.NONE;
+import static object.SetObject.NONE;
+
 
 /**
  * @author: junjiexun
@@ -27,6 +28,7 @@ import static object.None.NONE;
 @SuppressWarnings("all")
 @Command(name = "sadd")
 public class SAdd extends AbstractRedisCommand<SAddArg> {
+
     @Override
     protected SAddArg createArg(Arrays arrays) {
         List<String> argList = arrays.map2String(true);
