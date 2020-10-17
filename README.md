@@ -32,6 +32,11 @@ Cluster
     - [ ] CLUSTER READWRITE
 </details>
 
+<details>
+<summary>
+Connection
+</summary>
+
 - [ ] Connection
     - [ ] AUTH
     - [x] ECHO
@@ -39,6 +44,13 @@ Cluster
     - [x] QUIT
     - [x] SELECT
     - [x] SWAPDB
+</details>
+
+<details>
+<summary>
+Geo
+</summary>
+
 - [ ] Geo
     - [ ] GEOADD
     - [ ] GEOHASH
@@ -46,6 +58,13 @@ Cluster
     - [ ] GEODIST
     - [ ] GEORADIUS
     - [ ] GEORADIUSBYMEMBER
+</details>
+
+<details>
+<summary>
+Hashes
+</summary>
+
 - [ ] Hashes
     - [x] HDEL
     - [x] HEXISTS
@@ -62,10 +81,24 @@ Cluster
     - [x] HSTRLEN
     - [x] HVALS
     - [ ] HSCAN
+</details>
+
+<details>
+<summary>
+HyperLogLog
+</summary>
+
 - [ ] HyperLogLog
     - [ ] PFADD
     - [ ] PFCOUNT
     - [ ] PFMERGE
+</details>
+
+<details>
+<summary>
+Keys
+</summary>
+
 - [ ] Keys
     - [ ] DEL
     - [ ] DUMP
@@ -89,6 +122,13 @@ Cluster
     - [ ] TYPE
     - [ ] WAIT
     - [ ] SCAN
+</details>
+
+<details>
+<summary>
+Lists
+</summary>
+
 - [ ] Lists
     - [ ] BLPOP
     - [ ] BRPOP
@@ -107,6 +147,13 @@ Cluster
     - [ ] RPOPLPUSH
     - [ ] RPUSH
     - [ ] RPUSHX
+</details>
+
+<details>
+<summary>
+Pub/Sub
+</summary>
+
 - [ ] Pub/Sub
     - [ ] PSUBCRIBE
     - [ ] PUBSUB
@@ -114,6 +161,13 @@ Cluster
     - [ ] PUNSUBSCRIBE
     - [ ] SUBSRIBE
     - [ ] UNSUBSCRIBE
+</details>
+
+<details>
+<summary>
+Scripting
+</summary>
+
 - [ ] Scripting
     - [ ] EVAL
     - [ ] EVALSHA
@@ -122,6 +176,13 @@ Cluster
     - [ ] SCRIPT FLUSH
     - [ ] SCRIPT KILL
     - [ ] SCRIPT LOAD
+</details>
+
+<details>
+<summary>
+Server
+</summary>
+
 - [ ] Server
     - [ ] BGREWRITEAOF
     - [ ] BGSAVE
@@ -163,6 +224,13 @@ Cluster
     - [ ] SLOWLOG
     - [ ] SYNC
     - [ ] TIME
+</details>
+
+<details>
+<summary>
+Sets
+</summary>
+
 - [ ] Sets
     - [x] SADD
     - [x] SCARD
@@ -179,6 +247,13 @@ Cluster
     - [ ] SUNION
     - [ ] SUNIONSTORE
     - [ ] SSCAN
+</details>
+
+<details>
+<summary>
+Sorted Sets
+</summary>
+
 - [ ] Sorted Sets
     - [ ] ZADD
     - [ ] ZCARD
@@ -203,6 +278,13 @@ Cluster
     - [ ] ZSCORE
     - [ ] ZUNIONSTORE
     - [ ] ZSCAN
+</details>
+
+<details>
+<summary>
+Streams
+</summary>
+
 - [ ] Streams
     - [ ] XACK
     - [ ] XADD
@@ -217,6 +299,13 @@ Cluster
     - [ ] XREADGROUP
     - [ ] XREVRANGE
     - [ ] XTRIM
+</details>
+
+<details>
+<summary>
+Strings
+</summary>
+
 - [ ] Strings
     - [ ] APPEND
     - [ ] BITCOUNT
@@ -242,10 +331,18 @@ Cluster
     - [ ] SETNX
     - [ ] SETRANGE
     - [ ] STRLEN
+</details>
+
+<details>
+<summary>
+Transactions
+</summary>
+
 - [ ] Transactions
     - [ ] DISCARD
     - [ ] EXEC
     - [ ] MULTI
     - [ ] UNWATCH
     - [ ] WATCH
+</details>
 
