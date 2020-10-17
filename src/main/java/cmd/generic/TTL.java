@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "ttl")
-public class TTL extends AbstractRedisCommand<TTLArg> {
+public class TTL extends AbstractRedisCommand<TTLArg, Integers> {
     @Override
     public TTLArg createArg(Arrays arrays) {
         return new TTLArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

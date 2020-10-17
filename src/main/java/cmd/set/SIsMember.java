@@ -20,7 +20,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "sismember")
-public class SIsMember extends AbstractRedisCommand<SIsMemberArg> {
+public class SIsMember extends AbstractRedisCommand<SIsMemberArg, Integers> {
     @Override
     public SIsMemberArg createArg(Arrays arrays) {
         return new SIsMemberArg(

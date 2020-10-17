@@ -20,7 +20,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "persist")
-public class Persist extends AbstractRedisCommand<PersistArg> {
+public class Persist extends AbstractRedisCommand<PersistArg, Integers> {
     @Override
     public PersistArg createArg(Arrays arrays) {
         return new PersistArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

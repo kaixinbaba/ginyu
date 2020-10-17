@@ -49,4 +49,9 @@ public class SimpleStrings extends Resp2<String> {
         byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
     }
+
+    @Override
+    public Resp2 defaultResult() {
+        return SimpleStrings.OK;
+    }
 }

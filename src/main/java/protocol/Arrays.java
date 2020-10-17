@@ -93,4 +93,9 @@ public class Arrays extends Resp2<List<Resp2>> {
             resp2.writeByteBuf(byteBuf);
         }
     }
+
+    @Override
+    public Resp2 defaultResult() {
+        return Arrays.EMPTY;
+    }
 }

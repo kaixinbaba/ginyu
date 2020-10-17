@@ -16,7 +16,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "echo")
-public class Echo extends AbstractRedisCommand<EchoArg> {
+public class Echo extends AbstractRedisCommand<EchoArg, BulkStrings> {
     @Override
     public EchoArg createArg(Arrays arrays) {
         return new EchoArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

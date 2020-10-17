@@ -27,7 +27,7 @@ import static object.SetObject.NONE;
  */
 @SuppressWarnings("all")
 @Command(name = "sadd")
-public class SAdd extends AbstractRedisCommand<SAddArg> {
+public class SAdd extends AbstractRedisCommand<SAddArg, Integers> {
 
     @Override
     protected SAddArg createArg(Arrays arrays) {

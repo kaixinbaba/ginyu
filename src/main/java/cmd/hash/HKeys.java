@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hkeys")
-public class HKeys extends AbstractRedisCommand<HKeysArg> {
+public class HKeys extends AbstractRedisCommand<HKeysArg, Arrays> {
     @Override
     public HKeysArg createArg(Arrays arrays) {
         return new HKeysArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

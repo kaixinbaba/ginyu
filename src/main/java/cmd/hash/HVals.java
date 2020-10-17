@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hvals")
-public class HVals extends AbstractRedisCommand<HValsArg> {
+public class HVals extends AbstractRedisCommand<HValsArg, Arrays> {
     @Override
     public HValsArg createArg(Arrays arrays) {
         return new HValsArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

@@ -21,7 +21,7 @@ import static common.Constants.STR_EMPTY_ARRAY;
  */
 @SuppressWarnings("all")
 @Command(name = "exists")
-public class Exists extends AbstractRedisCommand<ExistsArg> {
+public class Exists extends AbstractRedisCommand<ExistsArg, Integers> {
     @Override
     public ExistsArg createArg(Arrays arrays) {
         return new ExistsArg(arrays.map2String(true).toArray(STR_EMPTY_ARRAY));

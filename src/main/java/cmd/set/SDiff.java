@@ -25,7 +25,7 @@ import static common.Constants.STR_EMPTY_ARRAY;
  */
 @SuppressWarnings("all")
 @Command(name = "sdiff")
-public class SDiff extends AbstractRedisCommand<SDiffArg> {
+public class SDiff extends AbstractRedisCommand<SDiffArg, Arrays> {
 
     @Override
     public SDiffArg createArg(Arrays arrays) {

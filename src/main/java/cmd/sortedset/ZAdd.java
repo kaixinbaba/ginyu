@@ -4,6 +4,7 @@ import cmd.AbstractRedisCommand;
 import cmd.Command;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.Arrays;
+import protocol.Integers;
 import protocol.Resp2;
 import protocol.Validates;
 
@@ -14,7 +15,7 @@ import protocol.Validates;
  */
 @SuppressWarnings("all")
 @Command(name = "zadd")
-public class ZAdd extends AbstractRedisCommand<ZAddArg> {
+public class ZAdd extends AbstractRedisCommand<ZAddArg, Integers> {
 
     @Override
     protected ZAddArg createArg(Arrays arrays) {

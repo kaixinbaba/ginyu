@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hexists")
-public class HExists extends AbstractRedisCommand<HExistsArg> {
+public class HExists extends AbstractRedisCommand<HExistsArg, Integers> {
     @Override
     public HExistsArg createArg(Arrays arrays) {
         return new HExistsArg(

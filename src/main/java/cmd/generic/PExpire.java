@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "pexpire")
-public class PExpire extends AbstractRedisCommand<PExpireArg> {
+public class PExpire extends AbstractRedisCommand<PExpireArg, Integers> {
 
     @Override
     public PExpireArg createArg(Arrays arrays) {

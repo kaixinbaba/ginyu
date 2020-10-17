@@ -12,9 +12,12 @@ import static common.Constants.ERRORS_FLAG;
  * @date: 2020/10/11 8:55 下午
  * @description:
  */
+@SuppressWarnings("all")
 @Data
 @ToString(callSuper = true)
 public class Errors extends SimpleStrings {
+
+    public static final Errors ERROR = Errors.create("Error");
 
     public Errors() {
         this.setFlag(ERRORS_FLAG);
@@ -30,5 +33,10 @@ public class Errors extends SimpleStrings {
         Errors errors = new Errors();
         errors.setData(errorMessage);
         return errors;
+    }
+
+    @Override
+    public Resp2 defaultResult() {
+        return Errors.ERROR;
     }
 }

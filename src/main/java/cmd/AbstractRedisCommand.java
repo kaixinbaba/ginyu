@@ -11,7 +11,7 @@ import protocol.Resp2;
  * @description:
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractRedisCommand<T> implements RedisCommand<T> {
+public abstract class AbstractRedisCommand<T, R extends Resp2> implements RedisCommand {
 
     @Override
     public void doCommand(String commandName, Arrays arrays, ChannelHandlerContext ctx) throws Exception {

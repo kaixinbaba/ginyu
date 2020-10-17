@@ -14,7 +14,7 @@ import protocol.*;
  */
 @SuppressWarnings("all")
 @Command(name = "select")
-public class Select extends AbstractRedisCommand<SelectArg> {
+public class Select extends AbstractRedisCommand<SelectArg, SimpleStrings> {
     @Override
     public SelectArg createArg(Arrays arrays) {
         BulkStrings bulkStrings = (BulkStrings) arrays.getData().get(1);

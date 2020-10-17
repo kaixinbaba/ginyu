@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "scard")
-public class SCard extends AbstractRedisCommand<SCardArg> {
+public class SCard extends AbstractRedisCommand<SCardArg, Integers> {
     @Override
     public SCardArg createArg(Arrays arrays) {
         return new SCardArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

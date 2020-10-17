@@ -25,7 +25,7 @@ import static common.Constants.STR_EMPTY_ARRAY;
  */
 @SuppressWarnings("all")
 @Command(name = "sinter")
-public class SInter extends AbstractRedisCommand<SInterArg> {
+public class SInter extends AbstractRedisCommand<SInterArg, Arrays> {
 
     @Override
     public SInterArg createArg(Arrays arrays) {

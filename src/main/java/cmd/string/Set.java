@@ -20,7 +20,7 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 @Command(name = "set")
-public class Set extends AbstractRedisCommand<SetArg> {
+public class Set extends AbstractRedisCommand<SetArg, SimpleStrings> {
 
     private static final int XX = 0 << 1;
     private static final int NX = 0 << 2;

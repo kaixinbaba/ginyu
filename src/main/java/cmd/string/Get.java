@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "get")
-public class Get extends AbstractRedisCommand<GetArg> {
+public class Get extends AbstractRedisCommand<GetArg, BulkStrings> {
     @Override
     public GetArg createArg(Arrays arrays) {
         return new GetArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

@@ -73,4 +73,9 @@ public class BulkStrings extends Resp2<BulkString> {
             byteBuf.writeBytes(Constants.SPLIT_BYTE);
         }
     }
+
+    @Override
+    public Resp2 defaultResult() {
+        return BulkStrings.NULL;
+    }
 }

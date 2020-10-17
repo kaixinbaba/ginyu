@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "type")
-public class Type extends AbstractRedisCommand<TypeArg> {
+public class Type extends AbstractRedisCommand<TypeArg, SimpleStrings> {
     @Override
     public TypeArg createArg(Arrays arrays) {
         return new TypeArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @SuppressWarnings("all")
 @Command(name = "hgetall")
-public class HGetAll extends AbstractRedisCommand<HGetAllArg> {
+public class HGetAll extends AbstractRedisCommand<HGetAllArg, Arrays> {
     @Override
     public HGetAllArg createArg(Arrays arrays) {
         return new HGetAllArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

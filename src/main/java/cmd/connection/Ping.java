@@ -14,7 +14,7 @@ import static common.Constants.SLOGAN;
  */
 @SuppressWarnings("all")
 @Command(name = "ping")
-public class Ping extends AbstractRedisCommand<PingArg> {
+public class Ping extends AbstractRedisCommand<PingArg, BulkStrings> {
     @Override
     public PingArg createArg(Arrays arrays) {
         if (arrays.getData().size() == 1) {

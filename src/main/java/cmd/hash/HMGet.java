@@ -24,7 +24,7 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 @Command(name = "hmget")
-public class HMGet extends AbstractRedisCommand<HMGetArg> {
+public class HMGet extends AbstractRedisCommand<HMGetArg, Arrays> {
     @Override
     protected HMGetArg createArg(Arrays arrays) {
         List<String> argList = arrays.map2String(true);

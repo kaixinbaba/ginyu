@@ -48,4 +48,9 @@ public class Integers extends Resp2<Long> {
         byteBuf.writeBytes(String.valueOf(this.getData()).getBytes());
         byteBuf.writeBytes(Constants.SPLIT_BYTE);
     }
+
+    @Override
+    public Resp2 defaultResult() {
+        return Integers.ZERO;
+    }
 }

@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hlen")
-public class HLen extends AbstractRedisCommand<HLenArg> {
+public class HLen extends AbstractRedisCommand<HLenArg, Integers> {
     @Override
     public HLenArg createArg(Arrays arrays) {
         return new HLenArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "smembers")
-public class SMembers extends AbstractRedisCommand<SMembersArg> {
+public class SMembers extends AbstractRedisCommand<SMembersArg, Arrays> {
     @Override
     public SMembersArg createArg(Arrays arrays) {
         return new SMembersArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

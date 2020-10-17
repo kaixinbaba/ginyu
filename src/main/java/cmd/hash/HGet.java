@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hget")
-public class HGet extends AbstractRedisCommand<HGetArg> {
+public class HGet extends AbstractRedisCommand<HGetArg, BulkStrings> {
     @Override
     public HGetArg createArg(Arrays arrays) {
         return new HGetArg(

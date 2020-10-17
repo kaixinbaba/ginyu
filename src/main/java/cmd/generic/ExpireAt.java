@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "expireat")
-public class ExpireAt extends AbstractRedisCommand<ExpireAtArg> {
+public class ExpireAt extends AbstractRedisCommand<ExpireAtArg, Integers> {
 
     @Override
     public ExpireAtArg createArg(Arrays arrays) {

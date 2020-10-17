@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "rename")
-public class Rename extends AbstractRedisCommand<RenameArg> {
+public class Rename extends AbstractRedisCommand<RenameArg, SimpleStrings> {
     @Override
     public RenameArg createArg(Arrays arrays) {
         return new RenameArg(

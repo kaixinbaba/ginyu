@@ -21,7 +21,7 @@ import static common.Constants.STR_EMPTY_ARRAY;
  */
 @SuppressWarnings("all")
 @Command(name = "del")
-public class Del extends AbstractRedisCommand<DelArg> {
+public class Del extends AbstractRedisCommand<DelArg, Integers> {
 
     @Override
     public DelArg createArg(Arrays arrays) {

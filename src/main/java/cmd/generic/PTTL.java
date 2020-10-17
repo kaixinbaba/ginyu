@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "pttl")
-public class PTTL extends AbstractRedisCommand<PTTLArg> {
+public class PTTL extends AbstractRedisCommand<PTTLArg, Integers> {
     @Override
     public PTTLArg createArg(Arrays arrays) {
         return new PTTLArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));

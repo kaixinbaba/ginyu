@@ -25,7 +25,7 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 @Command(name = "hset")
-public class HSet extends AbstractRedisCommand<HSetArg> {
+public class HSet extends AbstractRedisCommand<HSetArg, Integers> {
     @Override
     public HSetArg createArg(Arrays arrays) {
         List<String> argList = arrays.map2String(true);

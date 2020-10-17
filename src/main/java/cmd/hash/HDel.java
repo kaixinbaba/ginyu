@@ -24,7 +24,7 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 @Command(name = "hdel")
-public class HDel extends AbstractRedisCommand<HDelArg> {
+public class HDel extends AbstractRedisCommand<HDelArg, Integers> {
     @Override
     protected HDelArg createArg(Arrays arrays) {
         List<String> argList = arrays.map2String(true);

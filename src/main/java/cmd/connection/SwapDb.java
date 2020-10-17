@@ -14,7 +14,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "swapdb")
-public class SwapDb extends AbstractRedisCommand<SwapDbArg> {
+public class SwapDb extends AbstractRedisCommand<SwapDbArg, SimpleStrings> {
     @Override
     public SwapDbArg createArg(Arrays arrays) {
         BulkStrings bulkStrings = (BulkStrings) arrays.getData().get(1);

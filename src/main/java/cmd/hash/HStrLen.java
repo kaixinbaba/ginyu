@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "hstrlen")
-public class HStrLen extends AbstractRedisCommand<HStrLenArg> {
+public class HStrLen extends AbstractRedisCommand<HStrLenArg, Integers> {
     @Override
     public HStrLenArg createArg(Arrays arrays) {
         return new HStrLenArg(
