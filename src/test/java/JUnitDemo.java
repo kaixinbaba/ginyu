@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -35,15 +37,11 @@ public class JUnitDemo {
 
     @Test
     public void test1() {
-        ConcurrentSkipListSet<Double> set = new ConcurrentSkipListSet<>();
-        set.add(7.7D);
-        set.add(1.7D);
-        set.add(2.7D);
-        set.add(4.7D);
-        set.add(-3.7D);
-        set.add(7.8D);
-        set.add(-123.7D);
-        System.out.println(set);
+        Map<String, String> map = new HashMap<>();
+        String put = map.put("1", "1");
+        System.out.println(put);
+        put = map.put("1", "2");
+        System.out.println(put);
     }
 
     @Test

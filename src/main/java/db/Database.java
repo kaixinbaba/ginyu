@@ -32,8 +32,8 @@ public class Database {
         return this.dict.get(key);
     }
 
-    public void set(String key, RedisObject object) {
-        this.dict.put(key, object);
+    public RedisObject set(String key, RedisObject object) {
+        return this.dict.put(key, object);
     }
 
     public void setExpired(String key, Long expiredTimestamp) {
