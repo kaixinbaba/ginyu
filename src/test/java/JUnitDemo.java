@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author: junjiexun
@@ -37,11 +38,18 @@ public class JUnitDemo {
 
     @Test
     public void test1() {
-        Map<String, String> map = new HashMap<>();
-        String put = map.put("1", "1");
-        System.out.println(put);
-        put = map.put("1", "2");
-        System.out.println(put);
+        LinkedBlockingDeque<String> l = new LinkedBlockingDeque<>();
+        l.addFirst("1");
+        l.addFirst("2");
+        l.addFirst("3");
+        l.addFirst("4");
+        l.addFirst("5");
+        l.addLast("a");
+        l.addLast("b");
+        l.addLast("c");
+        l.addLast("d");
+        l.addLast("e");
+        System.out.println(l);
     }
 
     @Test

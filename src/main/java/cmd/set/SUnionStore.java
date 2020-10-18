@@ -30,7 +30,7 @@ import static object.SetObject.NONE;
  */
 @SuppressWarnings("all")
 @Command(name = "sunionstore")
-public class SUnionStore extends AbstractRedisCommand<SUnionStoreArg, Arrays> {
+public class SUnionStore extends AbstractRedisCommand<SUnionStoreArg, Integers> {
 
     @Override
     public SUnionStoreArg createArg(Arrays arrays) {
