@@ -1,5 +1,6 @@
 package cmd;
 
+import common.Consoles;
 import utils.ReflectUtils;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public abstract class RedisCommands {
         try {
             init();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Consoles.error(e.getMessage());
             System.exit(1);
         }
     }

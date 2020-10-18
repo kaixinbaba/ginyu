@@ -39,5 +39,4 @@ public class Exists extends AbstractRedisCommand<ExistsArg, Integers> {
         int exists = database.exists(arg.getKeys());
         return Integers.create(exists);
     }
-
 }

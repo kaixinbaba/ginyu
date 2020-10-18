@@ -1,6 +1,7 @@
 package io.handler;
 
 import common.Attributes;
+import common.Consoles;
 import core.Client;
 import core.Server;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,7 +25,7 @@ public class ClientSessionHandler extends IdleStateHandler {
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) {
-        System.out.println(SESSION_TIMEOUT + "分钟内未读到数据，关闭连接");
+        Consoles.warn(SESSION_TIMEOUT + "秒内未读到数据，关闭连接");
         Client client = Attributes.getClient(ctx);
         if (client != null) {
             Server.INSTANCE.removeClient(client);
