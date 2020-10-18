@@ -14,6 +14,7 @@ import protocol.Arrays;
 import protocol.Resp2;
 import protocol.Validates;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hmget")
+@Command(name = "hmget", checkExpire = true)
 public class HMGet extends AbstractRedisCommand<HMGetArg, Arrays> {
     @Override
     protected HMGetArg createArg(Arrays arrays) {
@@ -40,14 +41,14 @@ public class HMGet extends AbstractRedisCommand<HMGetArg, Arrays> {
     }
 
     @Override
+    protected Resp2 getDefaultValue(Object arg) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        return Arrays.createSpecifiedSizeWithNull(((HMGetArg) arg).getFields().length);
+    }
+
+    @Override
     protected Resp2 doCommand0(HMGetArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Arrays.createSpecifiedSizeWithNull(arg.getFields().length);
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Arrays.createSpecifiedSizeWithNull(arg.getFields().length);

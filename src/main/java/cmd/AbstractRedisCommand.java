@@ -10,6 +10,7 @@ import protocol.Arrays;
 import protocol.Resp2;
 import utils.ReflectUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -34,9 +35,7 @@ public abstract class AbstractRedisCommand<T, R extends Resp2> implements RedisC
                 boolean expired = database.checkIfExpired(keyArg.getKey());
                 if (expired) {
                     database.delete(keyArg.getKey());
-                    Class respClass = ReflectUtils.getGenericTypeOnSuperClass(this, 1);
-                    Method defaultValue = respClass.getDeclaredMethod("defaultValue");
-                    ctx.writeAndFlush((Resp2) defaultValue.invoke(null));
+                    ctx.writeAndFlush(this.getDefaultValue(arg));
                     return;
                 }
             }
@@ -47,6 +46,12 @@ public abstract class AbstractRedisCommand<T, R extends Resp2> implements RedisC
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    protected Resp2 getDefaultValue(Object arg) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Class respClass = ReflectUtils.getGenericTypeOnSuperClass(this, 1);
+        Method defaultValue = respClass.getDeclaredMethod("defaultValue");
+        return (Resp2) defaultValue.invoke(null);
     }
 
     protected abstract T createArg(Arrays arrays);

@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hkeys")
+@Command(name = "hkeys", checkExpire = true)
 public class HKeys extends AbstractRedisCommand<KeyArg, Arrays> {
     @Override
     public KeyArg createArg(Arrays arrays) {
@@ -37,11 +37,6 @@ public class HKeys extends AbstractRedisCommand<KeyArg, Arrays> {
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Arrays.EMPTY;
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Arrays.EMPTY;

@@ -26,7 +26,7 @@ import java.util.Map;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hgetall")
+@Command(name = "hgetall", checkExpire = true)
 public class HGetAll extends AbstractRedisCommand<KeyArg, Arrays> {
     @Override
     public KeyArg createArg(Arrays arrays) {
@@ -42,11 +42,6 @@ public class HGetAll extends AbstractRedisCommand<KeyArg, Arrays> {
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Arrays.EMPTY;
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Arrays.EMPTY;

@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "scard")
+@Command(name = "scard", checkExpire = true)
 public class SCard extends AbstractRedisCommand<KeyArg, Integers> {
     @Override
     public KeyArg createArg(Arrays arrays) {
@@ -38,11 +38,6 @@ public class SCard extends AbstractRedisCommand<KeyArg, Integers> {
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Integers.ZERO;
-        }
         SetObject setObject = Validates.validateType(database.get(arg.getKey()), ObjectType.SET);
         if (setObject == null) {
             return Integers.ZERO;

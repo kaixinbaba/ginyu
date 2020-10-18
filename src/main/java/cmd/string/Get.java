@@ -38,11 +38,6 @@ public class Get extends AbstractRedisCommand<KeyArg, BulkStrings> {
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return BulkStrings.NULL;
-        }
         StringObject stringObject = Validates.validateType(database.get(arg.getKey()), ObjectType.STRING);
         if (stringObject == null) {
             return BulkStrings.NULL;

@@ -22,7 +22,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hlen")
+@Command(name = "hlen", checkExpire = true)
 public class HLen extends AbstractRedisCommand<KeyArg, Integers> {
     @Override
     public KeyArg createArg(Arrays arrays) {
@@ -38,11 +38,6 @@ public class HLen extends AbstractRedisCommand<KeyArg, Integers> {
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Integers.ZERO;
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Integers.ZERO;

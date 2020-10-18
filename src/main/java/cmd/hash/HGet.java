@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hget")
+@Command(name = "hget", checkExpire = true)
 public class HGet extends AbstractRedisCommand<HGetArg, BulkStrings> {
     @Override
     public HGetArg createArg(Arrays arrays) {
@@ -39,11 +39,6 @@ public class HGet extends AbstractRedisCommand<HGetArg, BulkStrings> {
     protected Resp2 doCommand0(HGetArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return BulkStrings.NULL;
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return BulkStrings.NULL;

@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "sismember")
+@Command(name = "sismember", checkExpire = true)
 public class SIsMember extends AbstractRedisCommand<SIsMemberArg, Integers> {
     @Override
     public SIsMemberArg createArg(Arrays arrays) {
@@ -39,11 +39,6 @@ public class SIsMember extends AbstractRedisCommand<SIsMemberArg, Integers> {
     protected Resp2 doCommand0(SIsMemberArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Integers.ZERO;
-        }
         SetObject setObject = Validates.validateType(database.get(arg.getKey()), ObjectType.SET);
         if (setObject == null) {
             return Integers.ZERO;

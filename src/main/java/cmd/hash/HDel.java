@@ -23,7 +23,7 @@ import java.util.List;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hdel")
+@Command(name = "hdel", checkExpire = true)
 public class HDel extends AbstractRedisCommand<HDelArg, Integers> {
     @Override
     protected HDelArg createArg(Arrays arrays) {
@@ -43,11 +43,6 @@ public class HDel extends AbstractRedisCommand<HDelArg, Integers> {
     protected Resp2 doCommand0(HDelArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Integers.ZERO;
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Integers.ZERO;

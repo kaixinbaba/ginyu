@@ -20,7 +20,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "pttl")
+@Command(name = "pttl", checkExpire = true)
 public class PTTL extends AbstractRedisCommand<PTTLArg, Integers> {
     @Override
     public PTTLArg createArg(Arrays arrays) {
@@ -36,11 +36,6 @@ public class PTTL extends AbstractRedisCommand<PTTLArg, Integers> {
     protected Resp2 doCommand0(PTTLArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Integers.N_TWO;
-        }
         RedisObject value = database.get(arg.getKey());
         if (value == null) {
             return Integers.N_TWO;

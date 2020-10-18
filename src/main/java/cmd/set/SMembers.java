@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "smembers")
+@Command(name = "smembers", checkExpire = true)
 public class SMembers extends AbstractRedisCommand<KeyArg, Arrays> {
     @Override
     public KeyArg createArg(Arrays arrays) {
@@ -37,11 +37,6 @@ public class SMembers extends AbstractRedisCommand<KeyArg, Arrays> {
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Arrays.EMPTY;
-        }
         SetObject setObject = Validates.validateType(database.get(arg.getKey()), ObjectType.SET);
         if (setObject == null) {
             return Arrays.EMPTY;

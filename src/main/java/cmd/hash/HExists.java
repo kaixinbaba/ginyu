@@ -21,7 +21,7 @@ import utils.ProtocolValueUtils;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "hexists")
+@Command(name = "hexists", checkExpire = true)
 public class HExists extends AbstractRedisCommand<HExistsArg, Integers> {
     @Override
     public HExistsArg createArg(Arrays arrays) {
@@ -39,11 +39,6 @@ public class HExists extends AbstractRedisCommand<HExistsArg, Integers> {
     protected Resp2 doCommand0(HExistsArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        boolean expired = database.checkIfExpired(arg.getKey());
-        if (expired) {
-            database.delete(arg.getKey());
-            return Integers.ZERO;
-        }
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Integers.ZERO;
