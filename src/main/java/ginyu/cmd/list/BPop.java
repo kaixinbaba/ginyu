@@ -5,6 +5,7 @@ import ginyu.common.Attributes;
 import ginyu.core.Client;
 import ginyu.core.Server;
 import ginyu.db.Database;
+import ginyu.event.Events;
 import ginyu.object.ListObject;
 import ginyu.object.ObjectType;
 import ginyu.protocol.Arrays;
@@ -49,6 +50,7 @@ public abstract class BPop extends AbstractRedisCommand<BPopArg, Arrays> {
             }
         }
         // 执行到这里说明上面的key都不存在，需要进行订阅
+        Events.post(new BPopEvent(client, ctx, arg, this.isLeft(), arg.getKeys()));
         return null;
     }
 

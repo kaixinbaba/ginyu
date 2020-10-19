@@ -8,7 +8,6 @@ import ginyu.common.Consoles;
 import ginyu.utils.ReflectUtils;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -47,7 +46,9 @@ public abstract class Events {
                     return false;
                 },
                 c -> c.getName());
-        System.out.println(boot);
+        for (Object obj : boot.values()) {
+            eventBus.register(obj);
+        }
     }
 
     private static ThreadPoolExecutor threadPoolExecutor() {

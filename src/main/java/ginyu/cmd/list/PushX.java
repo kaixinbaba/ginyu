@@ -5,6 +5,7 @@ import ginyu.common.Attributes;
 import ginyu.core.Client;
 import ginyu.core.Server;
 import ginyu.db.Database;
+import ginyu.event.Events;
 import ginyu.object.ListObject;
 import ginyu.object.ObjectType;
 import ginyu.protocol.Arrays;
@@ -48,7 +49,9 @@ public abstract class PushX extends AbstractRedisCommand<PushXArg, Integers> {
             return Integers.ZERO;
         }
         listObject.getOriginal().push(this.isLeft(), arg.getValue());
-        return Integers.create(listObject.getOriginal().size());
+        int size = listObject.getOriginal().size();
+        Events.post(new PushEvent(arg.getKey(), size));
+        return Integers.create(size);
     }
 
     protected abstract boolean isLeft();

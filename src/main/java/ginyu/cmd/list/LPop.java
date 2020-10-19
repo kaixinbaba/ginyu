@@ -8,7 +8,7 @@ import ginyu.cmd.Command;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "lpop", checkExpire = true)
+@Command(name = "lpop")
 public class LPop extends Pop {
     @Override
     protected boolean isLeft() {

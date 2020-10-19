@@ -8,8 +8,8 @@ import ginyu.cmd.Command;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "rpop")
-public class RPop extends Pop {
+@Command(name = "brpop")
+public class BRPop extends BPop {
     @Override
     protected boolean isLeft() {
         return false;
