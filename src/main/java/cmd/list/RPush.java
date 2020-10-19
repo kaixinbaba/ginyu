@@ -9,11 +9,11 @@ import cmd.Command;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "lpush")
-public class LPush extends Push {
+@Command(name = "rpush")
+public class RPush extends Push {
 
     @Override
     protected boolean isLeft() {
-        return true;
+        return false;
     }
 }

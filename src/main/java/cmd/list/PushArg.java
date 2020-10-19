@@ -15,11 +15,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class LPushArg extends KeyArg {
+public class PushArg extends KeyArg {
 
     private String[] values;
 
-    public LPushArg(String key, String... values) {
+    public PushArg(String key, String... values) {
         super(key);
         this.values = values;
     }

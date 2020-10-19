@@ -1,17 +1,6 @@
 package cmd.list;
 
-import cmd.AbstractRedisCommand;
 import cmd.Command;
-import cmd.KeyArg;
-import common.Attributes;
-import core.Client;
-import core.Server;
-import db.Database;
-import io.netty.channel.ChannelHandlerContext;
-import object.ListObject;
-import object.ObjectType;
-import protocol.*;
-import utils.ProtocolValueUtils;
 
 /**
  * @author: junjiexun
@@ -20,29 +9,9 @@ import utils.ProtocolValueUtils;
  */
 @SuppressWarnings("all")
 @Command(name = "lpop", checkExpire = true)
-public class LPop extends AbstractRedisCommand<KeyArg, BulkStrings> {
+public class LPop extends Pop {
     @Override
-    public KeyArg createArg(Arrays arrays) {
-        return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
-    }
-
-    @Override
-    protected void validate(String commandName, Arrays arrays) {
-        Validates.validateArraysSize(commandName, arrays, 2);
-    }
-
-    @Override
-    protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
-        Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
-        ListObject listObject = Validates.validateType(database.get(arg.getKey()), ObjectType.LIST);
-        if (listObject == null) {
-            return BulkStrings.NULL;
-        }
-        String value = listObject.getOriginal().pollFirst();
-        if (listObject.getOriginal().isEmpty()) {
-            database.delete(arg.getKey());
-        }
-        return BulkStrings.create(value);
+    protected boolean isLeft() {
+        return true;
     }
 }
