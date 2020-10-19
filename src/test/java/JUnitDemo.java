@@ -1,6 +1,6 @@
-import cmd.RedisCommands;
-import common.Consoles;
-import event.Events;
+import ginyu.cmd.RedisCommands;
+import ginyu.common.Consoles;
+import ginyu.event.Events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
@@ -9,10 +9,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author: junjiexun
@@ -40,7 +37,7 @@ public class JUnitDemo {
 
     @Test
     public void test1() throws InterruptedException {
-//        System.out.println(RedisCommands.COMMAND_MAP);
+        System.out.println(RedisCommands.COMMAND_MAP);
         Events.post("abc");
         System.out.println("hello");
     }
