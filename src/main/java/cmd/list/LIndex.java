@@ -45,9 +45,8 @@ public class LIndex extends AbstractRedisCommand<LIndexArg, BulkStrings> {
         if (listObject == null) {
             return BulkStrings.NULL;
         }
-        final LinkedBlockingDeque<String> list = listObject.getOriginal().getList();
         int index = arg.getIndex();
-        final int size = list.size();
+        final int size = listObject.getOriginal().size();
         if (index < 0) {
             // lindex支持负数
             index = size + index;
@@ -55,13 +54,10 @@ public class LIndex extends AbstractRedisCommand<LIndexArg, BulkStrings> {
         if (index < 0 || index >= size) {
             return BulkStrings.NULL;
         }
-        int i = 0;
-        for (String value : list) {
-            if (i == index) {
-                return BulkStrings.create(value);
-            }
-            i++;
+        String value = listObject.getOriginal().get(index);
+        if (value == null) {
+            return BulkStrings.NULL;
         }
-        return BulkStrings.NULL;
+        return BulkStrings.create(value);
     }
 }

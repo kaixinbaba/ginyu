@@ -53,4 +53,15 @@ public class List {
         }
         return -1;
     }
+
+    public String get(int index) {
+        int i = 0;
+        for (String value : this.list) {
+            if (i == index) {
+                return value;
+            }
+            i++;
+        }
+        return null;
+    }
 }
