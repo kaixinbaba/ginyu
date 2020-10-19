@@ -18,4 +18,22 @@ public abstract class ConvertUtils {
         }
         return result;
     }
+
+    public static int getPositiveIndex(int index, int total) {
+        if (index >= 0) {
+            return index;
+        }
+        return total + index;
+    }
+
+    public static int getCorrectIndex(int index, int total) {
+        int positiveIndex = getPositiveIndex(index, total);
+        if (positiveIndex < 0) {
+            positiveIndex = 0;
+        }
+        if (positiveIndex >= total) {
+            positiveIndex = total - 1;
+        }
+        return positiveIndex;
+    }
 }

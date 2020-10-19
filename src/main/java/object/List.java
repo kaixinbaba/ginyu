@@ -3,6 +3,7 @@ package object;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -63,5 +64,24 @@ public class List {
             i++;
         }
         return null;
+    }
+
+    public java.util.List<String> range(int includeStart, int includeStop) {
+        int i = 0;
+        java.util.List<String> rangeList = new ArrayList<>(includeStop - includeStart + 1);
+        for (String value : this.list) {
+            if (i > includeStop) {
+                break;
+            }
+            if (i >= includeStart) {
+                rangeList.add(value);
+            }
+            i++;
+        }
+        return rangeList;
+    }
+
+    public void clear() {
+        this.list.clear();
     }
 }
