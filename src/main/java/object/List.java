@@ -1,18 +1,20 @@
 package object;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author: junjiexun
  * @date: 2020/10/19 11:03 上午
- * @description:
+ * @description: TODO 自己实现链表双端队列
  */
 public class List {
 
     @Getter
-    private final LinkedBlockingDeque<String> list = new LinkedBlockingDeque<>();
+    @Setter
+    private volatile LinkedBlockingDeque<String> list = new LinkedBlockingDeque<>();
 
     public void push(boolean left, String... values) {
         for (String value : values) {
@@ -39,5 +41,16 @@ public class List {
 
     public boolean isEmpty() {
         return this.list.isEmpty();
+    }
+
+    public int indexOf(String target) {
+        int i = 0;
+        for (String value : this.list) {
+            if (value.equals(target)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
     }
 }
