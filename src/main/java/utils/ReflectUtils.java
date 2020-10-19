@@ -1,6 +1,5 @@
 package utils;
 
-import cmd.Command;
 import cmd.RedisCommand;
 import lombok.NonNull;
 
@@ -16,17 +15,25 @@ import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 @SuppressWarnings("all")
 public abstract class ReflectUtils {
 
-    public static Map<String, RedisCommand> getRedisCommandFromPackage(String basePackageName) throws IOException {
-        return (Map<String, RedisCommand>) getRedisCommandFromPackage(basePackageName, new HashMap<String, RedisCommand>());
+    public static <T> Map<String, T> getMapFromPackage(String basePackageName,
+                                                       Predicate<Class> classMatcher,
+                                                       Function<Class, String> keyFunc) throws IOException {
+        return (Map<String, T>) getMapFromPackage(basePackageName,
+                new HashMap<String, T>(), classMatcher, keyFunc);
     }
 
-    public static Map<String, RedisCommand> getRedisCommandFromPackage(String basePackageName, Map<String, RedisCommand> commandMap) throws IOException {
+    public static <T> Map<String, T> getMapFromPackage(String basePackageName,
+                                                       Map<String, T> commandMap,
+                                                       Predicate<Class> classMatcher,
+                                                       Function<Class, String> keyFunc) throws IOException {
         // replace base package name to file path
         String packageDirName = basePackageName.replace('.', '/');
         Enumeration<URL> dirs = RedisCommand.class.getClassLoader().getResources(packageDirName);
@@ -35,17 +42,20 @@ public abstract class ReflectUtils {
             String protocol = url.getProtocol();
             if ("jar".equals(protocol)) {
                 // jar
-                findAndAddClassesInPackageByJar(url, basePackageName, commandMap);
+                findAndAddClassesInPackageByJar(url, basePackageName, commandMap, classMatcher, keyFunc);
             } else {
                 // file
                 String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
-                findAndAddClassesInPackageByFile(basePackageName, filePath, commandMap);
+                findAndAddClassesInPackageByFile(basePackageName, filePath, commandMap, classMatcher, keyFunc);
             }
         }
         return commandMap;
     }
 
-    private static void findAndAddClassesInPackageByJar(URL url, String basePackageName, Map<String, RedisCommand> commandMap) throws IOException {
+    private static <T> void findAndAddClassesInPackageByJar(URL url, String basePackageName,
+                                                            Map<String, T> commandMap,
+                                                            Predicate<Class> classMatcher,
+                                                            Function<Class, String> keyFunc) throws IOException {
         JarURLConnection connection = (JarURLConnection) url.openConnection();
         if (connection == null) {
             throw new RuntimeException("Can't get JarURL connection : " + url.toString());
@@ -64,12 +74,14 @@ public abstract class ReflectUtils {
             if (!clazzName.startsWith(basePackageName)) {
                 continue;
             }
-            addCommandToList(clazzName, commandMap);
+            addToList(clazzName, commandMap, classMatcher, keyFunc);
         }
     }
 
-    private static void findAndAddClassesInPackageByFile(String basePackageName, String packagePath,
-                                                         Map<String, RedisCommand> commandMap) {
+    private static <T> void findAndAddClassesInPackageByFile(String basePackageName, String packagePath,
+                                                             Map<String, T> commandMap,
+                                                             Predicate<Class> classMatcher,
+                                                             Function<Class, String> keyFunc) {
         File[] dirfiles = null;
         File dir = new File(packagePath);
         if (!dir.exists()) {
@@ -91,32 +103,27 @@ public abstract class ReflectUtils {
         for (File file : dirfiles) {
             // if is directory do recursion
             if (file.isDirectory()) {
-                findAndAddClassesInPackageByFile(basePackageName + "." + file.getName(), file.getAbsolutePath(), commandMap);
+                findAndAddClassesInPackageByFile(basePackageName + "." + file.getName(), file.getAbsolutePath(),
+                        commandMap, classMatcher, keyFunc);
             } else {
                 // get the class name
-                addCommandToList(basePackageName + '.' + file.getName(), commandMap);
+                addToList(basePackageName + '.' + file.getName(), commandMap, classMatcher, keyFunc);
             }
         }
     }
 
-    private static boolean isRedisCommand(Class clazz) {
-        return clazz.isAnnotationPresent(Command.class);
-    }
 
-    private static String getCommandName(Class clazz) {
-        Command command = (Command) clazz.getAnnotation(Command.class);
-        return command.name();
-    }
-
-    private static void addCommandToList(String classNameWithClassSuffix, Map<String, RedisCommand> commandMap) {
+    private static <T> void addToList(String classNameWithClassSuffix,
+                                      Map<String, T> commandMap,
+                                      Predicate<Class> classMatcher,
+                                      Function<Class, String> keyFunc) {
         String className = classNameWithClassSuffix.substring(0, classNameWithClassSuffix.length() - 6);
         Class<?> clazz = null;
         try {
             clazz = Class.forName(className);
             clazz.getInterfaces();
-            if (isRedisCommand(clazz)) {
-                String cmdName = getCommandName(clazz);
-                commandMap.put(cmdName, (RedisCommand) clazz.newInstance());
+            if (classMatcher.test(clazz)) {
+                commandMap.put(keyFunc.apply(clazz), (T) clazz.newInstance());
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
         }

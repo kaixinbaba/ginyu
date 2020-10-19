@@ -31,6 +31,10 @@ public class Arrays extends Resp2<List<Resp2>> {
         this.setFlag(ARRAYS_FLAG);
     }
 
+    public int size() {
+        return this.getData().size();
+    }
+
     public static Arrays createSpecifiedSizeWithNull(int size) {
         List<Resp2> result = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {

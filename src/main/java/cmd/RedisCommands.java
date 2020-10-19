@@ -28,6 +28,9 @@ public abstract class RedisCommands {
 
     private static void init() throws IOException {
         COMMAND_MAP = Collections.unmodifiableMap(
-                ReflectUtils.getRedisCommandFromPackage(RedisCommand.class.getPackage().getName()));
+                ReflectUtils.getMapFromPackage(RedisCommand.class.getPackage().getName(),
+                        c -> c.isAnnotationPresent(Command.class),
+                        c -> ((Command) c.getAnnotation(Command.class)).name())
+        );
     }
 }

@@ -1,4 +1,6 @@
+import cmd.RedisCommands;
 import common.Consoles;
+import event.Events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
@@ -37,19 +39,10 @@ public class JUnitDemo {
     }
 
     @Test
-    public void test1() {
-        LinkedBlockingDeque<String> l = new LinkedBlockingDeque<>();
-        l.addFirst("1");
-        l.addFirst("2");
-        l.addFirst("3");
-        l.addFirst("4");
-        l.addFirst("5");
-        l.addLast("a");
-        l.addLast("b");
-        l.addLast("c");
-        l.addLast("d");
-        l.addLast("e");
-        System.out.println(l);
+    public void test1() throws InterruptedException {
+//        System.out.println(RedisCommands.COMMAND_MAP);
+        Events.post("abc");
+        System.out.println("hello");
     }
 
     @Test

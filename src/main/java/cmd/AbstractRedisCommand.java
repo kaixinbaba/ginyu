@@ -8,6 +8,7 @@ import exception.GinyuException;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.Arrays;
 import protocol.Resp2;
+import protocol.SimpleStrings;
 import utils.ReflectUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,7 +41,10 @@ public abstract class AbstractRedisCommand<T, R extends Resp2> implements RedisC
                 }
             }
             Resp2 resp2 = AbstractRedisCommand.this.doCommand0(arg, ctx);
-            ctx.writeAndFlush(resp2);
+            // 若resp2为null，则会有异步的方式去响应客户端
+            if (resp2 != null) {
+                ctx.writeAndFlush(resp2);
+            }
         } catch (GinyuException g) {
             throw g;
         } catch (Exception e) {
