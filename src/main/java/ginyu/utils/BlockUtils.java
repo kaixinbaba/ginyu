@@ -12,22 +12,25 @@ import java.util.Set;
  */
 public abstract class BlockUtils {
 
-    public static void clearBlockClient(BlockByBPopEvent blockByBPopEvent) {
-        Set<String> blockKeys = blockByBPopEvent.getClient().getBlockKeys();
+    public static void clearBlockClient(BlockEvent blockEvent) {
+        Set<String> blockKeys = blockEvent.getClient().getBlockKeys();
         if (blockKeys == null || blockKeys.isEmpty()) {
             return;
         }
         for (String blockKey : blockKeys) {
-            clearBlockClientInDatabase(blockByBPopEvent, blockKey);
+            clearBlockClientInDatabase(blockEvent, blockKey);
         }
-        blockByBPopEvent.getClient().clearBlock();
+        blockEvent.getClient().clearBlock();
     }
 
-    public static void clearBlockClientInDatabase(BlockByBPopEvent blockByBPopEvent, String key) {
-        Set<BlockEvent> blockedEvents = blockByBPopEvent.getClient().getDatabase().getBlockedEvents(key);
+    public static void clearBlockClientInDatabase(BlockEvent blockEvent, String key) {
+        Set<BlockEvent> blockedEvents = blockEvent.getClient().getDatabase().getBlockedEvents(key);
         if (blockedEvents == null || blockedEvents.isEmpty()) {
             return;
         }
-        blockedEvents.remove(blockByBPopEvent);
+        blockedEvents.remove(blockEvent);
+        if (blockEvent.getClient().getDatabase().getBlockedEvents(key).isEmpty()) {
+            blockEvent.getClient().getDatabase().removeBlockKey(key);
+        }
     }
 }

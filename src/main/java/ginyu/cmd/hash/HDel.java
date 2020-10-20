@@ -54,9 +54,7 @@ public class HDel extends AbstractRedisCommand<HDelArg, Integers> {
                 deleted++;
             }
         }
-        if (hashObject.getOriginal().isEmpty()) {
-            database.delete(arg.getKey());
-        }
+        database.deleteIfNeeded(arg.getKey());
         return Integers.create(deleted);
     }
 }

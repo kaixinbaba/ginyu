@@ -11,4 +11,9 @@ public class HashObject extends RedisObject<Dict<String, String>> {
         this.setType(ObjectType.HASH);
         this.setOriginal(new Dict<>());
     }
+
+    @Override
+    public boolean isEmptyValue() {
+        return super.isEmptyValue() || this.getOriginal().isEmpty();
+    }
 }

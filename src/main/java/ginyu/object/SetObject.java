@@ -14,6 +14,11 @@ public class SetObject extends RedisObject<Dict<String, SetObject.None>> {
         this.setOriginal(new Dict<>());
     }
 
+    @Override
+    public boolean isEmptyValue() {
+        return super.isEmptyValue() || this.getOriginal().isEmpty();
+    }
+
     public static class None {
         private None() {
         }

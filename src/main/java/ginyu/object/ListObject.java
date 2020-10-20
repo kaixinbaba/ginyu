@@ -11,4 +11,9 @@ public class ListObject extends RedisObject<List> {
         this.setType(ObjectType.LIST);
         this.setOriginal(new List());
     }
+
+    @Override
+    public boolean isEmptyValue() {
+        return super.isEmptyValue() || this.getOriginal().isEmpty();
+    }
 }

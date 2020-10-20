@@ -6,6 +6,7 @@ import ginyu.db.Db;
 import ginyu.io.Communicator;
 import ginyu.io.NettyCommunicator;
 import ginyu.task.CleanExpiredTask;
+import ginyu.task.WakeupTimeoutClientTask;
 import ginyu.utils.ConfigUtils;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
@@ -37,6 +38,8 @@ public class Server {
 
     private CleanExpiredTask cleanExpiredTask;
 
+    private WakeupTimeoutClientTask wakeupTimeoutClientTask;
+
     private Server() {
     }
 
@@ -45,6 +48,7 @@ public class Server {
         this.communicator = new NettyCommunicator();
         this.db = new Db(this.ginyuConfig.getDbSize());
         this.cleanExpiredTask = new CleanExpiredTask();
+        this.wakeupTimeoutClientTask = new WakeupTimeoutClientTask();
     }
 
     private void printEnv() {
@@ -89,5 +93,6 @@ public class Server {
 
     private void startTask() {
         this.cleanExpiredTask.start();
+        this.wakeupTimeoutClientTask.start();
     }
 }

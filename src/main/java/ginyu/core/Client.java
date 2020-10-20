@@ -31,6 +31,10 @@ public class Client implements Comparable<Client> {
         Collections.addAll(this.blockKeys, keys);
     }
 
+    public synchronized boolean stillBlocked() {
+        return !this.blockKeys.isEmpty();
+    }
+
     public synchronized void addBlockKeys(Collection<String> keys) {
         this.blockKeys.addAll(keys);
     }

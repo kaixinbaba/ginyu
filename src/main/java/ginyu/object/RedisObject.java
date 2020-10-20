@@ -14,4 +14,8 @@ public abstract class RedisObject<T> {
 
     private T original;
 
+    public boolean isEmptyValue() {
+        return this.original == null;
+    }
+
 }

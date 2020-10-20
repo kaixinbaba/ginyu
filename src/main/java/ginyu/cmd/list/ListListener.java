@@ -2,6 +2,7 @@ package ginyu.cmd.list;
 
 import com.google.common.eventbus.Subscribe;
 import ginyu.core.Client;
+import ginyu.core.ClientTimeoutWrapper;
 import ginyu.db.Database;
 import ginyu.event.BlockEvent;
 import ginyu.event.list.BlockByBPopEvent;
@@ -9,7 +10,6 @@ import ginyu.event.list.PushEvent;
 import ginyu.object.ListObject;
 import ginyu.object.ObjectType;
 import ginyu.protocol.Arrays;
-import ginyu.protocol.BulkStrings;
 import ginyu.protocol.Resp2;
 import ginyu.protocol.Validates;
 import ginyu.utils.BlockUtils;
@@ -34,6 +34,10 @@ public class ListListener {
         client.addBlockKeys(keys);
         for (String key : keys) {
             client.getDatabase().addToBlockingDict(key, event);
+        }
+        if (event.getArg().getTimeout() > 0) {
+            Long timeoutTimestamp = System.currentTimeMillis() + event.getArg().getTimeout() * 1000;
+            client.getDatabase().addToTimeoutSet(new ClientTimeoutWrapper(timeoutTimestamp, event));
         }
     }
 

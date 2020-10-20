@@ -41,9 +41,7 @@ public abstract class Pop extends AbstractRedisCommand<KeyArg, BulkStrings> {
             return BulkStrings.NULL;
         }
         String value = listObject.getOriginal().pop(this.isLeft());
-        if (listObject.getOriginal().isEmpty()) {
-            database.delete(arg.getKey());
-        }
+        database.deleteIfNeeded(arg.getKey());
         return BulkStrings.create(value);
     }
 

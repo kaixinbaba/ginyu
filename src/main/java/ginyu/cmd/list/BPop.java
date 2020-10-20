@@ -46,6 +46,7 @@ public abstract class BPop extends AbstractRedisCommand<BPopArg, Arrays> {
             ListObject listObject = Validates.validateType(database.get(key), ObjectType.LIST);
             if (listObject != null && !listObject.getOriginal().isEmpty()) {
                 String pop = listObject.getOriginal().pop(this.isLeft());
+                database.deleteIfNeeded(key);
                 return Arrays.createByStringArray(key, pop);
             }
         }

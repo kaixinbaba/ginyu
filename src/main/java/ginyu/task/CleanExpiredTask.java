@@ -17,7 +17,7 @@ public class CleanExpiredTask {
     private final Timer timer = new Timer("ginyu-clean-expire", true);
 
     public void start() {
-        timer.schedule(new TimerTask() {
+        this.timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Db db = Server.INSTANCE.getDb();

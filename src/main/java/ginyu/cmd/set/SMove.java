@@ -61,6 +61,7 @@ public class SMove extends AbstractRedisCommand<SMoveArg, Integers> {
             destinationObject.getOriginal().put(arg.getMember(), NONE);
             database.set(arg.getDestination(), destinationObject);
         }
+        database.deleteIfNeeded(arg.getSource());
         return Integers.ONE;
     }
 }

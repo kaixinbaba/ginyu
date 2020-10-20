@@ -1,5 +1,8 @@
 import ginyu.cmd.RedisCommands;
 import ginyu.common.Consoles;
+import ginyu.core.Server;
+import ginyu.db.Database;
+import ginyu.db.Db;
 import ginyu.event.Events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +12,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -37,9 +42,17 @@ public class JUnitDemo {
 
     @Test
     public void test1() throws InterruptedException {
-        System.out.println(RedisCommands.COMMAND_MAP);
-        Events.post("abc");
-        System.out.println("hello");
+        new Timer("test", true).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000L);
+                } catch (InterruptedException e) {
+                }
+                System.out.println("run");
+            }
+        }, 1000, 1000);
+        Thread.currentThread().join();
     }
 
     @Test

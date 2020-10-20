@@ -1,5 +1,6 @@
 package ginyu.db;
 
+import ginyu.core.ClientTimeoutWrapper;
 import ginyu.event.BlockEvent;
 import ginyu.object.Dict;
 import ginyu.object.RedisObject;
@@ -27,11 +28,15 @@ public class Database {
 
     private final Dict<String, ConcurrentSkipListSet<BlockEvent>> blockingDict;
 
+    @Getter
+    private final ConcurrentSkipListSet<ClientTimeoutWrapper> timeoutSets;
+
     public Database(Integer id) {
         this.id = id;
         this.dict = new Dict<>();
         this.expired = new ConcurrentSkipListMap<>();
         this.blockingDict = new Dict<>();
+        this.timeoutSets = new ConcurrentSkipListSet<>();
     }
 
     public RedisObject get(String key) {
@@ -109,5 +114,27 @@ public class Database {
 
     public Set<BlockEvent> getBlockedEvents(String key) {
         return this.blockingDict.get(key);
+    }
+
+    public void addToTimeoutSet(ClientTimeoutWrapper clientTimeoutWrapper) {
+        this.timeoutSets.add(clientTimeoutWrapper);
+    }
+
+    public void removeTimeout(Set<ClientTimeoutWrapper> unblock) {
+        this.timeoutSets.removeAll(unblock);
+    }
+
+    public void deleteIfNeeded(String key) {
+        RedisObject redisObject = this.dict.get(key);
+        if (redisObject == null) {
+            return;
+        }
+        if (redisObject.isEmptyValue()) {
+            this.delete(key);
+        }
+    }
+
+    public void removeBlockKey(String blockKey) {
+        this.blockingDict.remove(blockKey);
     }
 }
