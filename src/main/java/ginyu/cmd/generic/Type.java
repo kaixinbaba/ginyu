@@ -36,7 +36,7 @@ public class Type extends AbstractRedisCommand<KeyArg, SimpleStrings> {
     @Override
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         RedisObject redisObject = database.get(arg.getKey());
         if (redisObject == null) {
             return SimpleStrings.NONE;

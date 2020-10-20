@@ -25,6 +25,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // 为每一个channel创建一个client
         Client client = ClientFactory.createClient();
+        client.setCtx(ctx);
         Attributes.setClient(client, ctx);
         Server.INSTANCE.addClient(client);
         ctx.fireChannelActive();

@@ -38,7 +38,7 @@ public class SIsMember extends AbstractRedisCommand<SIsMemberArg, Integers> {
     @Override
     protected Resp2 doCommand0(SIsMemberArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         SetObject setObject = Validates.validateType(database.get(arg.getKey()), ObjectType.SET);
         if (setObject == null) {
             return Integers.ZERO;

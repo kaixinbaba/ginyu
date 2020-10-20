@@ -50,7 +50,7 @@ public class SDiffStore extends AbstractRedisCommand<SDiffStoreArg, Integers> {
     @Override
     protected Resp2 doCommand0(SDiffStoreArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         SetObject setObject = Validates.validateType(database.get(arg.getKeys()[0]), ObjectType.SET);
         if (setObject == null) {
             return Integers.ZERO;

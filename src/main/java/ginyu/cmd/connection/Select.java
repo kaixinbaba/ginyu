@@ -30,7 +30,7 @@ public class Select extends AbstractRedisCommand<SelectArg, SimpleStrings> {
     @Override
     protected Resp2 doCommand0(SelectArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        client.setDb(arg.getIndex());
+        client.select(arg.getIndex());
         return SimpleStrings.OK;
     }
 }

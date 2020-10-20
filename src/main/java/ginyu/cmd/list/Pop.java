@@ -35,7 +35,7 @@ public abstract class Pop extends AbstractRedisCommand<KeyArg, BulkStrings> {
     @Override
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         ListObject listObject = Validates.validateType(database.get(arg.getKey()), ObjectType.LIST);
         if (listObject == null) {
             return BulkStrings.NULL;

@@ -37,7 +37,7 @@ public class HLen extends AbstractRedisCommand<KeyArg, Integers> {
     @Override
     protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         HashObject hashObject = Validates.validateType(database.get(arg.getKey()), ObjectType.HASH);
         if (hashObject == null) {
             return Integers.ZERO;

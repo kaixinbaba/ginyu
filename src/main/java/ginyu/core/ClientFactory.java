@@ -15,7 +15,7 @@ public abstract class ClientFactory {
         Client client = new Client();
         client.setId(CLIENT_ID_CURSOR.getAndIncrement());
         // default to db 0
-        client.setDb(0);
+        client.select(0);
         return client;
     }
 }

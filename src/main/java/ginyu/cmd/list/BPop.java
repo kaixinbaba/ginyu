@@ -3,9 +3,9 @@ package ginyu.cmd.list;
 import ginyu.cmd.AbstractRedisCommand;
 import ginyu.common.Attributes;
 import ginyu.core.Client;
-import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.event.Events;
+import ginyu.event.list.BlockByBPopEvent;
 import ginyu.object.ListObject;
 import ginyu.object.ObjectType;
 import ginyu.protocol.Arrays;
@@ -41,7 +41,7 @@ public abstract class BPop extends AbstractRedisCommand<BPopArg, Arrays> {
     @Override
     protected Resp2 doCommand0(BPopArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         for (String key : arg.getKeys()) {
             ListObject listObject = Validates.validateType(database.get(key), ObjectType.LIST);
             if (listObject != null && !listObject.getOriginal().isEmpty()) {
@@ -50,7 +50,7 @@ public abstract class BPop extends AbstractRedisCommand<BPopArg, Arrays> {
             }
         }
         // 执行到这里说明上面的key都不存在，需要进行订阅
-        Events.post(new BPopEvent(client, ctx, arg, this.isLeft(), arg.getKeys()));
+        Events.post(new BlockByBPopEvent(client, arg, this.isLeft()));
         return null;
     }
 

@@ -1,10 +1,13 @@
 package ginyu.db;
 
+import ginyu.event.BlockEvent;
 import ginyu.object.Dict;
 import ginyu.object.RedisObject;
 import lombok.Getter;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * @author: junjiexun
@@ -22,10 +25,13 @@ public class Database {
     @Getter
     private final ConcurrentSkipListMap<String, Long> expired;
 
+    private final Dict<String, ConcurrentSkipListSet<BlockEvent>> blockingDict;
+
     public Database(Integer id) {
         this.id = id;
         this.dict = new Dict<>();
         this.expired = new ConcurrentSkipListMap<>();
+        this.blockingDict = new Dict<>();
     }
 
     public RedisObject get(String key) {
@@ -85,5 +91,23 @@ public class Database {
 
     public Long removeExpire(String key) {
         return this.expired.remove(key);
+    }
+
+    public void addToBlockingDict(String key, BlockEvent blockEvent) {
+        ConcurrentSkipListSet<BlockEvent> clients = this.blockingDict.get(key);
+        if (clients == null) {
+            synchronized (this.blockingDict) {
+                clients = this.blockingDict.get(key);
+                if (clients == null) {
+                    clients = new ConcurrentSkipListSet<>();
+                    this.blockingDict.put(key, clients);
+                }
+            }
+        }
+        clients.add(blockEvent);
+    }
+
+    public Set<BlockEvent> getBlockedEvents(String key) {
+        return this.blockingDict.get(key);
     }
 }

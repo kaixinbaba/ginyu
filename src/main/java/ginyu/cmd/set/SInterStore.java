@@ -50,7 +50,7 @@ public class SInterStore extends AbstractRedisCommand<SInterStoreArg, Integers> 
     @Override
     protected Resp2 doCommand0(SInterStoreArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         SetObject setObject = Validates.validateType(database.get(arg.getKeys()[0]), ObjectType.SET);
         if (setObject == null) {
             return Integers.ZERO;

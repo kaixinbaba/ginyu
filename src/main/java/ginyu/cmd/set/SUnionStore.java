@@ -50,7 +50,7 @@ public class SUnionStore extends AbstractRedisCommand<SUnionStoreArg, Integers> 
     @Override
     protected Resp2 doCommand0(SUnionStoreArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         Set<String> unionSet = new HashSet<>();
         for (int i = 0; i < arg.getKeys().length; i++) {
             SetObject setObject = Validates.validateType(database.get(arg.getKeys()[i]), ObjectType.SET);

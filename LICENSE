@@ -176,7 +176,7 @@ above, provided that you also meet all of these conditions:
     table of data to be supplied by an application program that uses
     the facility, other than as an argument passed when the facility
     is invoked, then you must make a good faith effort to ensure that,
-    in the event an application does not supply such function or
+    in the blockEvent an application does not supply such function or
     table, the facility still operates, and performs whatever part of
     its purpose remains meaningful.
 

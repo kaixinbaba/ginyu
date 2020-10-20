@@ -1,6 +1,13 @@
 package ginyu.core;
 
+import ginyu.db.Database;
+import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author: junjiexun
@@ -8,11 +15,29 @@ import lombok.Data;
  * @description:
  */
 @Data
-public class Client {
+public class Client implements Comparable<Client> {
 
     private Integer id;
 
-    private Integer db;
+    private volatile Integer db;
+
+    private volatile Database database;
+
+    private ChannelHandlerContext ctx;
+
+    private Set<String> blockKeys = new HashSet<>(4);
+
+    public synchronized void addBlockKeys(String... keys) {
+        Collections.addAll(this.blockKeys, keys);
+    }
+
+    public synchronized void addBlockKeys(Collection<String> keys) {
+        this.blockKeys.addAll(keys);
+    }
+
+    public synchronized void clearBlock() {
+        this.blockKeys.clear();
+    }
 
     @Override
     public int hashCode() {
@@ -25,5 +50,15 @@ public class Client {
             return false;
         }
         return this.id.equals(((Client) obj).id);
+    }
+
+    public void select(Integer db) {
+        this.setDb(db);
+        this.setDatabase(Server.INSTANCE.getDb().getDatabase(this.getDb()));
+    }
+
+    @Override
+    public int compareTo(Client o) {
+        return this.id.compareTo(o.id);
     }
 }

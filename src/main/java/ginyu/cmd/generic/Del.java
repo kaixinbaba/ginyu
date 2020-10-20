@@ -36,7 +36,7 @@ public class Del extends AbstractRedisCommand<DelArg, Integers> {
     @Override
     protected Resp2 doCommand0(DelArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         int deleted = database.delete(arg.getKeys());
         return Integers.create(deleted);
     }

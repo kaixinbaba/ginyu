@@ -42,7 +42,7 @@ public class LTrim extends AbstractRedisCommand<LRangeArg, SimpleStrings> {
     @Override
     protected Resp2 doCommand0(LRangeArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         ListObject listObject = Validates.validateType(database.get(arg.getKey()), ObjectType.LIST);
         if (listObject == null) {
             return SimpleStrings.OK;

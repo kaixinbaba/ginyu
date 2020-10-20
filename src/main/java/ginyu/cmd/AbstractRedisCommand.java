@@ -31,7 +31,7 @@ public abstract class AbstractRedisCommand<T, R extends Resp2> implements RedisC
             if (commandAnno.checkExpire() && arg instanceof KeyArg) {
                 KeyArg keyArg = (KeyArg) arg;
                 Client client = Attributes.getClient(ctx);
-                Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+                Database database = client.getDatabase();
                 boolean expired = database.checkIfExpired(keyArg.getKey());
                 if (expired) {
                     database.delete(keyArg.getKey());

@@ -35,7 +35,7 @@ public class PTTL extends AbstractRedisCommand<PTTLArg, Integers> {
     @Override
     protected Resp2 doCommand0(PTTLArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         RedisObject value = database.get(arg.getKey());
         if (value == null) {
             return Integers.N_TWO;

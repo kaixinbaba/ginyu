@@ -40,7 +40,7 @@ public class SDiff extends AbstractRedisCommand<SDiffArg, Arrays> {
     @Override
     protected Resp2 doCommand0(SDiffArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         SetObject setObject = Validates.validateType(database.get(arg.getKeys()[0]), ObjectType.SET);
         if (setObject == null) {
             return Arrays.EMPTY;

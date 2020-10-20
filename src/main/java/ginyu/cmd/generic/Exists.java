@@ -35,7 +35,7 @@ public class Exists extends AbstractRedisCommand<ExistsArg, Integers> {
     @Override
     protected Resp2 doCommand0(ExistsArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         int exists = database.exists(arg.getKeys());
         return Integers.create(exists);
     }

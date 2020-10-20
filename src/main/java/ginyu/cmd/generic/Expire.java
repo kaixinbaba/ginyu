@@ -40,7 +40,7 @@ public class Expire extends AbstractRedisCommand<ExpireArg, Integers> {
     @Override
     protected Resp2 doCommand0(ExpireArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         RedisObject redisObject = database.get(arg.getKey());
         if (redisObject == null) {
             return Integers.ZERO;

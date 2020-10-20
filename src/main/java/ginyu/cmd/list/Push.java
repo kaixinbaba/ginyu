@@ -4,9 +4,9 @@ import ginyu.cmd.AbstractRedisCommand;
 import ginyu.common.Attributes;
 import ginyu.common.Constants;
 import ginyu.core.Client;
-import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.event.Events;
+import ginyu.event.list.PushEvent;
 import ginyu.object.ListObject;
 import ginyu.object.ObjectType;
 import ginyu.protocol.Arrays;
@@ -43,7 +43,7 @@ public abstract class Push extends AbstractRedisCommand<PushArg, Integers> {
     @Override
     protected Resp2 doCommand0(PushArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         ListObject listObject = Validates.validateType(database.get(arg.getKey()), ObjectType.LIST);
         if (listObject == null) {
             listObject = new ListObject();
@@ -51,7 +51,7 @@ public abstract class Push extends AbstractRedisCommand<PushArg, Integers> {
         }
         listObject.getOriginal().push(this.isLeft(), arg.getValues());
         int size = listObject.getOriginal().size();
-        Events.post(new PushEvent(arg.getKey(), size));
+        Events.post(new PushEvent(client, arg.getKey(), size));
         return Integers.create(size);
     }
 

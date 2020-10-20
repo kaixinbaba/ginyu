@@ -42,7 +42,7 @@ public class SMove extends AbstractRedisCommand<SMoveArg, Integers> {
     @Override
     protected Resp2 doCommand0(SMoveArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         SetObject sourceObject = Validates.validateType(database.get(arg.getSource()), ObjectType.SET);
         if (sourceObject == null) {
             return Integers.ZERO;

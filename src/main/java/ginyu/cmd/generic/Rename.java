@@ -38,7 +38,7 @@ public class Rename extends AbstractRedisCommand<RenameArg, SimpleStrings> {
     @Override
     protected Resp2 doCommand0(RenameArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
-        Database database = Server.INSTANCE.getDb().getDatabase(client.getDb());
+        Database database = client.getDatabase();
         RedisObject value = database.remove(arg.getKey());
         if (value == null) {
             throw new GinyuException("no such key '%s'", arg.getKey());
