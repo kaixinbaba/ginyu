@@ -30,7 +30,8 @@ public abstract class ProtocolValueUtils {
 
     public static Double getDoubleFromBulkStringsInArrays(Arrays arrays, int index) {
         String content = getFromBulkStringsInArrays(arrays, index);
-        if (content.equalsIgnoreCase("+inf")) {
+        if (content.equalsIgnoreCase("+inf")
+                || content.equalsIgnoreCase("inf")) {
             return Double.POSITIVE_INFINITY;
         } else if (content.equalsIgnoreCase("-inf")) {
             return Double.NEGATIVE_INFINITY;
