@@ -4,6 +4,10 @@ import ginyu.protocol.BulkStrings;
 import ginyu.protocol.Integers;
 import ginyu.protocol.Resp2;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author: junjiexun
  * @date: 2020/10/16 3:18 下午
@@ -16,7 +20,7 @@ public class ZSet {
 
     private final SkipList skipList = new SkipList();
 
-    public Long size() {
+    public Integer size() {
         return this.skipList.size();
     }
 
@@ -77,5 +81,37 @@ public class ZSet {
 
     public Long countByScoreRange(Double min, Double max) {
         return this.skipList.countByScoreRange(min, max);
+    }
+
+    public Collection<String> getDataByScoreRange(Double min, Double max, Boolean withScores) {
+        if (withScores) {
+            List<ZSetNode> nodes = this.skipList.getNodesByScoreRange(min, max);
+            List<String> data = new ArrayList<>(nodes.size() * 2);
+            if (nodes != null && !nodes.isEmpty()) {
+                for (ZSetNode node : nodes) {
+                    data.add(node.getMember());
+                    data.add(node.getScore().toString());
+                }
+            }
+            return data;
+        } else {
+            return this.skipList.getMembersByScoreRange(min, max);
+        }
+    }
+
+    public Collection<String> getDataByIndexRange(Integer start, Integer stop, Boolean withScores) {
+        if (withScores) {
+            List<ZSetNode> nodes = this.skipList.getNodesByIndexRange(start, stop);
+            List<String> data = new ArrayList<>(nodes.size() * 2);
+            if (nodes != null && !nodes.isEmpty()) {
+                for (ZSetNode node : nodes) {
+                    data.add(node.getMember());
+                    data.add(node.getScore().toString());
+                }
+            }
+            return data;
+        } else {
+            return this.skipList.getMembersByIndexRange(start, stop);
+        }
     }
 }

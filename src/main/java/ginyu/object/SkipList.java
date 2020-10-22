@@ -3,6 +3,7 @@ package ginyu.object;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static ginyu.common.Constants.SLOGAN;
@@ -15,7 +16,7 @@ import static ginyu.common.Constants.SLOGAN;
 @SuppressWarnings("all")
 public class SkipList {
 
-    private volatile Long length;
+    private volatile Integer length;
 
     private volatile int level;
 
@@ -25,14 +26,14 @@ public class SkipList {
 
     private volatile SkipListNode TAIL = null;
 
-    public Long size() {
+    public Integer size() {
         return this.length;
     }
 
     public SkipList() {
         this.HEAD = new SkipListNode(SLOGAN, Double.MIN_VALUE);
         this.level = 1;
-        this.length = 0L;
+        this.length = 0;
     }
 
     private int randomLevel() {
@@ -45,7 +46,7 @@ public class SkipList {
         return level;
     }
 
-    public void add(ZSetNode zSetNode, ZSet zSet) {
+    public synchronized void add(ZSetNode zSetNode, ZSet zSet) {
         this.add(zSetNode.getMember(), zSetNode.getScore(), zSet);
     }
 
@@ -55,7 +56,7 @@ public class SkipList {
      * @param member
      * @param score
      */
-    public void add(String member, Double score, ZSet zSet) {
+    public synchronized void add(String member, Double score, ZSet zSet) {
         // TODO maxLevel in config
         SkipListNode[] update = new SkipListNode[32];
         SkipListNode node = this.HEAD;
@@ -98,11 +99,11 @@ public class SkipList {
         zSet.put(member, score);
     }
 
-    public void update(ZSetNode node, Double currentScore, ZSet zSet) {
+    public synchronized void update(ZSetNode node, Double currentScore, ZSet zSet) {
         this.update(node.getMember(), node.getScore(), currentScore, zSet);
     }
 
-    public void update(String member, Double newScore, Double currentScore, ZSet zSet) {
+    public synchronized void update(String member, Double newScore, Double currentScore, ZSet zSet) {
         // TODO maxLevel in config
         SkipListNode[] update = new SkipListNode[32];
         SkipListNode node = this.HEAD;
@@ -159,22 +160,22 @@ public class SkipList {
         return this.getNodesByScoreRange(min, max).stream().count();
     }
 
-    public java.util.List<Double> getScoresByScoreRange(Double min, Double max) {
+    public List<Double> getScoresByScoreRange(Double min, Double max) {
         return this.getNodesByScoreRange(min, max)
                 .stream()
                 .map(ZSetNode::getScore)
                 .collect(Collectors.toList());
     }
 
-    public java.util.List<String> getMembersByScoreRange(Double min, Double max) {
+    public List<String> getMembersByScoreRange(Double min, Double max) {
         return this.getNodesByScoreRange(min, max)
                 .stream()
                 .map(ZSetNode::getMember)
                 .collect(Collectors.toList());
     }
 
-    public java.util.List<ZSetNode> getNodesByScoreRange(Double min, Double max) {
-        java.util.List<ZSetNode> nodes = new ArrayList<>();
+    public List<ZSetNode> getNodesByScoreRange(Double min, Double max) {
+        List<ZSetNode> nodes = new ArrayList<>();
         SkipListNode node = this.HEAD.getLevel()[0].getNext();
         while (node != null) {
             if (node.getScore() >= min && node.getScore() <= max) {
@@ -185,5 +186,28 @@ public class SkipList {
             node = node.getLevel()[0].getNext();
         }
         return nodes;
+    }
+
+    public List<ZSetNode> getNodesByIndexRange(Integer start, Integer stop) {
+        List<ZSetNode> nodes = new ArrayList<>();
+        SkipListNode node = this.HEAD.getLevel()[0].getNext();
+        int i = 0;
+        while (node != null) {
+            if (i >= start && i <= stop) {
+                nodes.add(new ZSetNode(node.getMember(), node.getScore()));
+            } else if (i > stop) {
+                break;
+            }
+            node = node.getLevel()[0].getNext();
+            i++;
+        }
+        return nodes;
+    }
+
+    public List<String> getMembersByIndexRange(Integer start, Integer stop) {
+        return this.getNodesByIndexRange(start, stop)
+                .stream()
+                .map(ZSetNode::getMember)
+                .collect(Collectors.toList());
     }
 }
