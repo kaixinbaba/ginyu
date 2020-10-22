@@ -90,16 +90,12 @@ public class ZAdd extends AbstractRedisCommand<ZAddArg, Integers> {
             }
             zSetObject = new ZSetObject();
             database.set(arg.getKey(), zSetObject);
-            return add(zSetObject, arg);
+            return zSetObject.getOriginal().add(arg.getCh(), arg.getIncr(), arg.getNodes());
         } else {
             if (arg.getNx()) {
                 return Integers.ZERO;
             }
-            return add(zSetObject, arg);
+            return zSetObject.getOriginal().add(arg.getCh(), arg.getIncr(), arg.getNodes());
         }
-    }
-
-    private Resp2 add(ZSetObject zSetObject, ZAddArg arg) {
-        return zSetObject.getOriginal().add(arg.getCh(), arg.getIncr(), arg.getNodes());
     }
 }

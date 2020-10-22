@@ -4,9 +4,6 @@ import ginyu.protocol.BulkStrings;
 import ginyu.protocol.Integers;
 import ginyu.protocol.Resp2;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
-
 /**
  * @author: junjiexun
  * @date: 2020/10/16 3:18 下午
@@ -15,13 +12,12 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @SuppressWarnings("all")
 public class ZSet {
 
-    private final ConcurrentHashMap<String, Double> members = new ConcurrentHashMap<>();
+    private final Dict<String, Double> members = new Dict<>();
 
-    private final ConcurrentSkipListSet<ZSetNode> nodes = new ConcurrentSkipListSet<>();
-
+    private final SkipList skipList = new SkipList();
 
     public int size() {
-        return this.nodes.size();
+        return this.skipList.size();
     }
 
     private ZSetNode getCorrectScore(ZSetNode node, Boolean incr) {
@@ -32,25 +28,50 @@ public class ZSet {
         return node;
     }
 
+    private Integer updateResult(Integer oldResult, Boolean ch, Double preValue, Double currentValue) {
+        if (ch) {
+            if (preValue != null && !preValue.equals(currentValue)) {
+                oldResult++;
+            }
+        } else {
+            if (preValue == null) {
+                oldResult++;
+            }
+        }
+        return oldResult;
+    }
+
     public Resp2 add(Boolean ch, Boolean incr, ZSetNode... nodes) {
         Integer result = 0;
         for (ZSetNode node : nodes) {
             node = getCorrectScore(node, incr);
-            this.nodes.add(node);
-            Double preValue = this.members.put(node.getMember(), node.getScore());
+            Double currentScore = this.members.get(node.getMember());
+            if (currentScore == null) {
+                // 新增
+                this.skipList.add(node, this);
+            } else {
+                if (!currentScore.equals(node.getScore())) {
+                    // 修改
+                    this.skipList.update(node, currentScore, this);
+                }
+            }
             if (incr) {
                 return BulkStrings.create(String.valueOf(node.getScore()));
             }
-            if (ch) {
-                if (preValue != null && !preValue.equals(node.getScore())) {
-                    result++;
-                }
-            } else {
-                if (preValue == null) {
-                    result++;
-                }
-            }
+            result = updateResult(result, ch, currentScore, node.getScore());
         }
         return Integers.create(result);
+    }
+
+    public void updateScore(String member, Double score) {
+        this.members.put(member, score);
+    }
+
+    public void put(String member, Double score) {
+        this.members.put(member, score);
+    }
+
+    public void remove(String member) {
+        this.members.remove(member);
     }
 }
