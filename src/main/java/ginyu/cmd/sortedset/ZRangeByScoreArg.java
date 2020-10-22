@@ -1,6 +1,5 @@
 package ginyu.cmd.sortedset;
 
-import ginyu.cmd.KeyArg;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -13,16 +12,13 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class ZCountArg extends KeyArg {
+public class ZRangeByScoreArg extends ZScoreRangeArg {
 
-    private Double min;
+    private Boolean withScores;
 
-    private Double max;
+    private Boolean limit;
 
-    public ZCountArg(String key, Double min, Double max) {
-        super(key);
-        this.min = min;
-        this.max = max;
-    }
+    private Integer offset;
 
+    private Integer count;
 }

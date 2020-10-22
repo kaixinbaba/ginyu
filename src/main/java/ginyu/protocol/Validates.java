@@ -70,4 +70,19 @@ public abstract class Validates {
         }
         return (T) redisObject;
     }
+
+    public static Double s2d(String content, String argName) {
+        try {
+            if (content.equalsIgnoreCase("+inf")
+                    || content.equalsIgnoreCase("inf")) {
+                return Double.POSITIVE_INFINITY;
+            } else if (content.equalsIgnoreCase("-inf")) {
+                return Double.NEGATIVE_INFINITY;
+            } else {
+                return Double.valueOf(content);
+            }
+        } catch (NumberFormatException e) {
+            throw new CommandValidateException("%s must be double", argName);
+        }
+    }
 }

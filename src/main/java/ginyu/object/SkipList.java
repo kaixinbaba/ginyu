@@ -1,5 +1,6 @@
 package ginyu.object;
 
+import ginyu.cmd.sortedset.ZScoreRangeArg;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ArrayList;
@@ -156,34 +157,49 @@ public class SkipList {
         zSet.remove(node.getMember());
     }
 
-    public Long countByScoreRange(Double min, Double max) {
-        return this.getNodesByScoreRange(min, max).stream().count();
+    public Long countByScoreRange(ZScoreRangeArg arg) {
+        return this.getNodesByScoreRange(arg, false, false, null, null).stream().count();
     }
 
-    public List<Double> getScoresByScoreRange(Double min, Double max) {
-        return this.getNodesByScoreRange(min, max)
+    public List<Double> getScoresByScoreRange(ZScoreRangeArg arg) {
+        return this.getNodesByScoreRange(arg, false, false, null, null)
                 .stream()
                 .map(ZSetNode::getScore)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getMembersByScoreRange(Double min, Double max) {
-        return this.getNodesByScoreRange(min, max)
+    public List<String> getMembersByScoreRange(ZScoreRangeArg arg,
+                                               Boolean withScores,
+                                               Boolean limit, Integer offset, Integer count) {
+        return this.getNodesByScoreRange(arg, withScores, limit, offset, count)
                 .stream()
                 .map(ZSetNode::getMember)
                 .collect(Collectors.toList());
     }
 
-    public List<ZSetNode> getNodesByScoreRange(Double min, Double max) {
+    public List<ZSetNode> getNodesByScoreRange(ZScoreRangeArg arg,
+                                               Boolean withScores,
+                                               Boolean limit, Integer offset, Integer count) {
+
         List<ZSetNode> nodes = new ArrayList<>();
         SkipListNode node = this.HEAD.getLevel()[0].getNext();
+        int i = 0;
         while (node != null) {
-            if (node.getScore() >= min && node.getScore() <= max) {
+            if (offset != null && i < offset) {
+            } else if (((arg.getOpenIntervalMin() && node.getScore() > arg.getMin())
+                    || (!arg.getOpenIntervalMin() && node.getScore() >= arg.getMin()))
+                    && ((arg.getOpenIntervalMax() && node.getScore() < arg.getMax())
+                    || (!arg.getOpenIntervalMax() && node.getScore() <= arg.getMax()))) {
                 nodes.add(new ZSetNode(node.getMember(), node.getScore()));
-            } else if (node.getScore() > max) {
+            } else if ((arg.getOpenIntervalMax() && node.getScore() >= arg.getMax())
+                    || node.getScore() > arg.getMax()) {
                 break;
             }
+            if (count != null && nodes.size() >= count) {
+                return nodes;
+            }
             node = node.getLevel()[0].getNext();
+            i++;
         }
         return nodes;
     }

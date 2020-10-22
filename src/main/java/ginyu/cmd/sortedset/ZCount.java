@@ -14,6 +14,8 @@ import ginyu.protocol.Validates;
 import ginyu.utils.ProtocolValueUtils;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.List;
+
 /**
  * @author: junjiexun
  * @date: 2020/10/16 2:54 下午
@@ -21,32 +23,26 @@ import io.netty.channel.ChannelHandlerContext;
  */
 @SuppressWarnings("all")
 @Command(name = "zcount")
-public class ZCount extends AbstractRedisCommand<ZCountArg, Integers> {
+public class ZCount extends AbstractRedisCommand<ZScoreRangeArg, Integers> {
 
     @Override
-    protected ZCountArg createArg(Arrays arrays) {
-        return new ZCountArg(
-                ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1),
-                ProtocolValueUtils.getDoubleFromBulkStringsInArrays(arrays, 2),
-                ProtocolValueUtils.getDoubleFromBulkStringsInArrays(arrays, 3)
-        );
+    protected ZScoreRangeArg createArg(Arrays arrays) {
+        return ZScoreRangeArg.create(arrays);
     }
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
         Validates.validateArraysSize(commandName, arrays, 4);
-        Validates.validateDouble(arrays, 2, "min");
-        Validates.validateDouble(arrays, 3, "max");
     }
 
     @Override
-    protected Resp2 doCommand0(ZCountArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(ZScoreRangeArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = client.getDatabase();
         ZSetObject zSetObject = Validates.validateType(database.get(arg.getKey()), ObjectType.ZSET);
         if (zSetObject == null) {
             return Integers.ZERO;
         }
-        return Integers.create(zSetObject.getOriginal().countByScoreRange(arg.getMin(), arg.getMax()));
+        return Integers.create(zSetObject.getOriginal().countByScoreRange(arg));
     }
 }

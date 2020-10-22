@@ -1,5 +1,7 @@
 package ginyu.object;
 
+import ginyu.cmd.sortedset.ZRangeByScoreArg;
+import ginyu.cmd.sortedset.ZScoreRangeArg;
 import ginyu.protocol.BulkStrings;
 import ginyu.protocol.Integers;
 import ginyu.protocol.Resp2;
@@ -79,13 +81,14 @@ public class ZSet {
         this.members.remove(member);
     }
 
-    public Long countByScoreRange(Double min, Double max) {
-        return this.skipList.countByScoreRange(min, max);
+    public Long countByScoreRange(ZScoreRangeArg arg) {
+        return this.skipList.countByScoreRange(arg);
     }
 
-    public Collection<String> getDataByScoreRange(Double min, Double max, Boolean withScores) {
-        if (withScores) {
-            List<ZSetNode> nodes = this.skipList.getNodesByScoreRange(min, max);
+    public Collection<String> getDataByScoreRange(ZRangeByScoreArg arg) {
+        if (arg.getWithScores()) {
+            List<ZSetNode> nodes = this.skipList.getNodesByScoreRange(arg, arg.getWithScores(), arg.getLimit(),
+                    arg.getOffset(), arg.getCount());
             List<String> data = new ArrayList<>(nodes.size() * 2);
             if (nodes != null && !nodes.isEmpty()) {
                 for (ZSetNode node : nodes) {
@@ -95,7 +98,8 @@ public class ZSet {
             }
             return data;
         } else {
-            return this.skipList.getMembersByScoreRange(min, max);
+            return this.skipList.getMembersByScoreRange(arg, arg.getWithScores(), arg.getLimit(),
+                    arg.getOffset(), arg.getCount());
         }
     }
 
