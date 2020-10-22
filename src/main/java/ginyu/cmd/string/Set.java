@@ -3,6 +3,7 @@ package ginyu.cmd.string;
 import ginyu.cmd.AbstractRedisCommand;
 import ginyu.cmd.Command;
 import ginyu.common.Attributes;
+import ginyu.core.Client;
 import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.exception.CommandValidateException;
@@ -21,9 +22,6 @@ import java.util.List;
 @SuppressWarnings("all")
 @Command(name = "set")
 public class Set extends AbstractRedisCommand<SetArg, SimpleStrings> {
-
-    private static final int XX = 0 << 1;
-    private static final int NX = 0 << 2;
 
     /**
      * SET key value [EX seconds|PX milliseconds] [NX|XX] [KEEPTTL]
@@ -99,7 +97,8 @@ public class Set extends AbstractRedisCommand<SetArg, SimpleStrings> {
 
     @Override
     protected Resp2 doCommand0(SetArg arg, ChannelHandlerContext ctx) {
-        Database database = Server.INSTANCE.getDb().getDatabase(Attributes.getClient(ctx).getDb());
+        Client client = Attributes.getClient(ctx);
+        Database database = client.getDatabase();
         StringObject stringObject = Validates.validateType(database.get(arg.getKey()), ObjectType.STRING);
         if (stringObject == null) {
             if (arg.getXx()) {

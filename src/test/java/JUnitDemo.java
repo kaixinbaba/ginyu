@@ -1,9 +1,4 @@
-import ginyu.cmd.RedisCommands;
 import ginyu.common.Consoles;
-import ginyu.core.Server;
-import ginyu.db.Database;
-import ginyu.db.Db;
-import ginyu.event.Events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.io.FileUtils;
@@ -13,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
@@ -57,13 +51,11 @@ public class JUnitDemo {
 
     @Test
     public void test2() {
-        ConcurrentSkipListSet<A> set = new ConcurrentSkipListSet<>();
-        set.add(new A("adkfj"));
-        set.add(new A("123"));
-        set.add(new A("addj"));
-        set.add(new A("adfkaj"));
-        set.add(new A("fdkfj123"));
-        set.add(new A("dsfk34"));
+//        Set<A> set = new ConcurrentSkipListSet<>();
+//        Set<A> set = new HashSet<>();
+        Set<A> set = new TreeSet<>();
+        set.add(new A("c", 3.0D));
+        set.add(new A("c", 8.0D));
         System.out.println(set);
     }
 
@@ -72,9 +64,28 @@ public class JUnitDemo {
     private static class A implements Comparable<A> {
         private String name;
 
+        private Double score;
+
+        @Override
+        public int hashCode() {
+            return this.name.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof A)) {
+                return false;
+            }
+            return this.name.equals(((A) obj).name);
+        }
+
         @Override
         public int compareTo(A o) {
-            return this.name.compareTo(o.name);
+            int scoreResult = this.score.compareTo(o.score);
+            if (scoreResult == 0) {
+                return this.name.compareTo(o.name);
+            }
+            return scoreResult;
         }
     }
 }

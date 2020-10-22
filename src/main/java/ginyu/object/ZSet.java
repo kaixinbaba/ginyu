@@ -1,13 +1,11 @@
 package ginyu.object;
 
-import ginyu.cmd.sortedset.ScoreMember;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import ginyu.protocol.BulkStrings;
+import ginyu.protocol.Integers;
+import ginyu.protocol.Resp2;
 
 import java.util.concurrent.ConcurrentHashMap;
-
-import static ginyu.common.Constants.SLOGAN;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * @author: junjiexun
@@ -17,56 +15,42 @@ import static ginyu.common.Constants.SLOGAN;
 @SuppressWarnings("all")
 public class ZSet {
 
-    private final ZSetNode HEAD = new ZSetNode(Double.MIN_VALUE, SLOGAN, null, null);
-    private ConcurrentHashMap<String, Double> members = new ConcurrentHashMap<>();
-    private volatile ZSetNode TAIL;
+    private final ConcurrentHashMap<String, Double> members = new ConcurrentHashMap<>();
 
-    public boolean exists(String member) {
-        return this.members.containsKey(member);
+    private final ConcurrentSkipListSet<ZSetNode> nodes = new ConcurrentSkipListSet<>();
+
+
+    public int size() {
+        return this.nodes.size();
     }
 
-    public void addNodes(ScoreMember[] scoreMembers, Boolean xx, Boolean nx, Boolean incr, Boolean ch) {
-        ZSetNode node = this.HEAD.next;
-        while (node != null) {
-
-        }
+    private ZSetNode getCorrectScore(ZSetNode node, Boolean incr) {
+        Double currentScore = this.members.get(node.getMember());
+        currentScore = currentScore == null ? 0.0D : currentScore;
+        Double score = incr ? node.getScore() + currentScore : node.getScore();
+        node.setScore(score);
+        return node;
     }
 
-    @AllArgsConstructor
-    static class ZSetNode implements Comparable<ZSetNode> {
-
-        Double score;
-
-        String member;
-
-        @Getter
-        @Setter
-        ZSetNode prev;
-
-        @Setter
-        @Getter
-        ZSetNode next;
-
-        @Override
-        public int hashCode() {
-            return score.hashCode() + member.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null || !(obj instanceof ZSetNode)) {
-                return false;
+    public Resp2 add(Boolean ch, Boolean incr, ZSetNode... nodes) {
+        Integer result = 0;
+        for (ZSetNode node : nodes) {
+            node = getCorrectScore(node, incr);
+            this.nodes.add(node);
+            Double preValue = this.members.put(node.getMember(), node.getScore());
+            if (incr) {
+                return BulkStrings.create(String.valueOf(node.getScore()));
             }
-            ZSetNode other = (ZSetNode) obj;
-            return this.score.equals(other.score) && this.member.equals(other.member);
-        }
-
-        @Override
-        public int compareTo(ZSetNode o) {
-            if (this.score.equals(o.score)) {
-                return this.member.compareTo(o.member);
+            if (ch) {
+                if (preValue != null && !preValue.equals(node.getScore())) {
+                    result++;
+                }
+            } else {
+                if (preValue == null) {
+                    result++;
+                }
             }
-            return this.score.compareTo(o.score);
         }
+        return Integers.create(result);
     }
 }

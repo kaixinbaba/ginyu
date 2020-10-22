@@ -1,6 +1,7 @@
 package ginyu.cmd.sortedset;
 
 import ginyu.cmd.KeyArg;
+import ginyu.object.ZSetNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +13,6 @@ import lombok.ToString;
  * @description:
  */
 @Data
-@AllArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ZAddArg extends KeyArg {
@@ -25,6 +25,6 @@ public class ZAddArg extends KeyArg {
 
     private Boolean ch;
 
-    private ScoreMember[] scoreMembers;
+    private ZSetNode[] nodes;
 
 }

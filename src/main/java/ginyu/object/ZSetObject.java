@@ -9,5 +9,6 @@ public class ZSetObject extends RedisObject<ZSet> {
 
     public ZSetObject() {
         this.setType(ObjectType.ZSET);
+        this.setOriginal(new ZSet());
     }
 }
