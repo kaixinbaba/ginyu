@@ -51,12 +51,7 @@ public class JUnitDemo {
 
     @Test
     public void test2() {
-//        Set<A> set = new ConcurrentSkipListSet<>();
-//        Set<A> set = new HashSet<>();
-        Set<A> set = new TreeSet<>();
-        set.add(new A("c", 3.0D));
-        set.add(new A("c", 8.0D));
-        System.out.println(set);
+        System.out.println(Double.valueOf("inf"));
     }
 
     @Data

@@ -3,6 +3,7 @@ package ginyu.object;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static ginyu.common.Constants.SLOGAN;
 
@@ -14,7 +15,7 @@ import static ginyu.common.Constants.SLOGAN;
 @SuppressWarnings("all")
 public class SkipList {
 
-    private volatile int length;
+    private volatile Long length;
 
     private volatile int level;
 
@@ -24,14 +25,14 @@ public class SkipList {
 
     private volatile SkipListNode TAIL = null;
 
-    public int size() {
+    public Long size() {
         return this.length;
     }
 
     public SkipList() {
         this.HEAD = new SkipListNode(SLOGAN, Double.MIN_VALUE);
         this.level = 1;
-        this.length = 0;
+        this.length = 0L;
     }
 
     private int randomLevel() {
@@ -50,6 +51,7 @@ public class SkipList {
 
     /**
      * TODO 如何保证并发安全
+     *
      * @param member
      * @param score
      */
@@ -65,9 +67,9 @@ public class SkipList {
             while (node.getLevel()[i].getNext() != null
                     // 当前分数更大
                     && (node.getLevel()[i].getNext().getScore() < score
-                        // 或者分数一样，字符串更大
-                        || (node.getLevel()[i].getNext().getScore().equals(score))
-                            && node.getLevel()[i].getNext().getMember().compareTo(member) < 0)) {
+                    // 或者分数一样，字符串更大
+                    || (node.getLevel()[i].getNext().getScore().equals(score))
+                    && node.getLevel()[i].getNext().getMember().compareTo(member) < 0)) {
                 // 说明当前新的节点应该排在这个next之后
                 node = node.getLevel()[i].getNext();
             }
@@ -151,5 +153,37 @@ public class SkipList {
         }
         this.length--;
         zSet.remove(node.getMember());
+    }
+
+    public Long countByScoreRange(Double min, Double max) {
+        return this.getNodesByScoreRange(min, max).stream().count();
+    }
+
+    public java.util.List<Double> getScoresByScoreRange(Double min, Double max) {
+        return this.getNodesByScoreRange(min, max)
+                .stream()
+                .map(ZSetNode::getScore)
+                .collect(Collectors.toList());
+    }
+
+    public java.util.List<String> getMembersByScoreRange(Double min, Double max) {
+        return this.getNodesByScoreRange(min, max)
+                .stream()
+                .map(ZSetNode::getMember)
+                .collect(Collectors.toList());
+    }
+
+    public java.util.List<ZSetNode> getNodesByScoreRange(Double min, Double max) {
+        java.util.List<ZSetNode> nodes = new ArrayList<>();
+        SkipListNode node = this.HEAD.getLevel()[0].getNext();
+        while (node != null) {
+            if (node.getScore() >= min && node.getScore() <= max) {
+                nodes.add(new ZSetNode(node.getMember(), node.getScore()));
+            } else if (node.getScore() > max) {
+                break;
+            }
+            node = node.getLevel()[0].getNext();
+        }
+        return nodes;
     }
 }

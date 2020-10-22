@@ -5,6 +5,7 @@ import ginyu.exception.CommandValidateException;
 import ginyu.exception.SetWrongTypeException;
 import ginyu.object.ObjectType;
 import ginyu.object.RedisObject;
+import ginyu.utils.ProtocolValueUtils;
 
 /**
  * @author: junjiexun
@@ -30,7 +31,7 @@ public abstract class Validates {
 
     public static Integer validateInteger(Arrays arrays, int index, String argName) {
         try {
-            return Integer.parseInt(((BulkStrings) arrays.getData().get(index)).getData().getContent());
+            return ProtocolValueUtils.getIntFromBulkStringsInArrays(arrays, index);
         } catch (NumberFormatException e) {
             throw new CommandValidateException("%s must be integer", argName);
         }
@@ -38,9 +39,17 @@ public abstract class Validates {
 
     public static Long validateLong(Arrays arrays, int index, String argName) {
         try {
-            return Long.parseLong(((BulkStrings) arrays.getData().get(index)).getData().getContent());
+            return ProtocolValueUtils.getLongFromBulkStringsInArrays(arrays, index);
         } catch (NumberFormatException e) {
             throw new CommandValidateException("%s must be long", argName);
+        }
+    }
+
+    public static Double validateDouble(Arrays arrays, int index, String argName) {
+        try {
+            return ProtocolValueUtils.getDoubleFromBulkStringsInArrays(arrays, index);
+        } catch (NumberFormatException e) {
+            throw new CommandValidateException("%s must be double", argName);
         }
     }
 

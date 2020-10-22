@@ -27,4 +27,15 @@ public abstract class ProtocolValueUtils {
     public static Long getLongFromBulkStringsInArrays(Arrays arrays, int index) {
         return Long.parseLong(getFromBulkStringsInArrays(arrays, index));
     }
+
+    public static Double getDoubleFromBulkStringsInArrays(Arrays arrays, int index) {
+        String content = getFromBulkStringsInArrays(arrays, index);
+        if (content.equalsIgnoreCase("+inf")) {
+            return Double.POSITIVE_INFINITY;
+        } else if (content.equalsIgnoreCase("-inf")) {
+            return Double.NEGATIVE_INFINITY;
+        } else {
+            return Double.valueOf(content);
+        }
+    }
 }

@@ -16,7 +16,7 @@ public class ZSet {
 
     private final SkipList skipList = new SkipList();
 
-    public int size() {
+    public Long size() {
         return this.skipList.size();
     }
 
@@ -73,5 +73,9 @@ public class ZSet {
 
     public void remove(String member) {
         this.members.remove(member);
+    }
+
+    public Long countByScoreRange(Double min, Double max) {
+        return this.skipList.countByScoreRange(min, max);
     }
 }
