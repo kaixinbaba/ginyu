@@ -6,7 +6,6 @@ import ginyu.cmd.KeyArg;
 import ginyu.common.Attributes;
 import ginyu.core.Client;
 import ginyu.db.Database;
-import ginyu.object.ListObject;
 import ginyu.object.ObjectType;
 import ginyu.object.ZSetObject;
 import ginyu.protocol.Arrays;

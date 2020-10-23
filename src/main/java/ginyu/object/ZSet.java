@@ -87,7 +87,7 @@ public class ZSet {
 
     public Collection<String> getDataByScoreRange(ZRangeByScoreArg arg) {
         if (arg.getWithScores()) {
-            List<ZSetNode> nodes = this.skipList.getNodesByScoreRange(arg, arg.getWithScores(), arg.getLimit(),
+            List<ZSetNode> nodes = this.skipList.getNodesByScoreRange(arg, arg.getWithScores(),
                     arg.getOffset(), arg.getCount());
             List<String> data = new ArrayList<>(nodes.size() * 2);
             if (nodes != null && !nodes.isEmpty()) {
@@ -98,7 +98,7 @@ public class ZSet {
             }
             return data;
         } else {
-            return this.skipList.getMembersByScoreRange(arg, arg.getWithScores(), arg.getLimit(),
+            return this.skipList.getMembersByScoreRange(arg, arg.getWithScores(),
                     arg.getOffset(), arg.getCount());
         }
     }

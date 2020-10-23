@@ -2,7 +2,6 @@ package ginyu.cmd.sortedset;
 
 import ginyu.cmd.KeyArg;
 import ginyu.object.ZSetNode;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

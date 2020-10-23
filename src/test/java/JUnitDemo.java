@@ -7,8 +7,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author: junjiexun

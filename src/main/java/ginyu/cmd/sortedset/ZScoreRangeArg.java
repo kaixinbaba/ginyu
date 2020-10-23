@@ -3,7 +3,6 @@ package ginyu.cmd.sortedset;
 import ginyu.cmd.KeyArg;
 import ginyu.protocol.Arrays;
 import ginyu.protocol.Validates;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

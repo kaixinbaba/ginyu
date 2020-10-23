@@ -16,8 +16,6 @@ public class ZRangeByScoreArg extends ZScoreRangeArg {
 
     private Boolean withScores;
 
-    private Boolean limit;
-
     private Integer offset;
 
     private Integer count;

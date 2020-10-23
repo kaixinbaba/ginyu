@@ -5,7 +5,6 @@ import ginyu.cmd.Command;
 import ginyu.cmd.KeyArg;
 import ginyu.common.Attributes;
 import ginyu.core.Client;
-import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.protocol.Arrays;
 import ginyu.protocol.Integers;

@@ -17,24 +17,20 @@ import static ginyu.common.Constants.SLOGAN;
 @SuppressWarnings("all")
 public class SkipList {
 
-    private volatile Integer length;
-
-    private volatile int level;
-
     private static final int LUCK = 0;
-
     private final SkipListNode HEAD;
-
+    private volatile Integer length;
+    private volatile int level;
     private volatile SkipListNode TAIL = null;
-
-    public Integer size() {
-        return this.length;
-    }
 
     public SkipList() {
         this.HEAD = new SkipListNode(SLOGAN, Double.MIN_VALUE);
         this.level = 1;
         this.length = 0;
+    }
+
+    public Integer size() {
+        return this.length;
     }
 
     private int randomLevel() {
@@ -158,11 +154,11 @@ public class SkipList {
     }
 
     public Long countByScoreRange(ZScoreRangeArg arg) {
-        return this.getNodesByScoreRange(arg, false, false, null, null).stream().count();
+        return this.getNodesByScoreRange(arg, false, null, null).stream().count();
     }
 
     public List<Double> getScoresByScoreRange(ZScoreRangeArg arg) {
-        return this.getNodesByScoreRange(arg, false, false, null, null)
+        return this.getNodesByScoreRange(arg, false, null, null)
                 .stream()
                 .map(ZSetNode::getScore)
                 .collect(Collectors.toList());
@@ -170,8 +166,8 @@ public class SkipList {
 
     public List<String> getMembersByScoreRange(ZScoreRangeArg arg,
                                                Boolean withScores,
-                                               Boolean limit, Integer offset, Integer count) {
-        return this.getNodesByScoreRange(arg, withScores, limit, offset, count)
+                                               Integer offset, Integer count) {
+        return this.getNodesByScoreRange(arg, withScores, offset, count)
                 .stream()
                 .map(ZSetNode::getMember)
                 .collect(Collectors.toList());
@@ -179,7 +175,7 @@ public class SkipList {
 
     public List<ZSetNode> getNodesByScoreRange(ZScoreRangeArg arg,
                                                Boolean withScores,
-                                               Boolean limit, Integer offset, Integer count) {
+                                               Integer offset, Integer count) {
 
         List<ZSetNode> nodes = new ArrayList<>();
         SkipListNode node = this.HEAD.getLevel()[0].getNext();

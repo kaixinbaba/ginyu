@@ -2,7 +2,6 @@ package ginyu.cmd;
 
 import ginyu.common.Attributes;
 import ginyu.core.Client;
-import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.exception.GinyuException;
 import ginyu.protocol.Arrays;

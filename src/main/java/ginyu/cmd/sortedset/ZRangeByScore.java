@@ -31,7 +31,6 @@ public class ZRangeByScore extends AbstractRedisCommand<ZRangeByScoreArg, Arrays
 
         List<String> args = arrays.map2String(true);
         Boolean withScores = false;
-        Boolean limit = false;
         Integer offset = null;
         Integer count = null;
         for (int i = 3; i < args.size(); i++) {
@@ -39,7 +38,6 @@ public class ZRangeByScore extends AbstractRedisCommand<ZRangeByScoreArg, Arrays
             if (arg.equalsIgnoreCase("WITHSCORES")) {
                 withScores = true;
             } else if (arg.equalsIgnoreCase("LIMIT")) {
-                limit = true;
                 try {
                     offset = Integer.parseInt(args.get(i + 1));
                     if (offset < 0) {
@@ -64,7 +62,6 @@ public class ZRangeByScore extends AbstractRedisCommand<ZRangeByScoreArg, Arrays
         zRangeByScoreArg.setOpenIntervalMax(zScoreRangeArg.getOpenIntervalMax());
         zRangeByScoreArg.setMax(zScoreRangeArg.getMax());
         zRangeByScoreArg.setWithScores(withScores);
-        zRangeByScoreArg.setLimit(limit);
         zRangeByScoreArg.setOffset(offset);
         zRangeByScoreArg.setCount(count);
         return zRangeByScoreArg;

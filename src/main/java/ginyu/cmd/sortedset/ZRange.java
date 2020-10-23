@@ -9,7 +9,6 @@ import ginyu.exception.CommandValidateException;
 import ginyu.object.ObjectType;
 import ginyu.object.ZSetObject;
 import ginyu.protocol.Arrays;
-import ginyu.protocol.Integers;
 import ginyu.protocol.Resp2;
 import ginyu.protocol.Validates;
 import ginyu.utils.ProtocolValueUtils;

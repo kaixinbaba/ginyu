@@ -1,7 +1,6 @@
 package ginyu.utils;
 
 import ginyu.event.BlockEvent;
-import ginyu.event.list.BlockByBPopEvent;
 
 import java.util.Set;
 

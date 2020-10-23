@@ -12,12 +12,9 @@ import lombok.Data;
 public class SkipListNode {
 
     private final String member;
-
-    private volatile Double score;
-
-    private SkipListNode prev;
-
     private final SkipListLevel[] level;
+    private volatile Double score;
+    private SkipListNode prev;
 
     public SkipListNode(String member, Double score) {
         // TODO maxLevel from config

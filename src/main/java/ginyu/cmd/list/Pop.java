@@ -4,7 +4,6 @@ import ginyu.cmd.AbstractRedisCommand;
 import ginyu.cmd.KeyArg;
 import ginyu.common.Attributes;
 import ginyu.core.Client;
-import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.object.ListObject;
 import ginyu.object.ObjectType;

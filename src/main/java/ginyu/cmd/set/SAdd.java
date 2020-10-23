@@ -5,7 +5,6 @@ import ginyu.cmd.Command;
 import ginyu.common.Attributes;
 import ginyu.common.Constants;
 import ginyu.core.Client;
-import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.object.ObjectType;
 import ginyu.object.SetObject;
