@@ -118,4 +118,8 @@ public class ZSet {
             return this.skipList.getMembersByIndexRange(start, stop);
         }
     }
+
+    public Double getScoreByMember(String member) {
+        return this.members.getOrDefault(member, 0.0D);
+    }
 }
