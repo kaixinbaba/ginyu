@@ -32,6 +32,13 @@ public class BulkStrings extends Resp2<BulkString> {
         this.setFlag(BULK_STRINGS_FLAG);
     }
 
+    public static BulkStrings create(Object content) {
+        if (content == null) {
+            return NULL;
+        }
+        return create(content.toString());
+    }
+
     public static BulkStrings create(String content) {
         if (content == null) {
             return NULL;
