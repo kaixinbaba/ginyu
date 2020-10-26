@@ -85,8 +85,7 @@ public class Set extends AbstractRedisCommand<SetArg, SimpleStrings> {
 
     private Resp2 set(Database database, String key, String value, Long expiredMilliSeconds) {
         // TODO 如果key已经存在是否直接变更StringObject的original 性能更好
-        StringObject stringObject = new StringObject();
-        stringObject.setOriginal(value);
+        StringObject stringObject = new StringObject(value);
         database.set(key, stringObject);
         if (expiredMilliSeconds != null && expiredMilliSeconds > 0) {
             database.setExpired(key, System.currentTimeMillis() + expiredMilliSeconds);

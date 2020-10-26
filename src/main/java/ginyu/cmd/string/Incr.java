@@ -6,6 +6,7 @@ import ginyu.cmd.KeyArg;
 import ginyu.common.Attributes;
 import ginyu.core.Client;
 import ginyu.db.Database;
+import ginyu.exception.CommandValidateException;
 import ginyu.object.ObjectType;
 import ginyu.object.StringObject;
 import ginyu.protocol.Arrays;
@@ -21,8 +22,8 @@ import io.netty.channel.ChannelHandlerContext;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "get", checkExpire = true)
-public class Get extends AbstractRedisCommand<KeyArg, BulkStrings> {
+@Command(name = "incr", checkExpire = true)
+public class Incr extends AbstractRedisCommand<KeyArg, BulkStrings> {
     @Override
     public KeyArg createArg(Arrays arrays) {
         return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
@@ -39,8 +40,18 @@ public class Get extends AbstractRedisCommand<KeyArg, BulkStrings> {
         Database database = client.getDatabase();
         StringObject stringObject = Validates.validateType(database.get(arg.getKey()), ObjectType.STRING);
         if (stringObject == null) {
-            return BulkStrings.NULL;
+            stringObject = new StringObject("1");
+            database.set(arg.getKey(), stringObject);
+            return BulkStrings.create(stringObject.getOriginal().getValue());
+        } else {
+            String value = stringObject.getOriginal().getValue();
+            try {
+                Integer intValue = Integer.parseInt(value);
+                stringObject.getOriginal().setValue(intValue + 1);
+                return BulkStrings.create(stringObject.getOriginal().getValue());
+            } catch (NumberFormatException e) {
+                throw new CommandValidateException("value is not an integer or out of range");
+            }
         }
-        return BulkStrings.create(stringObject.getOriginal().getValue());
     }
 }
