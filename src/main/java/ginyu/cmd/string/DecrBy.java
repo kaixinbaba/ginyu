@@ -2,7 +2,6 @@ package ginyu.cmd.string;
 
 import ginyu.cmd.AbstractRedisCommand;
 import ginyu.cmd.Command;
-import ginyu.cmd.KeyArg;
 import ginyu.common.Attributes;
 import ginyu.core.Client;
 import ginyu.db.Database;
@@ -21,30 +20,33 @@ import io.netty.channel.ChannelHandlerContext;
  * @description:
  */
 @SuppressWarnings("all")
-@Command(name = "decr", checkExpire = true)
-public class Decr extends AbstractRedisCommand<KeyArg, BulkStrings> {
-
+@Command(name = "decrby", checkExpire = true)
+public class DecrBy extends AbstractRedisCommand<CrementByArg, BulkStrings> {
     @Override
-    public KeyArg createArg(Arrays arrays) {
-        return new KeyArg(ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1));
+    public CrementByArg createArg(Arrays arrays) {
+        return new CrementByArg(
+                ProtocolValueUtils.getFromBulkStringsInArrays(arrays, 1),
+                ProtocolValueUtils.getIntFromBulkStringsInArrays(arrays, 2)
+        );
     }
 
     @Override
     protected void validate(String commandName, Arrays arrays) {
-        Validates.validateArraysSize(commandName, arrays, 2);
+        Validates.validateArraysSize(commandName, arrays, 3);
+        Validates.validateInteger(arrays, 2, "decrement");
     }
 
     @Override
-    protected Resp2 doCommand0(KeyArg arg, ChannelHandlerContext ctx) {
+    protected Resp2 doCommand0(CrementByArg arg, ChannelHandlerContext ctx) {
         Client client = Attributes.getClient(ctx);
         Database database = client.getDatabase();
         StringObject stringObject = Validates.validateType(database.get(arg.getKey()), ObjectType.STRING);
         if (stringObject == null) {
-            stringObject = new StringObject(-1);
+            stringObject = new StringObject(-arg.getCrement());
             database.set(arg.getKey(), stringObject);
             return BulkStrings.create(stringObject.getOriginal().getValue());
         } else {
-            stringObject.getOriginal().incrBy(-1);
+            stringObject.getOriginal().incrBy(-arg.getCrement());
             return BulkStrings.create(stringObject.getOriginal().getValue());
         }
     }

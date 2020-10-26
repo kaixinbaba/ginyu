@@ -8,7 +8,11 @@ package ginyu.object;
 public class StringObject extends RedisObject<GinyuString> {
 
     public StringObject() {
-        this(null);
+        this((String) null);
+    }
+
+    public StringObject(Integer value) {
+        this(String.valueOf(value));
     }
 
     public StringObject(String value) {
