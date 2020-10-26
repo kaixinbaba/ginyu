@@ -1,5 +1,6 @@
 package ginyu.object;
 
+import ginyu.exception.CommandValidateException;
 import lombok.Getter;
 
 /**
@@ -22,5 +23,14 @@ public class GinyuString {
 
     public GinyuString(String value) {
         this.value = value;
+    }
+
+    public void incrBy(Integer incrValue) {
+        try {
+            int intValue = Integer.parseInt(this.value);
+            this.setValue(intValue + incrValue);
+        } catch (NumberFormatException e) {
+            throw new CommandValidateException("value is not an integer or out of range");
+        }
     }
 }

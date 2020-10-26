@@ -44,14 +44,8 @@ public class Incr extends AbstractRedisCommand<KeyArg, BulkStrings> {
             database.set(arg.getKey(), stringObject);
             return BulkStrings.create(stringObject.getOriginal().getValue());
         } else {
-            String value = stringObject.getOriginal().getValue();
-            try {
-                Integer intValue = Integer.parseInt(value);
-                stringObject.getOriginal().setValue(intValue + 1);
-                return BulkStrings.create(stringObject.getOriginal().getValue());
-            } catch (NumberFormatException e) {
-                throw new CommandValidateException("value is not an integer or out of range");
-            }
+            stringObject.getOriginal().incrBy(1);
+            return BulkStrings.create(stringObject.getOriginal().getValue());
         }
     }
 }
