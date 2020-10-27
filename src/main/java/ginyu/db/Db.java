@@ -22,6 +22,14 @@ public class Db {
         }
     }
 
+    public Db(Db db) {
+        List<Database> databases = db.getDatabases();
+        this.databases = new ArrayList<>(databases.size());
+        for (Database database : databases) {
+            this.databases.add(new Database(database));
+        }
+    }
+
     public Database getDatabase(Integer id) {
         return this.databases.get(id);
     }

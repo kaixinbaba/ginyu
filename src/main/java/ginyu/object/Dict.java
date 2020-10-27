@@ -8,4 +8,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: TODO redis底层双数组
  */
 public class Dict<K, V> extends ConcurrentHashMap<K, V> {
+
+    public Dict() {
+    }
+
+    public Dict(Dict<K, V> dict) {
+        super(dict);
+    }
 }

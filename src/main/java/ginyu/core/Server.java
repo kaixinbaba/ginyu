@@ -5,10 +5,13 @@ import ginyu.config.GinyuConfig;
 import ginyu.db.Db;
 import ginyu.io.Communicator;
 import ginyu.io.NettyCommunicator;
+import ginyu.persist.Saver;
+import ginyu.persist.SnapshotSaver;
 import ginyu.task.CleanExpiredTask;
 import ginyu.task.WakeupTimeoutClientTask;
 import ginyu.utils.ConfigUtils;
 import lombok.Getter;
+import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -24,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description:
  */
 @SuppressWarnings("all")
+@ToString
 public class Server {
 
     public static final Server INSTANCE = new Server();
@@ -35,6 +39,8 @@ public class Server {
     private GinyuConfig ginyuConfig;
     @Getter
     private Db db;
+
+    private Saver saver;
 
     private CleanExpiredTask cleanExpiredTask;
 
@@ -49,6 +55,7 @@ public class Server {
         this.db = new Db(this.ginyuConfig.getDbSize());
         this.cleanExpiredTask = new CleanExpiredTask();
         this.wakeupTimeoutClientTask = new WakeupTimeoutClientTask();
+        this.saver = new SnapshotSaver();
     }
 
     private void printEnv() {
@@ -80,7 +87,6 @@ public class Server {
         Consoles.info("start listening port {}", ginyuConfig.getPort());
         this.communicator.start(ginyuConfig);
         this.startTask();
-        Consoles.info("server started");
     }
 
     public void addClient(Client client) {
@@ -94,5 +100,9 @@ public class Server {
     private void startTask() {
         this.cleanExpiredTask.start();
         this.wakeupTimeoutClientTask.start();
+    }
+
+    public void save() {
+        this.saver.save();
     }
 }

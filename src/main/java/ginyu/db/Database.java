@@ -21,6 +21,7 @@ public class Database {
     @Getter
     private final Integer id;
 
+    @Getter
     private final Dict<String, RedisObject> dict;
 
     @Getter
@@ -35,6 +36,14 @@ public class Database {
         this.id = id;
         this.dict = new Dict<>();
         this.expired = new ConcurrentSkipListMap<>();
+        this.blockingDict = new Dict<>();
+        this.timeoutSets = new ConcurrentSkipListSet<>();
+    }
+
+    public Database(Database database) {
+        this.id = database.id;
+        this.dict = new Dict<>(database.getDict());
+        this.expired = new ConcurrentSkipListMap<>(database.getExpired());
         this.blockingDict = new Dict<>();
         this.timeoutSets = new ConcurrentSkipListSet<>();
     }

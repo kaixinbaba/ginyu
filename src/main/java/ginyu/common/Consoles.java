@@ -108,6 +108,9 @@ public abstract class Consoles {
         debug(format(format, arguments));
     }
 
+    public static void info(Object msg) {
+        info(String.valueOf(msg));
+    }
     public static void info(String msg) {
         if (canLog(Level.INFO)) {
             if (enableColor) {
