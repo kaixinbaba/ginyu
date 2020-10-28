@@ -2,6 +2,13 @@
 Redis implment with PURE Java
 ![小青蛙基纽](./ginyu.png)
 
+一个用纯java实现的redis服务端
+
+- RESP2协议
+- String，Hash，List，Set，ZSet5种数据结构
+- 后台清除过期的key
+- 使用json格式进行内存快照的存储
+
 ## Redis Command List
 <details>
 <summary>
