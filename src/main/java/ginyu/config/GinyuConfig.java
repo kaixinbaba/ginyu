@@ -16,4 +16,6 @@ public class GinyuConfig {
 
     private Integer dbSize;
 
+    private String snapshotPath;
+
 }

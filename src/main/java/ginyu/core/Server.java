@@ -6,6 +6,7 @@ import ginyu.db.Db;
 import ginyu.io.Communicator;
 import ginyu.io.NettyCommunicator;
 import ginyu.persist.Saver;
+import ginyu.persist.ServerForSaver;
 import ginyu.persist.SnapshotSaver;
 import ginyu.task.CleanExpiredTask;
 import ginyu.task.WakeupTimeoutClientTask;
@@ -38,7 +39,7 @@ public class Server {
     @Getter
     private GinyuConfig ginyuConfig;
     @Getter
-    private Db db;
+    private volatile Db db;
 
     private Saver saver;
 
@@ -50,6 +51,7 @@ public class Server {
     }
 
     public void init(String[] args) {
+        // 初始化配置
         this.ginyuConfig = ConfigUtils.getConfig(args);
         this.communicator = new NettyCommunicator();
         this.db = new Db(this.ginyuConfig.getDbSize());
@@ -86,6 +88,8 @@ public class Server {
         printGinyuConfig();
         Consoles.info("start listening port {}", ginyuConfig.getPort());
         this.communicator.start(ginyuConfig);
+        // load from snapshot
+        this.saver.tryLoad(this.ginyuConfig.getSnapshotPath());
         this.startTask();
     }
 
@@ -104,5 +108,9 @@ public class Server {
 
     public void save() {
         this.saver.save();
+    }
+
+    public void loadFromSaver(ServerForSaver serverForSaver) {
+        this.db = serverForSaver.getDb();
     }
 }

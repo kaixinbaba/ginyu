@@ -5,8 +5,14 @@ import ginyu.common.Consoles;
 import ginyu.core.Server;
 import ginyu.db.Db;
 import ginyu.event.Events;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.function.Supplier;
+
+import static ginyu.common.Constants.DEFAULT_SNAPSHOT_PATH;
 
 /**
  * @author: junjiexun
@@ -21,14 +27,32 @@ public class SnapshotSaver implements Saver {
             final Server server = Server.INSTANCE;
             ServerForSaver serverForSaver = new ServerForSaver();
             serverForSaver.setDb(new Db(server.getDb()));
-            String s = JSONObject.toJSONString(serverForSaver, true);
-            Consoles.info(s);
+            String saveContent = JSONObject.toJSONString(serverForSaver, true);
+            String snapshotPath = Server.INSTANCE.getGinyuConfig().getSnapshotPath();
+            if (snapshotPath == null || snapshotPath.isEmpty()) {
+                snapshotPath = DEFAULT_SNAPSHOT_PATH;
+            }
+            try {
+                FileUtils.writeStringToFile(new File(snapshotPath), saveContent, Charset.defaultCharset());
+            } catch (IOException e) {
+                Consoles.error(e.getMessage());
+            }
             return null;
         });
     }
 
     @Override
-    public void load(String filePath) {
-
+    public void load(String filePath) throws IOException {
+        if (filePath == null) {
+            filePath = DEFAULT_SNAPSHOT_PATH;
+        }
+        File file = new File(filePath);
+        if (!file.exists() || !file.canRead()) {
+            Consoles.debug("The snapshot %s can't be read", file);
+            return;
+        }
+        String snapshotJson = FileUtils.readFileToString(file, Charset.defaultCharset());
+        ServerForSaver serverForSaver = JSONObject.parseObject(snapshotJson, ServerForSaver.class);
+        Server.INSTANCE.loadFromSaver(serverForSaver);
     }
 }

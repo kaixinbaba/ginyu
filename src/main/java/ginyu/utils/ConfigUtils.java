@@ -17,6 +17,7 @@ public abstract class ConfigUtils {
         ginyuConfig.setPort(9736);
         ginyuConfig.setDbSize(16);
         ginyuConfig.setLogLevel(0);
+        ginyuConfig.setSnapshotPath("./dump.ginyu");
         switch (ginyuConfig.getLogLevel()) {
             case 0:
                 Consoles.LEVEL = Level.FINE;

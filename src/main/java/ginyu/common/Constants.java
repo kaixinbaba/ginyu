@@ -32,4 +32,6 @@ public abstract class Constants {
     public static final HashEntry[] HASH_ENTRIES_EMPTY_ARRAY = new HashEntry[]{};
 
     public static String SLOGAN = "ギニュー特戦队!";
+
+    public static String DEFAULT_SNAPSHOT_PATH = "./dump.ginyu";
 }
