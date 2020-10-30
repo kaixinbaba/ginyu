@@ -1,6 +1,7 @@
 package ginyu.db;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,10 @@ import java.util.List;
 public class Db {
 
     @Getter
-    private final List<Database> databases;
+    private List<Database> databases;
+
+    public Db() {
+    }
 
     public Db(Integer dbSize) {
         this.databases = new ArrayList<>(dbSize);

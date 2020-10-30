@@ -5,6 +5,8 @@ import ginyu.event.BlockEvent;
 import ginyu.object.Dict;
 import ginyu.object.RedisObject;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -19,18 +21,26 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class Database {
 
     @Getter
-    private final Integer id;
+    @Setter
+    private Integer id;
 
     @Getter
-    private final Dict<String, RedisObject> dict;
+    @Setter
+    private Dict<String, RedisObject> dict;
 
     @Getter
-    private final ConcurrentSkipListMap<String, Long> expired;
+    @Setter
+    private ConcurrentSkipListMap<String, Long> expired;
 
-    private final Dict<String, ConcurrentSkipListSet<BlockEvent>> blockingDict;
+    private Dict<String, ConcurrentSkipListSet<BlockEvent>> blockingDict;
 
     @Getter
-    private final ConcurrentSkipListSet<ClientTimeoutWrapper> timeoutSets;
+    @Setter
+    private ConcurrentSkipListSet<ClientTimeoutWrapper> timeoutSets;
+
+    public Database() {
+        this.blockingDict = new Dict<>();
+    }
 
     public Database(Integer id) {
         this.id = id;

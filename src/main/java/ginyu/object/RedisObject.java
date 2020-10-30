@@ -7,6 +7,7 @@ import lombok.Data;
  * @date: 2020/10/13 10:05 下午
  * @description:
  */
+
 @Data
 public abstract class RedisObject<T> {
 

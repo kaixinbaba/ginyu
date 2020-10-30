@@ -9,6 +9,7 @@ import ginyu.persist.Saver;
 import ginyu.persist.ServerForSaver;
 import ginyu.persist.SnapshotSaver;
 import ginyu.task.CleanExpiredTask;
+import ginyu.task.SimpleSnapshotSaverTask;
 import ginyu.task.WakeupTimeoutClientTask;
 import ginyu.utils.ConfigUtils;
 import lombok.Getter;
@@ -47,6 +48,8 @@ public class Server {
 
     private WakeupTimeoutClientTask wakeupTimeoutClientTask;
 
+    private SimpleSnapshotSaverTask simpleSnapshotSaverTask;
+
     private Server() {
     }
 
@@ -57,6 +60,7 @@ public class Server {
         this.db = new Db(this.ginyuConfig.getDbSize());
         this.cleanExpiredTask = new CleanExpiredTask();
         this.wakeupTimeoutClientTask = new WakeupTimeoutClientTask();
+        this.simpleSnapshotSaverTask = new SimpleSnapshotSaverTask();
         this.saver = new SnapshotSaver();
     }
 
@@ -104,6 +108,7 @@ public class Server {
     private void startTask() {
         this.cleanExpiredTask.start();
         this.wakeupTimeoutClientTask.start();
+//        this.simpleSnapshotSaverTask.start();
     }
 
     public void save() {
