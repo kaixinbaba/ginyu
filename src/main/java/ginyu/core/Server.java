@@ -108,7 +108,7 @@ public class Server {
     private void startTask() {
         this.cleanExpiredTask.start();
         this.wakeupTimeoutClientTask.start();
-//        this.simpleSnapshotSaverTask.start();
+        this.simpleSnapshotSaverTask.start();
     }
 
     public void save() {

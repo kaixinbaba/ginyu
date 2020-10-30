@@ -14,8 +14,10 @@ import ginyu.protocol.Arrays;
 import ginyu.protocol.Resp2;
 import ginyu.protocol.Validates;
 import ginyu.utils.BlockUtils;
+import ginyu.utils.Dates;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -31,6 +33,6 @@ public class SnapshotSaverListener {
     @Subscribe
     public void saveSnapshot(Supplier<Void> supplier) {
         supplier.get();
-        Consoles.info("save done");
+        Consoles.info("{} save done", Dates.date2string(new Date(), Dates.PTTERN_DATETIME));
     }
 }

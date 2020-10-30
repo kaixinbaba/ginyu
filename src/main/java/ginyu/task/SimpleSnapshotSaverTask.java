@@ -17,6 +17,8 @@ public class SimpleSnapshotSaverTask {
 
     private final Timer timer = new Timer("ginyu-snapshto-save", true);
 
+    private final long TIME_PERIOD = 1000 * 20;
+
     public void start() {
         this.timer.schedule(new TimerTask() {
             @Override
@@ -24,7 +26,7 @@ public class SimpleSnapshotSaverTask {
                 Consoles.info("Try to save snapshot...");
                 Server.INSTANCE.save();
             }
-        }, 3000, 1000 * 20);
+        }, TIME_PERIOD, TIME_PERIOD);
     }
 
 }
