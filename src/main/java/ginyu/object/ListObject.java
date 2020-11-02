@@ -16,4 +16,9 @@ public class ListObject extends RedisObject<List> {
     public boolean isEmptyValue() {
         return super.isEmptyValue() || this.getOriginal().isEmpty();
     }
+
+    @Override
+    public String toSnapshot() {
+        return null;
+    }
 }

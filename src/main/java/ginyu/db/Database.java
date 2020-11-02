@@ -1,11 +1,11 @@
 package ginyu.db;
 
 import ginyu.core.ClientTimeoutWrapper;
+import ginyu.core.Snapshot;
 import ginyu.event.BlockEvent;
 import ginyu.object.Dict;
 import ginyu.object.RedisObject;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @description:
  */
 @SuppressWarnings("all")
-public class Database {
+public class Database implements Snapshot {
 
     @Getter
     @Setter
@@ -30,7 +30,7 @@ public class Database {
 
     @Getter
     @Setter
-    private ConcurrentSkipListMap<String, Long> expired;
+    private Dict<String, Long> expired;
 
     private Dict<String, ConcurrentSkipListSet<BlockEvent>> blockingDict;
 
@@ -45,7 +45,7 @@ public class Database {
     public Database(Integer id) {
         this.id = id;
         this.dict = new Dict<>();
-        this.expired = new ConcurrentSkipListMap<>();
+        this.expired = new Dict<>();
         this.blockingDict = new Dict<>();
         this.timeoutSets = new ConcurrentSkipListSet<>();
     }
@@ -53,7 +53,7 @@ public class Database {
     public Database(Database database) {
         this.id = database.id;
         this.dict = new Dict<>(database.getDict());
-        this.expired = new ConcurrentSkipListMap<>(database.getExpired());
+        this.expired = new Dict<>(database.getExpired());
         this.blockingDict = new Dict<>();
         this.timeoutSets = new ConcurrentSkipListSet<>();
     }
@@ -155,5 +155,14 @@ public class Database {
 
     public void removeBlockKey(String blockKey) {
         this.blockingDict.remove(blockKey);
+    }
+
+    @Override
+    public String toSnapshot() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.id);
+        sb.append(this.dict.toSnapshot());
+        sb.append(this.expired.toSnapshot());
+        return sb.toString();
     }
 }

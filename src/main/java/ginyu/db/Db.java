@@ -1,7 +1,7 @@
 package ginyu.db;
 
+import ginyu.core.Snapshot;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @date: 2020/10/13 10:03 下午
  * @description:
  */
-public class Db {
+public class Db implements Snapshot {
 
     @Getter
     private List<Database> databases;
@@ -39,11 +39,19 @@ public class Db {
     }
 
     public void swapDb(Integer index1, Integer index2) {
-        synchronized (this.databases) {
-            Database database1 = databases.get(index1);
-            Database database2 = databases.get(index2);
-            databases.set(index1, database2);
-            databases.set(index2, database1);
+        Database database1 = databases.get(index1);
+        Database database2 = databases.get(index2);
+        databases.set(index1, database2);
+        databases.set(index2, database1);
+    }
+
+    @Override
+    public String toSnapshot() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.databases.size());
+        for (Database database : this.databases) {
+            sb.append(database.toSnapshot());
         }
+        return sb.toString();
     }
 }

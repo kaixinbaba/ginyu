@@ -49,6 +49,15 @@ public class SnapshotSaver implements Saver {
             final Server server = Server.INSTANCE;
             ServerForSaver serverForSaver = new ServerForSaver();
             serverForSaver.setDb(new Db(server.getDb()));
+            String snapshotPath = Server.INSTANCE.getGinyuConfig().getSnapshotPath();
+            if (snapshotPath == null || snapshotPath.isEmpty()) {
+                snapshotPath = DEFAULT_SNAPSHOT_PATH;
+            }
+            try {
+                FileUtils.writeByteArrayToFile(new File(snapshotPath), serverForSaver.toSnapshot().getBytes());
+            } catch (IOException e) {
+                Consoles.error(e.getMessage());
+            }
             return null;
         });
     }

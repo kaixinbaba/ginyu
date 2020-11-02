@@ -3,6 +3,7 @@ package ginyu.task;
 import ginyu.core.Server;
 import ginyu.db.Database;
 import ginyu.db.Db;
+import ginyu.object.Dict;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -23,7 +24,7 @@ public class CleanExpiredTask {
                 Db db = Server.INSTANCE.getDb();
                 long now = System.currentTimeMillis();
                 for (Database database : db.getDatabases()) {
-                    ConcurrentSkipListMap<String, Long> expired = database.getExpired();
+                    Dict<String, Long> expired = database.getExpired();
                     List<Map.Entry<String, Long>> entryList = new ArrayList<>(expired.entrySet());
                     entryList.sort(Comparator.comparingLong(Map.Entry::getValue));
                     for (Map.Entry<String, Long> entry : entryList) {

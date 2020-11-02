@@ -19,4 +19,9 @@ public class StringObject extends RedisObject<GinyuString> {
         this.setType(ObjectType.STRING);
         this.setOriginal(new GinyuString(value));
     }
+
+    @Override
+    public String toSnapshot() {
+        return null;
+    }
 }

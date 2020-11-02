@@ -16,4 +16,9 @@ public class HashObject extends RedisObject<Dict<String, String>> {
     public boolean isEmptyValue() {
         return super.isEmptyValue() || this.getOriginal().isEmpty();
     }
+
+    @Override
+    public String toSnapshot() {
+        return null;
+    }
 }

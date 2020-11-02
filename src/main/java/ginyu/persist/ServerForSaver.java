@@ -1,5 +1,6 @@
 package ginyu.persist;
 
+import ginyu.core.Snapshot;
 import ginyu.db.Db;
 import lombok.Data;
 
@@ -9,7 +10,12 @@ import lombok.Data;
  * @description:
  */
 @Data
-public class ServerForSaver {
+public class ServerForSaver implements Snapshot {
 
     private Db db;
+
+    @Override
+    public String toSnapshot() {
+        return this.db.toSnapshot();
+    }
 }

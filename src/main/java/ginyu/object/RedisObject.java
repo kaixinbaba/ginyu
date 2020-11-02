@@ -1,5 +1,6 @@
 package ginyu.object;
 
+import ginyu.core.Snapshot;
 import lombok.Data;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Data;
  */
 
 @Data
-public abstract class RedisObject<T> {
+public abstract class RedisObject<T> implements Snapshot {
 
     private ObjectType type;
 

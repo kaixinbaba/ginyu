@@ -11,4 +11,9 @@ public class ZSetObject extends RedisObject<ZSet> {
         this.setType(ObjectType.ZSET);
         this.setOriginal(new ZSet());
     }
+
+    @Override
+    public String toSnapshot() {
+        return null;
+    }
 }
