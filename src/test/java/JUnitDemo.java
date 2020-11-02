@@ -92,4 +92,15 @@ public class JUnitDemo {
             return scoreResult;
         }
     }
+
+    @Test
+    public void writeByteTest() throws IOException {
+        File f = new File("./tttt");
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        for (int i = 0; i < 10; i++) {
+            FileUtils.writeByteArrayToFile(f, ("123 adfkj" + i).getBytes(), true);
+        }
+    }
 }
